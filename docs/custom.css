@@ -25,3 +25,25 @@
     color: rgb(240, 235, 235); /* 设置文字颜色，根据需要调整 */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* 添加文字阴影，增强可读性 */
 }
+
+
+html, body {
+    height: 100%;
+    margin: 0;
+  }
+  
+  #app {
+    height: calc(100vh - 评论区高度); /* 根据评论区实际高度调整 */
+    overflow-y: auto; /* 内容区出现滚动条 */
+  }
+  
+  #gitalk-container {
+    position: fixed;
+    display: none;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: white; /* 可根据需要调整背景色 */
+    z-index: 100; /* 确保评论区在最上层 */
+  }
+
