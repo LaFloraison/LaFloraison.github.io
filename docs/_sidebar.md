@@ -3,14 +3,16 @@
 * [Home](README)
 * [Instructions](guide.md)
 
-
-
-* [Mathemaics]()
+* [Mathemaics](01/Algebra/)
     * [Mathematical Analysis](01/Analysis/)
     * [Algebra](01/Algebra/)
 
 * [Artifical Intelligence]()
+
 * [Electronic information]()
-* [PreTools]()
+
+* [Tech Talk](04/README.md)
+* [PreTools](05/README.md)
+
 * [How to have a website like this?](05/README.md)
 

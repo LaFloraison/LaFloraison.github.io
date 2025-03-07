@@ -4,18 +4,37 @@ Here I'd answer your questions about this website.
 
 > What's this website?  
 
+This is a website I built for sharing my learning experience and notes about science and technology.
+
+
 
 > Why I build this website?  
 
-Owing to the lack of teaching resources in my university, I build this 
+Here are several reasons:
+- As
+
+
+
+As is known to us, in most of the chin 
 
 
 >What I will share on this website?  
 
+As is mentioned above, 
+
+
 
 >Who's the website for?
 
+- For those who are interested in science and technology.
+
+
 > About language  
+
+After thinking twice, I decide to write my blog in English. As a native Chinese speaker, it seems a little bit confusing and inexplicable. 
+
+But actually it has reasons to do so:
+- English has its advantages in science and technology.  
 
 
 > Have a fun time!
@@ -30,8 +49,11 @@ This website is built by Docsify and GitHub Pages.
 
 >To contact me
 
-
-
+If you are also interested in science and technology,  have  have any questions about this website.  
+You can contact me——  
+by email:2597211308@qq.com  
+on GitHub:[LaFloraison](https://github.com/LaFloraison)  
+QQ group: 1034694618
 
 
 

@@ -1,5 +1,2 @@
 * [主页](/)
-* [Mathemaics]()
-* [Electronic information]()
-* [Artifical Intelligence]()
-* [PreTools]()
+* [PreTools](/04/)

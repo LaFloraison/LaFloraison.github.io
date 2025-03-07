@@ -1,7 +1,5 @@
 # PreTools
 
-This is a learning guidance for you to be a poser(just kidding)
+This is a learning guidance for you to be a poser(just kidding!)
 
-Here you can learn about some useful tools that you should know as early as possible.
-
-These tools are
+Here you can learn about some magic tools that you may use in your learning journey.  The tools I recommend are either  pratical or popular nowadays.  

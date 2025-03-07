@@ -4,7 +4,7 @@
 
 - Welcome!This is a lab built by Lafloraison.  
 - Here I'd share my learning notes and some experience about College.  
-- to know more, you can go to [>>Instructions](guide.md)
+- To know more, you can go to [>>Instructions](guide.md)
 
 
 

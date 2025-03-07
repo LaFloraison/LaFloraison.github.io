@@ -1,7 +1,6 @@
 <!-- _coverpage.md -->
 
 ![logo](395eb39c96d9e4a4ad9e4b607fa7d77.png)
-
 # Just believe it
 >你那么憎恨那些人，跟他们斗了那么久，最终却变得和他们一样。
 
