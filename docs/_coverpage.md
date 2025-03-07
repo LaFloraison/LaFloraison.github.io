@@ -1,14 +1,19 @@
 <!-- _coverpage.md -->
 
-![logo](Snipaste_2022-11-17_14-37-07.png)
+![logo](395eb39c96d9e4a4ad9e4b607fa7d77.png)
 
-# 汝且妄言以信之
+# Just believe it
+>你那么憎恨那些人，跟他们斗了那么久，最终却变得和他们一样。
 
-> A magical documentation site generator.
+>人世间没有任何理想值得以这样的沉沦作为代价。
+-  Welcome to my blog
 
-- Simple and lightweight
-- No statically built html files
-- Multiple themes
 
-[GitHub](https://github.com/docsifyjs/docsify/)
-[Get Started](README)
+
+
+
+
+
+
+[Let's Start](README)
+<!-- [GitHub](https://github.com/docsifyjs/docsify/) -->

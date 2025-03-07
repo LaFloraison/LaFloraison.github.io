@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Document</title>
+  <title>LaFloraison'Lab</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="description" content="Description">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
  
 </head>
 <body>
@@ -21,9 +21,36 @@
       loadNavbar: true,
       coverpage: true,
       onlyCover: true
-    }
+
+     }
+   
+
   </script>
+<script>
+  var gitalk = new Gitalk({
+      clientID: 'Ov23liqTYVQOIyXzl0ke',
+      clientSecret: 'bcd0e249dc2637d87fad5a1d1d10acba0ee9fc4c',
+      repo: 'Comment',  // 存放评论的仓库
+      owner: 'LaFloraison',  // 仓库的创建者，
+      admin: 'LaFloraison' // 如果仓库有多个人可以操作，那么在这里以数组形式写出
+      title: `Comment ${location.hash.match(/#(.*?)([?]|$)/)[1]}`,
+      id: location.hash.match(/#(.*?)([?]|$)/)[1],  // 存放评论的仓库
+  })
+  // Listen for changes in hash in the URL. If an MD file is found to have changed,
+  // refresh the page to solve the problem of using a single digital comment issue for the entire website.
+  window.onhashchange = function (event) {
+      if (event.newURL.split('?')[0] !== event.oldURL.split('?')[0]) {
+          location.reload()
+      }
+  }
+</script>
+
   <!-- Docsify v4 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <script src="//polyfill.io/v3/polyfill.min.js?features=String.prototype.normalize"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
 </body>
 </html>

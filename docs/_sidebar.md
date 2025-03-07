@@ -1,18 +1,16 @@
 <!-- docs/_sidebar.md -->
 
-* [主页](README)
-* [操作指南](guide.md)
-* [PreTools]()
-    * [Markdown]
-    * [LATEX]
-    * [Github]
+* [Home](README)
+* [Instructions](guide.md)
+
 
 
 * [Mathemaics]()
     * [Mathematical Analysis](01/Analysis/)
     * [Algebra](01/Algebra/)
 
-
-
-
 * [Artifical Intelligence]()
+* [Electronic information]()
+* [PreTools]()
+* [How to have a website like this?](05/README.md)
+
