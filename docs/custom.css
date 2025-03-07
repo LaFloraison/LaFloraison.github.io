@@ -27,23 +27,44 @@
 }
 
 
-html, body {
-    height: 100%;
-    margin: 0;
-  }
-  
-  #app {
-    height: calc(100vh - 评论区高度); /* 根据评论区实际高度调整 */
-    overflow-y: auto; /* 内容区出现滚动条 */
-  }
-  
-  #gitalk-container {
-    position: fixed;
-    display: none;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: white; /* 可根据需要调整背景色 */
-    z-index: 100; /* 确保评论区在最上层 */
-  }
 
+
+/* custom.css */
+#gitalk-container {
+    position: fixed;
+    top: 0;
+    right: -24%; /* 初始时评论区隐藏在屏幕右侧 */
+    width: 20%;
+    height: 100vh;
+    overflow-y: auto;
+    border-left: 1px solid #ddd;
+    background-color: #fff;
+    z-index: 1000;
+    transition: right 0.3s ease; /* 添加过渡效果，使滑动更平滑 */
+}
+
+#gitalk-container.open {
+    right: 0; /* 展开时显示评论区 */
+}
+
+#toggle-comments {
+    position: fixed;
+    top: 5px;
+    right: 5px;
+    z-index: 1001;
+    background-color: #067620;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#app {
+    width: 100%; /* 主内容区域初始占满宽度 */
+    transition: width 0.3s ease; /* 添加过渡效果 */
+}
+
+#app.shrink {
+    width: 70%; /* 评论区展开时，主内容区域宽度调整 */
+}
