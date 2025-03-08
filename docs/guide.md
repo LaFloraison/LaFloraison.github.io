@@ -8,7 +8,7 @@ This is a website I built for sharing my learning experience and notes about sci
 
 
 
-> Why I build this website?  
+> Why do I build this website?  
 
 Here are several reasons:
 - As
@@ -18,7 +18,7 @@ Here are several reasons:
 As is known to us, in most of the chin 
 
 
->What I will share on this website?  
+>What will  I share on this website?  
 
 As is mentioned above, 
 
@@ -33,17 +33,21 @@ As is mentioned above,
 
 After thinking twice, I decide to write my blog in English. As a native Chinese speaker, it seems a little bit confusing and inexplicable. 
 
-But actually it has reasons to do so:
+But actually there are sufficient reasons to do so:
 - English has its advantages in science and technology.  
+
+>How to use this website?  
+
 
 
 > Have a fun time!
 
 >Want to build a website like this?
-This website is built by Docsify and GitHub Pages.
 
- even though you don't know anything about coding languages and website design.  You can make it in a week.  
- If you are interested in it, click here to see the detailed tutorial.[>>tutorial](05/README.md)
+This website is completely built by Docsify, GitHub Pages and Doubao.
+
+ To be honest,even though you don't know anything about coding languages and website design.  You can make a website like this in a week.  
+ If you are tempted by this, click here to see the detailed tutorial.[>>tutorial](05/README.md)
 
 
 
