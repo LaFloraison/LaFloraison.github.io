@@ -1,4 +1,5 @@
-* [主页](/)
+* [Home](/)
 * [Contents](/)
+* [TechTalk](/04/)
 * [Pretools]()
 * [Happy!](/04/)

@@ -1,5 +1,6 @@
 # Instructions
-Here I'd answer your questions about this website.
+Here I'd have a brief introduction about this website. 
+
 
 
 > What's this website?  
@@ -11,11 +12,11 @@ This is a website I built for sharing my learning experience and notes about sci
 > Why do I build this website?  
 
 Here are several reasons:
-- As
+- 
 
 
 
-As is known to us, in most of the chin 
+As is known to us, in most of the universities in China
 
 
 >What will  I share on this website?  
@@ -36,6 +37,8 @@ After thinking twice, I decide to write my blog in English. As a native Chinese 
 But actually there are sufficient reasons to do so:
 - English has its advantages in science and technology.  
 
+>Further planning
+
 >How to use this website?  
 
 
@@ -44,10 +47,11 @@ But actually there are sufficient reasons to do so:
 
 >Want to build a website like this?
 
-This website is completely built by Docsify, GitHub Pages and Doubao.
-
- To be honest,even though you don't know anything about coding languages and website design.  You can make a website like this in a week.  
- If you are tempted by this, click here to see the detailed tutorial.[>>tutorial](05/README.md)
+To be honest, the process of making this website is very simple.
+This website is completely built by Docsify, GitHub Pages and Doubao.  
+ Even though you don't know anything about coding languages and website design.
+ You can make a website like this in a week.  
+ Tempted by this? click here to see the detailed tutorial.[>>tutorial](05/README.md)
 
 
 
