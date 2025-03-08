@@ -28,18 +28,35 @@
   </script>
   <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
   <script>
+    // 移除 clientSecret
     var gitalk = new Gitalk({
       clientID: 'Ov23liqTYVQOIyXzl0ke',
-      clientSecret: 'bcd0e249dc2637d87fad5a1d1d10acba0ee9fc4c',
       repo: 'Comment',  // 存放评论的仓库
       owner: 'LaFloraison',  // 仓库的创建者
       admin: ['LaFloraison'], // 如果仓库有多个人可以操作，那么在这里以数组形式写出
       title: `Comment ${location.hash.match(/#(.*?)([?]|$)/)[1]}`,
       id: location.hash.match(/#(.*?)([?]|$)/)[1],  // 存放评论的仓库
-    })
+    });
+
+    // 获取授权码后向后端请求访问令牌
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+
+    if (code) {
+      fetch(`http://localhost:3000/get-access-token?code=${code}`)
+        .then(response => response.json())
+        .then(data => {
+          const accessToken = data.access_token;
+          gitalk.options.accessToken = accessToken;
+          gitalk.render('gitalk-container');
+        })
+        .catch(error => {
+          console.error('Error getting access token:', error);
+        });
+    }
+
     // Listen for changes in hash in the URL. If an MD file is found to have changed,
     // refresh the page to solve the problem of using a single digital comment issue for the entire website.
-    gitalk.render('gitalk-container'); 
     window.onhashchange = function (event) {
       if (event.newURL.split('?')[0] !== event.oldURL.split('?')[0]) {
           location.reload()
