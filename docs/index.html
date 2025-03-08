@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>LaFloraison'Lab</title>
@@ -10,8 +11,9 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
   <link rel="stylesheet" href="custom.css">
 </head>
+
 <body>
-  
+
   <div id="app"></div>
   <div id="gitalk-container"></div>
   <button id="toggle-comments">Comments</button>
@@ -24,18 +26,21 @@
       loadNavbar: true,
       coverpage: true,
       onlyCover: true
-     }
+    }
   </script>
   <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
   <script>
-    // 移除 clientSecret
+    // 处理 hash 匹配问题
+    const hashMatch = location.hash.match(/#(.*?)([?]|$)/);
+    const hashValue = hashMatch ? hashMatch[1] : 'default';
+
     var gitalk = new Gitalk({
       clientID: 'Ov23liqTYVQOIyXzl0ke',
       repo: 'Comment',  // 存放评论的仓库
       owner: 'LaFloraison',  // 仓库的创建者
       admin: ['LaFloraison'], // 如果仓库有多个人可以操作，那么在这里以数组形式写出
-      title: `Comment ${location.hash.match(/#(.*?)([?]|$)/)[1]}`,
-      id: location.hash.match(/#(.*?)([?]|$)/)[1],  // 存放评论的仓库
+      title: `Comment ${hashValue}`,
+      id: hashValue,  // 存放评论的仓库
     });
 
     // 获取授权码后向后端请求访问令牌
@@ -52,14 +57,21 @@
         })
         .catch(error => {
           console.error('Error getting access token:', error);
+          const errorMessage = document.createElement('p');
+          errorMessage.textContent = 'Failed to get access token. Please try again later.';
+          const gitalkContainer = document.getElementById('gitalk-container');
+          gitalkContainer.appendChild(errorMessage);
         });
+    } else {
+      // 没有 code 参数时直接渲染 Gitalk
+      gitalk.render('gitalk-container');
     }
 
     // Listen for changes in hash in the URL. If an MD file is found to have changed,
     // refresh the page to solve the problem of using a single digital comment issue for the entire website.
     window.onhashchange = function (event) {
       if (event.newURL.split('?')[0] !== event.oldURL.split('?')[0]) {
-          location.reload()
+        location.reload()
       }
     }
 
@@ -68,7 +80,7 @@
     const gitalkContainer = document.getElementById('gitalk-container');
     const app = document.getElementById('app');
 
-    toggleButton.addEventListener('click', function() {
+    toggleButton.addEventListener('click', function () {
       gitalkContainer.classList.toggle('open');
       app.classList.toggle('shrink');
     });
@@ -78,4 +90,5 @@
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
   <script src="//polyfill.io/v3/polyfill.min.js?features=String.prototype.normalize"></script>
 </body>
+
 </html>
