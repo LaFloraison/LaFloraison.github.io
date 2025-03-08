@@ -39,18 +39,21 @@ But actually there are sufficient reasons to do so:
 
 >Further planning
 
->How to use this website?  
+- To establish a free knowledge repository about elementary STEM knowledge  with Obsidian, open source on Github and try to build a website to launch it.
+- To create accounts on Zhihu or CSDN or other platforms to share some formed articles on this blog.
+- To learn Manim and create popular science videos with it, then share them on Bilibili and Youtube.
+- To write articles on my blog and improve the website. 
+- To collect and organize my 
 
-
+> How to use this website?  
 
 > Have a fun time!
 
+
+
 >Want to build a website like this?
 
-To be honest, the process of making this website is very simple.
-This website is completely built by Docsify, GitHub Pages and Doubao.  
- Even though you don't know anything about coding languages and website design.
- You can make a website like this in a week.  
+To be honest, the process of making this website is very simple. This website is completely built by Docsify, GitHub Pages and Doubao.  Even though you don't know anything about coding languages and website design. You can make a website like this in a week.  
  Tempted by this? click here to see the detailed tutorial.[>>tutorial](05/README.md)
 
 
