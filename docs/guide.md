@@ -41,9 +41,10 @@ But actually there are sufficient reasons to do so:
 
 - To establish a free knowledge repository about elementary STEM knowledge  with Obsidian, open source on Github and try to build a website to launch it.
 - To create accounts on Zhihu or CSDN or other platforms to share some formed articles on this blog.
-- To learn Manim and create popular science videos with it, then share them on Bilibili and Youtube.
-- To write articles on my blog and improve the website. 
-- To collect and organize my 
+- To learn Manim, create popular science videos with it, and then share them on Bilibili and Youtube.
+- To write articles on my blog and maintain the website. 
+- To collect and organize my blogs and repositories into lecture notes with LaTeX when they come into a certain degree of completeness.
+To know more, you can go to [>>plan](Plan/README.md)
 
 > How to use this website?  
 
@@ -66,7 +67,6 @@ by email:2597211308@qq.com
 on GitHub:[LaFloraison](https://github.com/LaFloraison)  
 QQ group: 1034694618
 
-
-
+to know more,you can go to [instruction](guide.md)
 
 [<<backhome](/)

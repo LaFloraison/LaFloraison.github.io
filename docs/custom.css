@@ -49,13 +49,13 @@
 
 #toggle-comments {
     position: fixed;
-    top: 5px;
+    top: 0px;
     right: 5px;
     z-index: 1001;
-    background-color: #067620;
+    background-color: #052c8f;
     color: white;
     border: none;
-    padding: 10px 15px;
+    padding: 25px 15px;
     cursor: pointer;
     border-radius: 5px;
 }
@@ -67,4 +67,7 @@
 
 #app.shrink {
     width: 70%; /* 评论区展开时，主内容区域宽度调整 */
+}
+.navbar {
+    background-color: blue;
 }

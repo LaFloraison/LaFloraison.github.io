@@ -7,12 +7,25 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="description" content="Description">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <link rel="stylesheet" media="(prefers-color-scheme: light)" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
   <link rel="stylesheet" href="custom.css">
+  <style>
+    /* 顶部蓝色条样式 */
+   .top-blue-bar {
+      background-color: #dae4ef;
+      height: 70px; /* 可根据需要调整高度 */
+      width: 100%;
+    }
+
+    /* 侧边栏宽度调整 */
+
+  </style>
 </head>
 
 <body>
+  <!-- 顶部蓝色条 -->
+  <div class="top-blue-bar"></div>
 
   <div id="app"></div>
   <div id="gitalk-container"></div>
@@ -89,6 +102,7 @@
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
   <script src="//polyfill.io/v3/polyfill.min.js?features=String.prototype.normalize"></script>
+
 </body>
 
-</html>
+</html>    
