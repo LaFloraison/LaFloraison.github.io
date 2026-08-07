@@ -143,6 +143,7 @@ select{appearance:none;-webkit-appearance:none;padding-right:2rem;
         <option value="">选择项目…</option>
         <option value="roadofcs">⚛️ Road of CS</option>
         <option value="math5all">📐 Math5All</option>
+        <option value="dlmath">🧠 DL Math</option>
       </select>
       <select id="lessonSel" onchange="onLessonChange()">
         <option value="">选择课程…</option>
@@ -188,6 +189,9 @@ var FILE_TYPES = {
     {id:'习题',label:'✏️ 习题',desc:'三组习题 + 答案'},
     {id:'谜镜',label:'🪞 谜镜',desc:'哲学 + 艺术 + 大师耳语'},
     {id:'深入',label:'🔬 深入',desc:'不限篇幅的深度探索',needsTopic:true}
+  ],
+  dlmath: [
+    {id:'主线',label:'🧠 主线',desc:'动机 + 数学讲解 + DL桥接 + 代码验证'}
   ]
 };
 
@@ -254,6 +258,8 @@ function onProjectChange(){
     loadRoadOfCSLessons();
   } else if(projectId === 'math5all'){
     loadMath5AllLessons();
+  } else if(projectId === 'dlmath'){
+    loadDLMathLessons();
   }
 }
 
@@ -344,6 +350,26 @@ function loadMath5AllLessons(){
     .catch(function(e){
       sel.innerHTML = '<option value="">加载失败</option>';
     });
+}
+
+/* ── Load DL-Math lessons (12 chapters hardcoded) ── */
+function loadDLMathLessons(){
+  var sel = document.getElementById('lessonSel');
+  var chapters = [
+    '01 Introduction','02 Linear Algebra','03 Multivariate Calculus',
+    '04 Probability Theory and Statistics','05 Optimization Theory',
+    '06 Information Theory','07 Graph Theory','08 Differential Geometry',
+    '09 Topology in Deep Learning','10 Harmonic Analysis for CNNs',
+    '11 Dynamical Systems & DEs for RNNs','12 Quantum Computing'
+  ];
+  state.lessons = chapters.map(function(c,i){
+    var parts = c.split(' ');
+    return {id: parts[0], title: parts.slice(1).join(' ')};
+  });
+  sel.innerHTML = '<option value="">选择课程 ('+state.lessons.length+' 节)...</option>';
+  state.lessons.forEach(function(l){
+    sel.innerHTML += '<option value="'+l.id+'">Ch'+l.id+' '+l.title+'</option>';
+  });
 }
 
 /* ══════════════════════════════════════════
@@ -473,6 +499,9 @@ function commitToGitHub(){
     var short = lesson?lesson.title:'';
     if(dash>0)short = short.substring(0,dash);
     folderName = '第'+state.lessonId+'节-'+short;
+  } else if(state.project==='dlmath'){
+    var chName = lesson?lesson.title.replace(/\s+/g,'-'):'Chapter';
+    folderName = '第'+state.lessonId+'节-'+chName;
   } else {
     folderName = lesson?lesson.folderName:'第'+state.lessonId+'节';
   }
@@ -547,7 +576,7 @@ function renderHistory(){
     list.innerHTML = '<div style="color:var(--text-muted);font-size:.8rem;padding:.5rem 0">暂无生成记录</div>';
     return;
   }
-  var projectNames = {roadofcs:'⚛️ RoadOfCS', math5all:'📐 Math5All'};
+  var projectNames = {roadofcs:'⚛️ RoadOfCS', math5all:'📐 Math5All', dlmath:'🧠 DL Math'};
   list.innerHTML = history.slice(0,20).map(function(h){
     var time = new Date(h.time);
     var timeStr = time.toLocaleDateString('zh-CN')+' '+time.toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'});

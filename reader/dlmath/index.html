@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1e1e1e">
+<title>DL Math · 课程阅读器</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+
+:root{
+  --bg-primary:#1e1e1e;--bg-secondary:#181818;--bg-surface:#252525;--bg-hover:#2d2d2d;
+  --bg-code:#1a1a2e;--color-accent:#0284c7;--color-accent-light:#38bdf8;
+  --color-accent-soft:rgba(2,132,199,0.15);--color-accent-glow:rgba(2,132,199,0.08);
+  --text-normal:#c6c6c6;--text-soft:#a0a0a0;--text-muted:#7a7a7a;--text-faint:#5a5a5a;
+  --border-subtle:rgba(255,255,255,0.06);--border-normal:rgba(255,255,255,0.09);
+  --border-visible:rgba(255,255,255,0.14);
+  --radius-s:5px;--radius-m:7px;--radius-l:15px;
+  --font-text:Bookerly,'Inter',"Segoe UI","霞鹜文楷 GB","LXGW WenKai","Microsoft YaHei",sans-serif;
+  --font-mono:'JetBrains Mono',Consolas,Monaco,monospace;
+  --h1-size:1.5625em;--h2-size:1.4375em;--h3-size:1.3125em;--h4-size:1.1875em;
+  --safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);
+}
+
+html,body{height:100%}
+body{
+  background:var(--bg-primary);color:var(--text-normal);
+  font-family:var(--font-text);font-size:18px;
+  overflow:hidden;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+
+.app{display:flex;height:100vh;height:100dvh}
+.sidebar{
+  width:280px;min-width:280px;background:var(--bg-secondary);
+  border-right:1px solid var(--border-subtle);
+  display:flex;flex-direction:column;overflow:hidden;z-index:10;
+  transition:transform .3s cubic-bezier(.4,0,.2,1);
+}
+.sidebar-header{
+  padding:.9rem 1.1rem;border-bottom:1px solid var(--border-subtle);
+  display:flex;align-items:center;gap:.5rem;flex-shrink:0;background:var(--bg-secondary);
+}
+.sidebar-header .back{color:var(--text-muted);text-decoration:none;font-size:1rem}
+.sidebar-header h2{font-size:.9rem;font-weight:600;color:var(--text-normal)}
+.sidebar-tree{flex:1;overflow-y:auto;padding:.3rem 0;-webkit-overflow-scrolling:touch}
+.sidebar-tree::-webkit-scrollbar{width:4px}
+.sidebar-tree::-webkit-scrollbar-thumb{background:var(--border-visible);border-radius:4px}
+
+.lesson-item{
+  display:flex;align-items:center;gap:.4rem;padding:.4rem 1.1rem;
+  cursor:pointer;font-size:.78rem;color:var(--text-muted);
+  transition:color .15s,background .15s;border-left:3px solid transparent;
+}
+.lesson-item:hover{color:var(--text-normal);background:var(--bg-hover)}
+.lesson-item.active{color:var(--color-accent-light);background:var(--color-accent-glow);border-left-color:var(--color-accent)}
+.lesson-item .num{color:var(--text-faint);font-family:var(--font-mono);font-size:.68rem;min-width:2rem}
+.lesson-item .status{font-size:.6rem}
+
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;background:var(--bg-primary)}
+.topbar{
+  padding:.6rem 1.2rem;border-bottom:1px solid var(--border-subtle);
+  display:flex;align-items:center;gap:.7rem;flex-shrink:0;
+  background:var(--bg-secondary);flex-wrap:wrap;
+}
+.menu-btn{display:none;background:none;border:none;color:var(--text-muted);font-size:1.2rem;cursor:pointer;padding:4px}
+.topbar .lesson-title{font-size:.85rem;font-weight:600;flex:1;min-width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text-normal)}
+
+.content{flex:1;overflow-y:auto;padding:2rem 2.5rem;-webkit-overflow-scrolling:touch}
+.content::-webkit-scrollbar{width:6px}
+.content::-webkit-scrollbar-thumb{background:var(--border-visible);border-radius:6px}
+
+/* Markdown — Blue Topaz style */
+.rendered{max-width:780px;margin:0 auto;line-height:1.75}
+.rendered h1{font-size:var(--h1-size);font-weight:700;color:var(--text-normal);margin:2rem 0 1rem;padding-bottom:.4rem;border-bottom:2px solid var(--color-accent);line-height:1.3}
+.rendered h2{font-size:var(--h2-size);font-weight:600;color:var(--text-normal);margin:1.8rem 0 .8rem;padding-bottom:.3rem;border-bottom:1px solid var(--border-visible);line-height:1.35}
+.rendered h3{font-size:var(--h3-size);font-weight:600;color:var(--text-normal);margin:1.5rem 0 .6rem;line-height:1.4}
+.rendered h4{font-size:var(--h4-size);font-weight:600;color:var(--text-soft);margin:1.2rem 0 .5rem}
+.rendered h5,.rendered h6{font-size:1em;font-weight:600;color:var(--text-soft);margin:1rem 0 .4rem}
+.rendered p{color:var(--text-normal);line-height:1.8;margin:.7rem 0;font-size:1em}
+.rendered strong{color:#e0e0e0;font-weight:700}
+.rendered em{color:var(--text-soft)}
+.rendered blockquote{border-left:3px solid var(--color-accent);margin:1.2rem 0;padding:.7rem 1.1rem;background:var(--color-accent-glow);border-radius:0 var(--radius-s) var(--radius-s) 0;color:var(--text-soft)}
+.rendered blockquote p{margin:.3rem 0}
+.rendered a{color:var(--color-accent-light);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}
+.rendered a:hover{border-bottom-color:var(--color-accent-light)}
+.rendered code{background:var(--bg-code);padding:2px 7px;border-radius:var(--radius-s);font-family:var(--font-mono);font-size:.85em;color:#e0b070;border:1px solid var(--border-subtle)}
+.rendered pre{background:var(--bg-code);border:1px solid var(--border-normal);border-radius:var(--radius-m);padding:1rem 1.3rem;overflow-x:auto;margin:1.2rem 0;font-size:.88rem;line-height:1.65}
+.rendered pre code{background:none;padding:0;color:#c6c6d0;border:none;font-size:inherit}
+.rendered table{border-collapse:collapse;width:100%;margin:1.2rem 0;font-size:.9em}
+.rendered th,.rendered td{border:1px solid var(--border-subtle);padding:.5rem .9rem;text-align:left}
+.rendered th{background:var(--color-accent-soft);color:var(--text-normal);font-weight:600}
+.rendered tr:hover{background:rgba(255,255,255,0.02)}
+.rendered ul,.rendered ol{padding-left:1.6rem;margin:.6rem 0;color:var(--text-normal);line-height:1.9}
+.rendered li{margin:.15rem 0}
+.rendered li::marker{color:var(--text-faint)}
+.rendered hr{border:none;border-top:1px solid var(--border-subtle);margin:2.5rem 0}
+.rendered img{max-width:100%;border-radius:var(--radius-s)}
+.rendered .mermaid{background:var(--bg-surface);border-radius:var(--radius-m);padding:1rem;margin:1.2rem 0;overflow-x:auto}
+
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--text-muted);text-align:center;padding:2rem}
+.empty-state .icon{font-size:3rem;margin-bottom:1rem;opacity:.6}
+.empty-state h3{font-size:1.1rem;margin-bottom:.5rem;color:var(--text-soft)}
+.empty-state p{font-size:.9rem}
+.loader{text-align:center;padding:3rem;color:var(--text-muted)}
+.loader .spinner{display:inline-block;width:28px;height:28px;border:3px solid var(--border-visible);border-top-color:var(--color-accent);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:.8rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error-banner{background:rgba(244,67,54,0.08);border:1px solid rgba(244,67,54,0.2);border-radius:var(--radius-s);padding:.7rem 1rem;margin:1rem 0;color:#e57373;font-size:.85rem}
+
+.sidebar-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:9}
+
+@media(max-width:768px){
+  .sidebar{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);z-index:20;width:280px;min-width:280px}
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-overlay.active{display:block}
+  .menu-btn{display:inline-block}
+  .content{padding:1.2rem 1rem}
+  .rendered h1{font-size:1.35em}
+  .rendered h2{font-size:1.2em}
+}
+@media(max-width:400px){.sidebar{width:100%;min-width:100%}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="sidebar-overlay" id="overlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="../../" class="back">←</a>
+      <h2>🧠 DL Math</h2>
+    </div>
+    <div class="sidebar-tree" id="tree"></div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <button class="menu-btn" id="menuBtn">☰</button>
+      <span class="lesson-title" id="lessonTitle">选择一节课</span>
+    </div>
+    <div class="content" id="content">
+      <div class="empty-state">
+        <div class="icon">🧠</div>
+        <h3>深度学习数学基础</h3>
+        <p>Mathematical Foundations for Deep Learning<br>Ghayoumi · 2026 · 12 章</p>
+        <p style="font-size:.8rem;margin-top:.8rem;color:var(--text-muted)">从左侧选择一节课开始阅读</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+var CONFIG = {
+  repo:'LaFloraison/DL-Math',
+  branch:'main',
+  lessonsDir:'lessons',
+  chapters: [
+    {num:'01',name:'Introduction',en:'Introduction'},
+    {num:'02',name:'Linear-Algebra',en:'Linear Algebra'},
+    {num:'03',name:'Multivariate-Calculus',en:'Multivariate Calculus'},
+    {num:'04',name:'Probability-Theory-and-Statistics',en:'Probability Theory and Statistics'},
+    {num:'05',name:'Optimization-Theory',en:'Optimization Theory'},
+    {num:'06',name:'Information-Theory',en:'Information Theory'},
+    {num:'07',name:'Graph-Theory',en:'Graph Theory'},
+    {num:'08',name:'Differential-Geometry',en:'Differential Geometry'},
+    {num:'09',name:'Topology-in-Deep-Learning',en:'Topology in Deep Learning'},
+    {num:'10',name:'Harmonic-Analysis-for-CNNs',en:'Harmonic Analysis for CNNs'},
+    {num:'11',name:'Dynamical-Systems-for-RNNs',en:'Dynamical Systems & DEs for RNNs'},
+    {num:'12',name:'Quantum-Computing',en:'Quantum Computing'}
+  ]
+};
+
+var state = {currentIdx:-1,lessonFolders:{}};
+
+var sidebar=document.getElementById('sidebar'),overlay=document.getElementById('overlay');
+var treeEl=document.getElementById('tree'),contentEl=document.getElementById('content');
+var lessonTitle=document.getElementById('lessonTitle'),menuBtn=document.getElementById('menuBtn');
+
+menuBtn.addEventListener('click',function(){sidebar.classList.toggle('open');overlay.classList.toggle('active')});
+overlay.addEventListener('click',function(){sidebar.classList.remove('open');overlay.classList.remove('active')});
+
+/* Scan for actual lesson folders */
+function scanLessons(){
+  var apiUrl='https://api.github.com/repos/'+CONFIG.repo+'/contents/'+CONFIG.lessonsDir+'?ref='+CONFIG.branch;
+  return fetch(apiUrl,{headers:{'Accept':'application/vnd.github.v3+json'}})
+    .then(function(r){if(!r.ok)throw new Error('API '+r.status);return r.json()})
+    .then(function(items){
+      for(var i=0;i<items.length;i++){
+        if(items[i].type==='dir'){
+          var name=items[i].name;
+          var m=name.match(/^第(\d+)节/);
+          if(m)state.lessonFolders[m[1]]=name;
+        }
+      }
+    })
+    .catch(function(){}); /* Silently fail — empty lessons dir is fine */
+}
+
+function renderTree(){
+  var html='';
+  for(var i=0;i<CONFIG.chapters.length;i++){
+    var ch=CONFIG.chapters[i];
+    var active=i===state.currentIdx?' active':'';
+    var hasLesson=state.lessonFolders[ch.num]!==undefined;
+    var status=hasLesson?'✅':'⏳';
+    html+='<div class="lesson-item'+active+'" data-idx="'+i+'">'+
+      '<span class="num">'+ch.num+'</span>'+
+      '<span class="status">'+status+'</span> '+
+      '<span>'+ch.en+'</span>'+
+    '</div>';
+  }
+  treeEl.innerHTML=html;
+
+  treeEl.querySelectorAll('.lesson-item').forEach(function(item){
+    item.addEventListener('click',function(){
+      selectLesson(parseInt(this.dataset.idx));
+      sidebar.classList.remove('open');overlay.classList.remove('active');
+    });
+  });
+}
+
+function selectLesson(idx){
+  state.currentIdx=idx;
+  treeEl.querySelectorAll('.lesson-item').forEach(function(el,i){el.classList.toggle('active',i===idx)});
+
+  var ch=CONFIG.chapters[idx];
+  lessonTitle.textContent='Ch'+ch.num+' '+ch.en;
+
+  /* Try exact folder match first, then fallback to constructed */
+  var folderName = state.lessonFolders[ch.num] || ('第'+ch.num+'节-'+ch.name);
+  var url='https://raw.githubusercontent.com/'+CONFIG.repo+'/'+CONFIG.branch+'/'+
+    CONFIG.lessonsDir+'/'+encodeURIComponent(folderName)+'/'+encodeURIComponent('主线.md');
+
+  contentEl.innerHTML='<div class="loader"><div class="spinner"></div><p>加载中...</p></div>';
+
+  fetch(url)
+    .then(function(r){if(!r.ok)throw new Error('文件不存在');return r.text()})
+    .then(function(md){renderMarkdown(md)})
+    .catch(function(e){
+      contentEl.innerHTML='<div class="empty-state">'+
+        '<div class="icon">🔮</div>'+
+        '<h3>这节课还没有生成</h3>'+
+        '<p>Ch'+ch.num+' '+ch.en+'</p>'+
+        '<p style="font-size:.8rem;margin-top:.5rem;color:var(--text-muted)">'+
+        '去 <a href="../../generator/" style="color:var(--color-accent-light)">课程生成器</a> 创建</p>'+
+      '</div>';
+    });
+}
+
+function renderMarkdown(md){
+  var body=md;
+  if(md.indexOf('---')===0){
+    var end=md.indexOf('---',3);
+    if(end>0)body=md.substring(end+3).trim();
+  }
+
+  var html='';
+  try{
+    if(typeof marked!=='undefined'){
+      marked.setOptions({breaks:true,gfm:true});
+      html=marked.parse(body);
+    }
+  }catch(e){}
+
+  contentEl.innerHTML='<div class="rendered">'+html+'</div>';
+
+  /* Render LaTeX */
+  if(typeof renderMathInElement!=='undefined'){
+    try{renderMathInElement(contentEl.querySelector('.rendered'),{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})}catch(e){}
+  }
+}
+
+document.addEventListener('keydown',function(e){
+  if(state.currentIdx<0)return;
+  if((e.key==='ArrowRight'||e.key==='ArrowDown')&&state.currentIdx<CONFIG.chapters.length-1){
+    e.preventDefault();selectLesson(state.currentIdx+1);
+  }
+  if((e.key==='ArrowLeft'||e.key==='ArrowUp')&&state.currentIdx>0){
+    e.preventDefault();selectLesson(state.currentIdx-1);
+  }
+});
+
+/* Init */
+Promise.all([scanLessons()]).then(function(){
+  renderTree();
+  if(CONFIG.chapters.length>0)selectLesson(0);
+});
+</script>
+</body>
+</html>
