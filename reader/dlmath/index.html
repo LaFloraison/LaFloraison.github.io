@@ -260,7 +260,7 @@ function loadTree(){
   .then(([chDirs])=>{
     var promises=chDirs.filter(d=>d.type==='dir').map(d=>
       fetch(d.url+'?ref='+CONFIG.branch,{headers:{Accept:'application/vnd.github.v3+json'}})
-        .then(r=>r.json()).then(files=>{
+        .then(r=>r.ok?r.json():[]).catch(()=>[]).then(files=>{
           var secs=[];
           for(var j=0;j<files.length;j++){
             var sm=files[j].name.match(/^sec-(\d+\.\d+(?:\.\d+)?(?:\.\d+)?)-(.+)\.txt$/);
@@ -268,7 +268,7 @@ function loadTree(){
           }
           secs.sort((a,b)=>{var ap=a.id.split('.').map(Number),bp=b.id.split('.').map(Number);for(var k=0;k<Math.max(ap.length,bp.length);k++){if((ap[k]||0)!==(bp[k]||0))return (ap[k]||0)-(bp[k]||0)}return 0});
           var cm=d.name.match(/^ch(\d+)-(.+)/);
-          return {num:cm?cm[1]:'',name:cm?cm[2].replace(/-/g,' '):d.name,sections:secs};
+          return {num:cm?cm[1]:'?',name:cm?cm[2].replace(/-/g,' '):d.name,sections:secs};
         })
     );
     return Promise.all(promises);
@@ -276,13 +276,13 @@ function loadTree(){
   .then(chapters=>{
     chapters.sort((a,b)=>parseInt(a.num)-parseInt(b.num));
     state.chapters=chapters;
-    renderTree();
-    /* Auto-expand all chapters */
+    try{renderTree()}catch(e){treeEl.innerHTML='<div style="color:var(--color-error);padding:1rem">Render error: '+e.message+'</div>';return}
     setTimeout(function(){
-      treeEl.querySelectorAll('.era-toggle').forEach(function(btn){btn.click()});
-    },100);
+      var toggles=treeEl.querySelectorAll('.era-toggle');
+      for(var t=0;t<toggles.length;t++){toggles[t].click()}
+    },200);
   })
-  .catch(e=>{treeEl.innerHTML='<div style="color:var(--color-error);padding:1rem;font-size:.8rem">加载失败: '+e.message+'</div>'});
+  .catch(e=>{treeEl.innerHTML='<div style="color:var(--color-error);padding:1rem;font-size:.8rem">Load failed: '+e.message+'</div>';console.error(e)});
 }
 
 /* ══════════════════════════════════════════
