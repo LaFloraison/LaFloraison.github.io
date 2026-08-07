@@ -37,7 +37,8 @@ body{background:var(--bg-primary);color:var(--text-normal);font-family:var(--fon
 .era-toggle{display:flex;align-items:center;gap:.35rem;padding:.5rem 1rem;cursor:pointer;font-size:.8rem;font-weight:600;color:var(--text-muted);transition:color .15s,background .15s;user-select:none;border:none;background:none;width:100%;text-align:left;font-family:inherit}
 .era-toggle:hover{color:var(--text-normal);background:var(--bg-hover)}
 .era-toggle .arrow{font-size:.5rem;transition:transform .2s;display:inline-block;opacity:.5}
-.era-lessons{display:block}
+.era-lessons{display:none}
+.era-lessons.open{display:block}
 .lesson-item{display:flex;align-items:center;gap:.3rem;padding:.35rem 1rem .35rem 2rem;cursor:pointer;font-size:.75rem;color:var(--text-muted);transition:color .15s,background .15s;border-left:3px solid transparent}
 .lesson-item:hover{color:var(--text-normal);background:var(--bg-hover)}
 .lesson-item.active{color:var(--color-accent-light);background:var(--color-accent-glow);border-left-color:var(--color-accent)}
@@ -310,7 +311,7 @@ function renderTree(){
       var hasSome=state.generatedFiles[sec.id]&&state.generatedFiles[sec.id].length>0;
       var statusIcon=hasAll?'✅':hasSome?'📝':'⏳';
       html+='<div class="lesson-item" data-ch="'+ci+'" data-sec="'+si+'" data-sid="'+sec.id+'">'+
-        '<span class="num">'+sec.num+'</span><span>'+sec.title+'</span>'+
+        '<span class="num">'+sec.id+'</span><span>'+sec.title+'</span>'+
         '<span style="font-size:.6rem;margin-left:.3rem">'+statusIcon+'</span>'+
         (!hasAll?'<button class="gen-btn" data-ch="'+ci+'" data-sec="'+si+'">⚡</button>':'')+
       '</div>';
@@ -348,7 +349,7 @@ function selectSection(ch,sec){
   state.currentCh=ch;state.currentSec=sec;state.currentFile='主线';
   treeEl.querySelectorAll('.lesson-item').forEach(el=>el.classList.remove('active'));
   var ael=treeEl.querySelector('[data-sid="'+sec.id+'"]');if(ael)ael.classList.add('active');
-  lessonTitle.textContent='Ch'+ch.num+' §'+sec.num+' '+sec.title;
+  lessonTitle.textContent='Ch'+ch.num+' §'+sec.id+' '+sec.title;
   renderFileTabs();renderActionBar();
   loadFile('主线');
 }
@@ -408,7 +409,7 @@ function loadFile(fileId){
     .catch(function(e){
       contentEl.innerHTML='<div class="empty-state"><div class="icon">🔮</div>'+
         '<h3>'+fileId+' 还没有生成</h3>'+
-        '<p>'+sec.num+' '+sec.title+'</p>'+
+        '<p>'+sec.id+' '+sec.title+'</p>'+
         '<button class="btn btn-primary" style="margin-top:1rem" onclick="generateCurrentMissing()">⚡ 生成 '+fileId+'</button>'+
       '</div>';
     });
@@ -452,7 +453,7 @@ function generateSection(ch,sec){
     fetch('https://raw.githubusercontent.com/'+CONFIG.repo+'/'+CONFIG.branch+'/'+sec.path).then(r=>r.ok?r.text():'').catch(()=>'')
   ]).then(([claudeMd,secText])=>{
     var systemPrompt='你是一位深度学习数学导师。请严格遵循以下教学指令：\n\n'+claudeMd+'\n\n---\n\n请只输出最终的课程内容（Markdown格式），不要包含任何元对话或解释。';
-    var userPrompt='请生成课程内容：\n\n- 章节：Ch'+ch.num+' §'+sec.num+' '+sec.title+'\n- 文件类型：'+state.currentFile+'\n';
+    var userPrompt='请生成课程内容：\n\n- 章节：Ch'+ch.num+' §'+sec.id+' '+sec.title+'\n- 文件类型：'+state.currentFile+'\n';
     if(secText){userPrompt+='\n以下是教材原文参考（请基于此内容生成，逐一覆盖每个关键定义、定理和示例，不得跳过，同时添加深度学习桥接和代码验证）：\n\n'+secText.substring(0,50000)+'\n';}
     userPrompt+='\n请开始生成。注意控制篇幅和结构，使内容适合移动端阅读。';
 
@@ -508,7 +509,7 @@ function commitGenerated(){
   fetch(apiUrl,{headers:{Authorization:'Bearer '+ghToken,Accept:'application/vnd.github.v3+json'}})
     .then(r=>r.ok?r.json():null)
     .then(existing=>{
-      var body={message:'📱 生成: '+state.currentFile+' — Ch'+ch.num+' §'+sec.num+' '+sec.title,content:btoa(unescape(encodeURIComponent(state.genContent))),branch:CONFIG.branch};
+      var body={message:'📱 生成: '+state.currentFile+' — Ch'+ch.num+' §'+sec.id+' '+sec.title,content:btoa(unescape(encodeURIComponent(state.genContent))),branch:CONFIG.branch};
       if(existing&&existing.sha)body.sha=existing.sha;
       return fetch(apiUrl,{method:'PUT',headers:{Authorization:'Bearer '+ghToken,'Content-Type':'application/json',Accept:'application/vnd.github.v3+json'},body:JSON.stringify(body)});
     })
