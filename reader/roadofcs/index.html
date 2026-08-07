@@ -3,237 +3,182 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#1e1e1e">
+<meta name="theme-color" content="#0a0a1a">
 <title>Road of CS · 课程阅读器</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 
-/* ══════ Blue Topaz inspired color scheme ══════ */
 :root{
-  --bg-primary:#1e1e1e;
-  --bg-secondary:#181818;
-  --bg-surface:#252525;
-  --bg-hover:#2d2d2d;
-  --bg-code:#1a1a2e;
-  --color-accent:#2d82cc;
-  --color-accent-light:#4993d4;
-  --color-accent-soft:rgba(45,130,204,0.15);
-  --color-accent-glow:rgba(45,130,204,0.08);
-  --text-normal:#c6c6c6;
-  --text-soft:#a0a0a0;
-  --text-muted:#7a7a7a;
-  --text-faint:#5a5a5a;
-  --border-subtle:rgba(255,255,255,0.06);
-  --border-normal:rgba(255,255,255,0.09);
-  --border-visible:rgba(255,255,255,0.14);
-  --radius-s:5px;
-  --radius-m:7px;
-  --radius-l:15px;
-  --font-text:Bookerly,'Inter',"Segoe UI","霞鹜文楷 GB","LXGW WenKai","Microsoft YaHei",sans-serif;
-  --font-mono:'JetBrains Mono',Consolas,Monaco,"等距更纱黑体 SC","Microsoft YaHei",monospace;
-  --safe-top:env(safe-area-inset-top,0px);
-  --safe-bottom:env(safe-area-inset-bottom,0px);
-  /* Blue Topaz heading sizes */
-  --h1-size:1.5625em;
-  --h2-size:1.4375em;
-  --h3-size:1.3125em;
-  --h4-size:1.1875em;
+  --bg-deep:#0a0a1a;--bg-base:#12122a;--bg-surface:#1a1a3a;--bg-hover:#22224a;
+  --color-primary:#7c5cfc;--color-primary-light:#9d85fd;--color-primary-glow:rgba(124,92,252,0.4);
+  --color-accent:#ffb347;--color-success:#4caf50;
+  --text-primary:#e8e8f0;--text-secondary:#a0a0c0;--text-muted:#606080;
+  --border-color:rgba(124,92,252,0.2);
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;
+  --font-sans:"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;
+  --font-mono:"Cascadia Code","Fira Code","JetBrains Mono","Consolas",monospace;
+  --safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);
 }
 
 html,body{height:100%}
 body{
-  background:var(--bg-primary);color:var(--text-normal);
-  font-family:var(--font-text);font-size:18px;
+  background:var(--bg-deep);color:var(--text-primary);font-family:var(--font-sans);
   overflow:hidden;-webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
 }
 
 /* ── Layout ── */
 .app{display:flex;height:100vh;height:100dvh}
 .sidebar{
-  width:280px;min-width:280px;background:var(--bg-secondary);
-  border-right:1px solid var(--border-subtle);
+  width:300px;min-width:300px;background:var(--bg-base);border-right:1px solid var(--border-color);
   display:flex;flex-direction:column;overflow:hidden;z-index:10;
   transition:transform .3s cubic-bezier(.4,0,.2,1);
 }
 .sidebar-header{
-  padding:.9rem 1.1rem;border-bottom:1px solid var(--border-subtle);
-  display:flex;align-items:center;gap:.5rem;flex-shrink:0;
-  background:var(--bg-secondary);
+  padding:1rem 1.2rem;border-bottom:1px solid var(--border-color);
+  display:flex;align-items:center;gap:.6rem;flex-shrink:0;
+  background:rgba(15,15,35,0.9);backdrop-filter:blur(8px);
 }
-.sidebar-header .back{color:var(--text-muted);text-decoration:none;font-size:1rem;line-height:1}
-.sidebar-header .back:hover{color:var(--color-accent-light)}
-.sidebar-header h2{font-size:.9rem;font-weight:600;white-space:nowrap;color:var(--text-normal)}
-.sidebar-tree{flex:1;overflow-y:auto;padding:.3rem 0;-webkit-overflow-scrolling:touch}
+.sidebar-header .back{color:var(--text-secondary);text-decoration:none;font-size:1.1rem;line-height:1}
+.sidebar-header .back:hover{color:var(--color-primary-light)}
+.sidebar-header h2{font-size:.95rem;font-weight:600;white-space:nowrap}
+.sidebar-tree{flex:1;overflow-y:auto;padding:.5rem 0;-webkit-overflow-scrolling:touch}
 .sidebar-tree::-webkit-scrollbar{width:4px}
-.sidebar-tree::-webkit-scrollbar-thumb{background:var(--border-visible);border-radius:4px}
+.sidebar-tree::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}
 
 /* Tree items */
-.era-item{border-bottom:1px solid var(--border-subtle)}
+.era-item{border-bottom:1px solid rgba(255,255,255,0.03)}
 .era-toggle{
-  display:flex;align-items:center;gap:.35rem;padding:.55rem 1.1rem;
-  cursor:pointer;font-size:.82rem;font-weight:600;color:var(--text-muted);
-  transition:color .15s,background .15s;user-select:none;
-  border:none;background:none;width:100%;text-align:left;font-family:inherit;
+  display:flex;align-items:center;gap:.4rem;padding:.65rem 1.2rem;
+  cursor:pointer;font-size:.85rem;font-weight:600;color:var(--text-secondary);
+  transition:color .2s,background .2s;user-select:none;border:none;background:none;width:100%;text-align:left;
+  font-family:inherit;
 }
-.era-toggle:hover{color:var(--text-normal);background:var(--bg-hover)}
-.era-toggle .arrow{font-size:.55rem;transition:transform .2s;display:inline-block;opacity:.6}
-.era-toggle.open .arrow{transform:rotate(90deg);opacity:1}
-.era-toggle .era-icon{font-size:.9rem}
+.era-toggle:hover{color:var(--text-primary);background:var(--bg-hover)}
+.era-toggle .arrow{font-size:.6rem;transition:transform .2s;display:inline-block}
+.era-toggle.open .arrow{transform:rotate(90deg)}
+.era-toggle .era-icon{font-size:1rem}
 .era-lessons{max-height:0;overflow:hidden;transition:max-height .35s ease}
 .era-lessons.open{max-height:4000px}
 
 .lesson-item{
-  display:flex;align-items:center;gap:.4rem;padding:.4rem 1.1rem .4rem 2.2rem;
-  cursor:pointer;font-size:.78rem;color:var(--text-muted);
-  transition:color .15s,background .15s;text-decoration:none;
+  display:flex;align-items:center;gap:.5rem;padding:.45rem 1.2rem .45rem 2.4rem;
+  cursor:pointer;font-size:.8rem;color:var(--text-secondary);
+  transition:color .2s,background .2s;text-decoration:none;
 }
-.lesson-item:hover{color:var(--text-normal);background:var(--bg-hover)}
-.lesson-item.active{
-  color:var(--color-accent-light);background:var(--color-accent-glow);
-  border-right:2px solid var(--color-accent);
-}
-.lesson-item .status{font-size:.6rem}
-.lesson-item .num{color:var(--text-faint);font-family:var(--font-mono);font-size:.68rem;min-width:2rem}
+.lesson-item:hover{color:var(--text-primary);background:var(--bg-hover)}
+.lesson-item.active{color:var(--color-primary-light);background:rgba(124,92,252,0.08);border-right:2px solid var(--color-primary)}
+.lesson-item .status{font-size:.65rem}
+.lesson-item .num{color:var(--text-muted);font-family:var(--font-mono);font-size:.72rem;min-width:2.2rem}
 
 /* ── Main Content ── */
-.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;background:var(--bg-primary)}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
 .topbar{
-  padding:.6rem 1.2rem;border-bottom:1px solid var(--border-subtle);
-  display:flex;align-items:center;gap:.7rem;flex-shrink:0;
-  background:var(--bg-secondary);flex-wrap:wrap;
+  padding:.7rem 1.2rem;border-bottom:1px solid var(--border-color);
+  display:flex;align-items:center;gap:.8rem;flex-shrink:0;
+  background:rgba(15,15,35,0.9);backdrop-filter:blur(8px);
+  flex-wrap:wrap;
 }
-.menu-btn{display:none;background:none;border:none;color:var(--text-muted);font-size:1.2rem;cursor:pointer;padding:4px}
-.topbar .lesson-title{font-size:.85rem;font-weight:600;flex:1;min-width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text-normal)}
+.menu-btn{
+  display:none;background:none;border:none;color:var(--text-secondary);
+  font-size:1.3rem;cursor:pointer;padding:4px;line-height:1;
+}
+.topbar .lesson-title{font-size:.9rem;font-weight:600;flex:1;min-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-/* File tabs — Blue Topaz pill style */
-.file-tabs{display:flex;gap:2px;background:var(--bg-hover);border-radius:var(--radius-m);padding:3px}
+/* File tabs */
+.file-tabs{display:flex;gap:4px}
 .file-tab{
-  padding:4px 14px;border-radius:var(--radius-s);font-size:.73rem;cursor:pointer;
-  border:none;background:transparent;color:var(--text-muted);
-  transition:all .15s;font-family:inherit;white-space:nowrap;touch-action:manipulation;
+  padding:5px 14px;border-radius:50px;font-size:.75rem;cursor:pointer;
+  border:1px solid var(--border-color);background:transparent;color:var(--text-secondary);
+  transition:all .2s;font-family:inherit;white-space:nowrap;touch-action:manipulation;
 }
-.file-tab:hover{color:var(--text-normal);background:rgba(255,255,255,0.04)}
-.file-tab.active{background:var(--color-accent);color:#fff}
+.file-tab:hover{color:var(--text-primary);border-color:var(--color-primary-light)}
+.file-tab.active{background:var(--color-primary);color:#fff;border-color:var(--color-primary)}
 
 /* Content area */
-.content{flex:1;overflow-y:auto;padding:2rem 2.5rem;-webkit-overflow-scrolling:touch}
+.content{
+  flex:1;overflow-y:auto;padding:1.5rem 2rem;-webkit-overflow-scrolling:touch;
+}
 .content::-webkit-scrollbar{width:6px}
-.content::-webkit-scrollbar-thumb{background:var(--border-visible);border-radius:6px}
+.content::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:6px}
 
-/* ══════════════════════════════════════════
-   MARKDOWN RENDERED — Blue Topaz inspired
-   ══════════════════════════════════════════ */
-.rendered{max-width:780px;margin:0 auto;line-height:1.75}
-
-/* Headings — clean, no gradient, solid color */
-.rendered h1{
-  font-size:var(--h1-size);font-weight:700;color:var(--text-normal);
-  margin:2rem 0 1rem;padding-bottom:.4rem;
-  border-bottom:2px solid var(--color-accent);line-height:1.3;
-}
-.rendered h2{
-  font-size:var(--h2-size);font-weight:600;color:var(--text-normal);
-  margin:1.8rem 0 .8rem;padding-bottom:.3rem;
-  border-bottom:1px solid var(--border-visible);line-height:1.35;
-}
-.rendered h3{
-  font-size:var(--h3-size);font-weight:600;color:var(--text-normal);
-  margin:1.5rem 0 .6rem;line-height:1.4;
-}
-.rendered h4{
-  font-size:var(--h4-size);font-weight:600;color:var(--text-soft);
-  margin:1.2rem 0 .5rem;
-}
-.rendered h5,.rendered h6{font-size:1em;font-weight:600;color:var(--text-soft);margin:1rem 0 .4rem}
-
-/* Paragraphs */
-.rendered p{color:var(--text-normal);line-height:1.8;margin:.7rem 0;font-size:1em}
-.rendered strong{color:#e0e0e0;font-weight:700}
-.rendered em{color:var(--text-soft)}
-
-/* Blockquote — Blue Topaz note-card style */
+/* Markdown rendered styles */
+.rendered{max-width:800px;margin:0 auto}
+.rendered h1{font-size:1.8rem;margin:1.5rem 0 1rem;background:linear-gradient(135deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.3}
+.rendered h2{font-size:1.35rem;margin:1.8rem 0 .8rem;color:var(--color-primary-light);border-bottom:1px solid var(--border-color);padding-bottom:.4rem}
+.rendered h3{font-size:1.1rem;margin:1.4rem 0 .6rem;color:var(--text-primary)}
+.rendered p{color:var(--text-secondary);line-height:1.85;margin:.8rem 0;font-size:.95rem}
+.rendered strong{color:var(--text-primary)}
 .rendered blockquote{
-  border-left:3px solid var(--color-accent);margin:1.2rem 0;padding:.7rem 1.1rem;
-  background:var(--color-accent-glow);
-  border-radius:0 var(--radius-s) var(--radius-s) 0;
-  color:var(--text-soft);
+  border-left:3px solid var(--color-primary);margin:1rem 0;padding:.6rem 1rem;
+  background:rgba(124,92,252,0.06);border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  color:var(--text-secondary);font-style:italic;
 }
 .rendered blockquote p{margin:.3rem 0}
-
-/* Links */
-.rendered a{color:var(--color-accent-light);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}
-.rendered a:hover{border-bottom-color:var(--color-accent-light)}
-
-/* Inline code */
 .rendered code{
-  background:var(--bg-code);padding:2px 7px;border-radius:var(--radius-s);
-  font-family:var(--font-mono);font-size:.85em;color:#e0b070;
-  border:1px solid var(--border-subtle);
+  background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;
+  font-family:var(--font-mono);font-size:.85em;color:var(--color-accent-light);
 }
-
-/* Code blocks */
 .rendered pre{
-  background:var(--bg-code);border:1px solid var(--border-normal);
-  border-radius:var(--radius-m);padding:1rem 1.3rem;overflow-x:auto;
-  margin:1.2rem 0;font-size:.88rem;line-height:1.65;
+  background:var(--bg-surface);border:1px solid var(--border-color);border-radius:var(--radius-md);
+  padding:1rem 1.2rem;overflow-x:auto;margin:1rem 0;font-size:.85rem;line-height:1.6;
 }
-.rendered pre code{background:none;padding:0;color:#c6c6d0;border:none;font-size:inherit}
-
-/* Tables — clean, subtle */
-.rendered table{border-collapse:collapse;width:100%;margin:1.2rem 0;font-size:.9em}
-.rendered th,.rendered td{border:1px solid var(--border-subtle);padding:.5rem .9rem;text-align:left}
-.rendered th{background:var(--color-accent-soft);color:var(--text-normal);font-weight:600}
+.rendered pre code{background:none;padding:0;color:var(--text-primary)}
+.rendered table{
+  border-collapse:collapse;width:100%;margin:1rem 0;font-size:.85rem;
+}
+.rendered th,.rendered td{
+  border:1px solid var(--border-color);padding:.5rem .8rem;text-align:left;
+}
+.rendered th{background:rgba(124,92,252,0.1);color:var(--color-primary-light);font-weight:600}
 .rendered tr:hover{background:rgba(255,255,255,0.02)}
-
-/* Lists */
-.rendered ul,.rendered ol{padding-left:1.6rem;margin:.6rem 0;color:var(--text-normal);line-height:1.9}
-.rendered li{margin:.15rem 0}
-.rendered li::marker{color:var(--text-faint)}
-
-/* Horizontal rule */
-.rendered hr{border:none;border-top:1px solid var(--border-subtle);margin:2.5rem 0}
-
-/* Images */
-.rendered img{max-width:100%;border-radius:var(--radius-s)}
-
+.rendered ul,.rendered ol{padding-left:1.5rem;margin:.6rem 0;color:var(--text-secondary);line-height:1.8}
+.rendered li{margin:.2rem 0}
+.rendered hr{border:none;border-top:1px solid var(--border-color);margin:2rem 0}
+.rendered a{color:var(--color-primary-light);text-decoration:underline}
+.rendered img{max-width:100%;border-radius:var(--radius-md)}
 /* Mermaid */
-.rendered .mermaid{background:var(--bg-surface);border-radius:var(--radius-m);padding:1rem;margin:1.2rem 0;overflow-x:auto}
+.rendered .mermaid{background:var(--bg-surface);border-radius:var(--radius-md);padding:1rem;margin:1rem 0;overflow-x:auto}
 .rendered .mermaid svg{max-width:100%}
 
-/* YAML frontmatter meta box */
-.meta-box{
-  background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:var(--radius-m);
-  padding:.7rem 1rem;margin-bottom:1.5rem;font-size:.78rem;color:var(--text-muted);
-  display:flex;flex-wrap:wrap;gap:.6rem 1.2rem;
-}
-.meta-box .meta-label{color:var(--text-soft);font-weight:600}
-.meta-box .meta-item{display:flex;align-items:center;gap:4px}
-
 /* Empty state */
-.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--text-muted);text-align:center;padding:2rem}
-.empty-state .icon{font-size:3rem;margin-bottom:1rem;opacity:.6}
-.empty-state h3{font-size:1.1rem;margin-bottom:.5rem;color:var(--text-soft)}
+.empty-state{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  height:100%;color:var(--text-muted);text-align:center;padding:2rem;
+}
+.empty-state .icon{font-size:3rem;margin-bottom:1rem}
+.empty-state h3{font-size:1.1rem;margin-bottom:.5rem;color:var(--text-secondary)}
 .empty-state p{font-size:.9rem}
 
 /* Loading */
 .loader{text-align:center;padding:3rem;color:var(--text-muted)}
 .loader .spinner{
-  display:inline-block;width:28px;height:28px;border:3px solid var(--border-visible);
-  border-top-color:var(--color-accent);border-radius:50%;
+  display:inline-block;width:32px;height:32px;border:3px solid var(--border-color);
+  border-top-color:var(--color-primary);border-radius:50%;
   animation:spin .8s linear infinite;margin-bottom:.8rem;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* Error */
+/* Error banner */
 .error-banner{
-  background:rgba(244,67,54,0.08);border:1px solid rgba(244,67,54,0.2);
-  border-radius:var(--radius-s);padding:.7rem 1rem;margin:1rem 0;color:#e57373;font-size:.85rem;
+  background:rgba(244,67,54,0.1);border:1px solid rgba(244,67,54,0.3);
+  border-radius:var(--radius-sm);padding:.8rem 1rem;margin:1rem 0;
+  color:#f44336;font-size:.85rem;
 }
-.error-banner small{color:var(--text-muted)}
 
-/* Sidebar overlay (mobile) */
-.sidebar-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:9}
+/* ── Sidebar overlay (mobile) ── */
+.sidebar-overlay{
+  display:none;position:fixed;top:0;left:0;right:0;bottom:0;
+  background:rgba(0,0,0,0.5);z-index:9;
+}
+
+/* ── YAML frontmatter box ── */
+.meta-box{
+  background:var(--bg-surface);border:1px solid var(--border-color);border-radius:var(--radius-md);
+  padding:.8rem 1rem;margin-bottom:1.5rem;font-size:.8rem;color:var(--text-muted);
+  display:flex;flex-wrap:wrap;gap:.8rem 1.5rem;
+}
+.meta-box .meta-item{display:flex;align-items:center;gap:4px}
+.meta-box .meta-label{color:var(--text-secondary);font-weight:600}
 
 /* ── Mobile ── */
 @media(max-width:768px){
@@ -241,15 +186,20 @@ body{
   .sidebar.open{transform:translateX(0)}
   .sidebar-overlay.active{display:block}
   .menu-btn{display:inline-block}
-  .content{padding:1.2rem 1rem}
-  .rendered h1{font-size:1.35em}
-  .rendered h2{font-size:1.2em}
-  .rendered h3{font-size:1.1em}
+  .content{padding:1rem}
+  .rendered h1{font-size:1.4rem}
+  .rendered h2{font-size:1.15rem}
+  .file-tab{padding:4px 10px;font-size:.7rem}
 }
-@media(max-width:400px){.sidebar{width:100%;min-width:100%}}
-@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+@media(max-width:400px){
+  .sidebar{width:100%;min-width:100%}
+  .topbar{padding:.5rem .8rem;gap:.5rem}
+  .topbar .lesson-title{font-size:.8rem}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
 </style>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 </head>
 <body>
 <div class="app">
@@ -281,8 +231,6 @@ body{
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 <script>
 /* ══════════════════════════════════════════
    CONFIG
@@ -306,7 +254,6 @@ var state = {
   eras:[],          // Parsed curriculum tree
   currentLesson:null, // {eraIdx, lessonIdx, lesson}
   currentFile:'主线',
-  lessonFolders:{}, // Maps "X.Y" → actual folder name (from GitHub API)
   generatedLessons:{} // Cache: "era-lesson" → true/false
 };
 
@@ -407,44 +354,22 @@ function renderTree(){
 }
 
 /* ══════════════════════════════════════════
-   DETECT ACTUAL LESSON FOLDERS (GitHub API)
+   DETECT GENERATED LESSONS
    ══════════════════════════════════════════ */
-function scanLessonFolders(){
-  var apiUrl='https://api.github.com/repos/'+CONFIG.repo+'/contents/'+CONFIG.lessonsDir+'?ref='+CONFIG.branch;
-  return fetch(apiUrl,{headers:{'Accept':'application/vnd.github.v3+json'}})
-    .then(function(r){if(!r.ok)throw new Error('API '+r.status);return r.json()})
-    .then(function(items){
-      state.lessonFolders={};
-      for(var i=0;i<items.length;i++){
-        if(items[i].type!=='dir')continue;
-        var name=items[i].name;
-        /* Extract lesson ID from folder name "第X.Y节-..." */
-        var m=name.match(/^第(\d+\.\d+)节/);
-        if(m){
-          state.lessonFolders[m[1]]=name;
-          state.generatedLessons[m[1]]=true;
-        }
-      }
-    })
-    .catch(function(e){
-      console.warn('GitHub API folder scan failed:',e.message);
-      /* Fallback: empty, will try constructed names */
-    });
-}
+function detectGeneratedLessons(){
+  /* Try fetching lesson files to detect which exist.
+     We check the first lesson in each era as a sample.
+     In practice, we detect by trying to fetch the 主线.md */
+  var repoUrl='https://raw.githubusercontent.com/'+CONFIG.repo+'/'+CONFIG.branch+'/';
+  var dirUrl=repoUrl+CONFIG.lessonsDir+'/';
 
-/* ══════════════════════════════════════════
-   GET FOLDER NAME (mapping or fallback)
-   ══════════════════════════════════════════ */
-function getFolderName(lesson){
-  /* Use API-discovered folder name if available */
-  if(state.lessonFolders[lesson.id])return state.lessonFolders[lesson.id];
+  /* We'll use a simpler approach: fetch the lessons directory listing
+     via GitHub API, or check known generated lessons.
+     For now, we know lesson 0.1 is generated. */
+  state.generatedLessons['0.1']=true;
 
-  /* Fallback: construct from title */
-  var short=lesson.title;
-  var dash=short.indexOf('——');
-  if(dash>0)short=short.substring(0,dash);
-  if(short.charAt(short.length-1)==='？')short=short.slice(0,-1);
-  return '第'+lesson.id+'节-'+short;
+  /* Also attempt to detect by scanning for any lesson folders we can find */
+  /* We'll mark lessons as generated when they load successfully */
 }
 
 /* ══════════════════════════════════════════
@@ -454,22 +379,18 @@ function loadCurriculum(){
   treeEl.innerHTML='<div class="loader"><div class="spinner"></div><p>加载课程结构…</p></div>';
   var url='https://raw.githubusercontent.com/'+CONFIG.repo+'/'+CONFIG.branch+'/'+CONFIG.curriculumPath;
 
-  /* Fetch curriculum + folder listing in parallel */
-  Promise.all([
-    fetch(url).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.text()}),
-    scanLessonFolders()
-  ])
-    .then(function(results){
-      var text=results[0];
+  fetch(url)
+    .then(function(r){if(!r.ok)throw new Error(r.status);return r.text()})
+    .then(function(text){
       state.eras=parseCurriculum(text);
+      detectGeneratedLessons();
       renderTree();
-      /* Refresh tree to show detected generated lessons */
+      /* Auto-expand first era */
       var firstToggle=treeEl.querySelector('.era-toggle');
       if(firstToggle)firstToggle.click();
     })
     .catch(function(e){
-      treeEl.innerHTML='<div class="error-banner">加载课程结构失败: '+e.message+
-        '<br><small>请检查网络连接后刷新页面</small></div>';
+      treeEl.innerHTML='<div class="error-banner">加载课程结构失败: '+e.message+'<br>请检查网络连接</div>';
     });
 }
 
@@ -520,7 +441,8 @@ function loadFile(fileId){
   });
 
   var lesson=state.currentLesson.lesson;
-  var folderName=encodeURIComponent(getFolderName(lesson));
+  /* Build folder name: "第X.Y节-简称" */
+  var folderName=encodeURIComponent('第'+lesson.id+'节-'+lesson.title);
   var fileName=encodeURIComponent(fileId+'.md');
   var url='https://raw.githubusercontent.com/'+CONFIG.repo+'/'+CONFIG.branch+'/'+
     CONFIG.lessonsDir+'/'+folderName+'/'+fileName;
@@ -600,18 +522,6 @@ function renderMarkdown(md,lesson){
 
   contentEl.innerHTML='<div class="rendered">'+html+'</div>';
 
-  /* Render LaTeX math with KaTeX */
-  if(typeof renderMathInElement!=='undefined'){
-    try{
-      renderMathInElement(contentEl.querySelector('.rendered'),{
-        delimiters:[
-          {left:'$$',right:'$$',display:true},
-          {left:'$',right:'$',display:false}
-        ],
-        throwOnError:false
-      });
-    }catch(e){}
-  }
   /* Render mermaid diagrams if present */
   if(typeof mermaid!=='undefined'){
     try{mermaid.run({querySelector:'.mermaid'})}catch(e){}
