@@ -294,6 +294,12 @@ function loadTree(){
     console.log('DL-Math loaded:',chapters.length,'chapters,',totalSecs,'sections');
     chapters.forEach(function(c){console.log(c._debug)});
     try{renderTree()}catch(e){treeEl.innerHTML='<div style="color:var(--color-error);padding:1rem">Render error: '+e.message+'</div>';return}
+    /* Debug — add AFTER renderTree so it survives innerHTML */
+    var dbg2=document.createElement('div');
+    dbg2.style.cssText='padding:.5rem .8rem;font-size:.6rem;color:#ff0;background:#330;border-top:1px solid #660;line-height:1.6;white-space:pre-wrap;max-height:200px;overflow-y:auto';
+    dbg2.textContent='=== DEBUG ===\nChapters: '+chapters.length+' | Total sections: '+totalSecs+'\n';
+    chapters.forEach(function(c,i){dbg2.textContent+='['+i+'] '+c.name+': '+c.sections.length+' secs | '+c._debug+'\n'});
+    treeEl.appendChild(dbg2);
     setTimeout(function(){
       var toggles=treeEl.querySelectorAll('.era-toggle');
       for(var t=0;t<toggles.length;t++){toggles[t].click()}
