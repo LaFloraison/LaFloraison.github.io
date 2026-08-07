@@ -128,13 +128,18 @@ select{appearance:none;-webkit-appearance:none;padding-right:2rem;
     <h1>✨ 课程生成器</h1>
   </div>
 
-  <!-- Worker URL config (saved to localStorage) -->
-  <div class="worker-config" id="workerConfig">
-    <strong>⚙️ 设置 Worker 地址</strong>
-    <p style="color:var(--text-muted);margin:.3rem 0">部署 Cloudflare Worker 后，将其 URL 粘贴到下方：</p>
-    <input type="text" id="workerUrl" placeholder="https://lafloraison-generator.YOURNAME.workers.dev" value="">
-    <button class="btn btn-primary" onclick="saveWorkerUrl()" style="margin-top:.4rem">保存</button>
-    <button class="btn btn-outline" onclick="hideWorkerConfig()" style="margin-top:.4rem">稍后</button>
+  <!-- API Key config (saved to localStorage) -->
+  <div class="worker-config" id="apiConfig">
+    <strong>🔑 设置 API 密钥</strong>
+    <p style="color:var(--text-muted);margin:.3rem 0">密钥只存在你浏览器里，不上传任何服务器。</p>
+    <input type="password" id="deepseekKey" placeholder="DeepSeek API Key (sk-...)" style="margin-top:.4rem">
+    <input type="password" id="githubToken" placeholder="GitHub Personal Access Token (ghp_...)" style="margin-top:.4rem">
+    <button class="btn btn-primary" onclick="saveKeys()" style="margin-top:.4rem">保存</button>
+    <button class="btn btn-outline" onclick="hideApiConfig()" style="margin-top:.4rem">稍后</button>
+    <p style="font-size:.7rem;color:var(--text-muted);margin-top:.4rem">
+    GitHub Token 需要 <b>repo</b> 权限 ·
+    <a href="https://github.com/settings/tokens/new" target="_blank" style="color:var(--color-accent-light)">创建 Token</a>
+    </p>
   </div>
 
   <div class="form" id="form">
@@ -209,29 +214,34 @@ var state = {
    ══════════════════════════════════════════ */
 (function init(){
   renderHistory();
-  var savedUrl = localStorage.getItem('workerUrl');
-  if(!savedUrl){
-    document.getElementById('workerConfig').classList.add('visible');
+  var dk = localStorage.getItem('deepseekKey');
+  var gt = localStorage.getItem('githubToken');
+  if(!dk || !gt){
+    document.getElementById('apiConfig').classList.add('visible');
   } else {
-    document.getElementById('workerUrl').value = savedUrl;
+    document.getElementById('deepseekKey').value = dk;
+    document.getElementById('githubToken').value = gt;
   }
 })();
 
-function getWorkerUrl(){
-  return document.getElementById('workerUrl').value.trim() || localStorage.getItem('workerUrl') || '';
+function getDeepSeekKey(){
+  return document.getElementById('deepseekKey').value.trim() || localStorage.getItem('deepseekKey') || '';
+}
+function getGithubToken(){
+  return document.getElementById('githubToken').value.trim() || localStorage.getItem('githubToken') || '';
 }
 
-function saveWorkerUrl(){
-  var url = document.getElementById('workerUrl').value.trim();
-  if(url){
-    localStorage.setItem('workerUrl', url);
-    toast('Worker 地址已保存','success');
-    hideWorkerConfig();
-  }
+function saveKeys(){
+  var dk = document.getElementById('deepseekKey').value.trim();
+  var gt = document.getElementById('githubToken').value.trim();
+  if(dk)localStorage.setItem('deepseekKey',dk);
+  if(gt)localStorage.setItem('githubToken',gt);
+  if(dk&&gt){toast('API 密钥已保存','success');hideApiConfig()}
+  else toast('请填写两个密钥','error');
 }
 
-function hideWorkerConfig(){
-  document.getElementById('workerConfig').classList.remove('visible');
+function hideApiConfig(){
+  document.getElementById('apiConfig').classList.remove('visible');
 }
 
 /* ══════════════════════════════════════════
@@ -376,15 +386,21 @@ function loadDLMathLessons(){
    GENERATE
    ══════════════════════════════════════════ */
 
+/* ── PROJECT CONFIG for prompt assembly ── */
+var PROJECT_CONFIG = {
+  roadofcs: {repo:'LaFloraison/RoadOfCS',branch:'main',claudeMd:'CLAUDE.md',skillsDir:'.claude/skills'},
+  math5all: {repo:'LaFloraison/Math5All',branch:'main',claudeMd:'CLAUDE.md',skillsDir:'.claude/skills'},
+  dlmath: {repo:'LaFloraison/DL-Math',branch:'main',claudeMd:'CLAUDE.md',skillsDir:'.claude/skills',
+    chaptersDir:'decomposition/chapters',
+    chapterMap:{'01':'chapter01-Introduction','02':'chapter02-Linear-Algebra','03':'chapter03-Multivariate-Calculus','04':'chapter04-Probability-Theory-and-Statistics','05':'chapter05-Optimization-Theory','06':'chapter06-Information-Theory','07':'chapter07-Graph-Theory','08':'chapter08-Differential-Geometry','09':'chapter09-Topology-in-Deep-Learning','10':'chapter10-Harmonic-Analysis-for-CNNs','11':'chapter11-Dynamical-Systems-and-Differential-Equations-for-RNNs','12':'chapter12-Quantum-Computing'}
+  }
+};
+
 function startGeneration(){
   if(state.generating)return;
 
-  var workerUrl = getWorkerUrl();
-  if(!workerUrl){
-    document.getElementById('workerConfig').classList.add('visible');
-    toast('请先设置 Worker 地址','error');
-    return;
-  }
+  var apiKey = getDeepSeekKey();
+  if(!apiKey){document.getElementById('apiConfig').classList.add('visible');toast('请先设置 API 密钥','error');return}
 
   var projectId = document.getElementById('projectSel').value;
   var lessonId = document.getElementById('lessonSel').value;
@@ -404,19 +420,92 @@ function startGeneration(){
   document.getElementById('generateBtn').disabled = true;
   document.getElementById('commitBtn').style.display = 'none';
   document.getElementById('commitBtn').disabled = true;
-  document.getElementById('status').textContent = '⏳ 正在生成…';
+  document.getElementById('status').textContent = '⏳ 正在加载上下文…';
 
-  var body = {project:projectId, lessonId:lessonId, fileType:fileType};
-  if(topic)body.topic = topic;
+  /* Step 1: Fetch CLAUDE.md + skill + textbook content from GitHub */
+  var cfg = PROJECT_CONFIG[projectId];
+  var fetches = [
+    fetch('https://raw.githubusercontent.com/'+cfg.repo+'/'+cfg.branch+'/'+cfg.claudeMd)
+      .then(function(r){return r.ok?r.text():''})
+      .catch(function(){return ''})
+  ];
 
-  fetch(workerUrl+'/api/generate', {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify(body)
+  /* Fetch skill file if applicable */
+  var skillMap = {
+    roadofcs:{'主线':'narrative-tutor.md','前沿':'frontier-tutor.md','习题':'exercise-tutor.md','镜鉴':'mirror-tutor.md','深入':'deep-dive.md'},
+    math5all:{'数学':'math-tutor.md','应用':'application-tutor.md','习题':'exercise-tutor.md','谜镜':'mirror-tutor.md','深入':'deep-dive.md'},
+    dlmath:{'主线':'CLAUDE.md'} // DL-Math uses CLAUDE.md as its only skill
+  };
+  var skillFile = (skillMap[projectId]||{})[fileType];
+  if(skillFile && skillFile!=='CLAUDE.md'){
+    fetches.push(
+      fetch('https://raw.githubusercontent.com/'+cfg.repo+'/'+cfg.branch+'/'+cfg.skillsDir+'/'+skillFile)
+        .then(function(r){return r.ok?r.text():''})
+        .catch(function(){return ''})
+    );
+  } else {
+    fetches.push(Promise.resolve(''));
+  }
+
+  /* Fetch full-text.txt for DL-Math */
+  if(projectId==='dlmath' && cfg.chapterMap && cfg.chapterMap[lessonId]){
+    var chDir = cfg.chapterMap[lessonId];
+    fetches.push(
+      fetch('https://raw.githubusercontent.com/'+cfg.repo+'/'+cfg.branch+'/'+cfg.chaptersDir+'/'+chDir+'/full-text.txt')
+        .then(function(r){return r.ok?r.text():''})
+        .catch(function(){return ''})
+    );
+  } else {
+    fetches.push(Promise.resolve(''));
+  }
+
+  Promise.all(fetches).then(function(results){
+    var claudeMd = results[0];
+    var skillMd = results[1];
+    var textbookContent = results[2]||'';
+
+    /* Build system prompt */
+    var systemPrompt = '';
+    if(claudeMd){
+      systemPrompt += '你是一位深度学习数学导师。请严格遵循以下教学哲学和风格指南：\n\n'+claudeMd+'\n\n---\n\n';
+    }
+    if(skillMd){
+      systemPrompt += '请按以下生成指令执行：\n\n'+skillMd+'\n\n---\n\n';
+    }
+    systemPrompt += '请只输出最终的课程内容（Markdown格式），不要包含任何元对话或解释。';
+
+    /* Build user prompt */
+    var lesson = state.lessons.find(function(l){return l.id===lessonId});
+    var lessonTitle = lesson?lesson.title:'';
+    var userPrompt = '请为以下课程节点生成内容：\n\n- 项目：'+cfg.repo+'\n- 课程节点：'+lessonId+' '+lessonTitle+'\n- 生成类型：'+fileType+'\n';
+    if(topic)userPrompt += '- 深入主题：'+topic+'\n';
+    if(textbookContent){
+      /* Truncate to reasonable length (first ~60k chars) */
+      var truncated = textbookContent.substring(0,60000);
+      userPrompt += '\n以下是教材原文参考（请基于此内容生成）：\n\n'+truncated+'\n';
+    }
+    userPrompt += '\n请开始生成。注意控制篇幅和结构，使内容适合移动端阅读。';
+
+    /* Call DeepSeek API */
+    document.getElementById('status').textContent = '⏳ DeepSeek 正在生成…';
+    return fetch('https://api.deepseek.com/v1/chat/completions',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
+      body:JSON.stringify({
+        model:'deepseek-chat',
+        messages:[
+          {role:'system',content:systemPrompt},
+          {role:'user',content:userPrompt}
+        ],
+        stream:true,
+        temperature:0.7,
+        max_tokens:16384
+      })
+    });
   })
   .then(function(res){
     if(!res.ok){
-      return res.json().then(function(e){throw new Error(e.error||'HTTP '+res.status)});
+      return res.text().then(function(t){throw new Error('DeepSeek API '+res.status+': '+t.substring(0,200))});
     }
     return readSSEStream(res);
   })
@@ -483,14 +572,19 @@ function readSSEStream(response){
    ══════════════════════════════════════════ */
 
 function commitToGitHub(){
-  var workerUrl = getWorkerUrl();
-  if(!workerUrl||!state.generatedContent){return}
+  var token = getGithubToken();
+  if(!token||!state.generatedContent){
+    document.getElementById('apiConfig').classList.add('visible');
+    toast('请先设置 GitHub Token','error');
+    return;
+  }
 
   var btn = document.getElementById('commitBtn');
   btn.disabled = true;
   btn.textContent = '⏳ 保存中…';
   document.getElementById('status').textContent = '⏳ 正在提交到 GitHub…';
 
+  var cfg = PROJECT_CONFIG[state.project];
   var lesson = state.lessons.find(function(l){return l.id===state.lessonId});
   var folderName = '';
 
@@ -511,36 +605,48 @@ function commitToGitHub(){
     topic.replace(/[^a-zA-Z0-9一-鿿_-]/g,'-')+'.md' :
     state.fileType+'.md';
 
-  fetch(workerUrl+'/api/commit',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      project:state.project,
-      lessonId:state.lessonId,
-      fileType:state.fileType,
-      topic:topic||undefined,
-      folderName:folderName,
-      content:state.generatedContent
+  /* Determine lessons dir */
+  var lessonsDir = (state.project==='dlmath')?'lessons':'lessons/408-history';
+  if(state.project==='math5all')lessonsDir='lessons/calculus';
+
+  var filePath = lessonsDir+'/'+folderName+'/'+fileName;
+
+  /* Check if file exists to get SHA */
+  var apiUrl = 'https://api.github.com/repos/'+cfg.repo+'/contents/'+filePath+'?ref='+cfg.branch;
+
+  fetch(apiUrl,{headers:{'Authorization':'Bearer '+token,'Accept':'application/vnd.github.v3+json'}})
+    .then(function(r){return r.ok?r.json():Promise.resolve(null)})
+    .then(function(existing){
+      var body = {
+        message: '📱 手机端生成: '+state.fileType+' — '+state.lessonId+(topic?' → '+topic:''),
+        content: btoa(unescape(encodeURIComponent(state.generatedContent))),
+        branch: cfg.branch
+      };
+      if(existing&&existing.sha)body.sha=existing.sha;
+
+      return fetch(apiUrl,{
+        method:'PUT',
+        headers:{'Authorization':'Bearer '+token,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},
+        body:JSON.stringify(body)
+      });
     })
-  })
-  .then(function(r){return r.json()})
-  .then(function(result){
-    if(result.success){
-      toast('✅ 已保存到 GitHub: '+result.filePath,'success');
+    .then(function(r){
+      if(!r.ok)return r.json().then(function(e){throw new Error(e.message||'HTTP '+r.status)});
+      return r.json();
+    })
+    .then(function(result){
+      toast('✅ 已保存到 GitHub: '+filePath,'success');
       document.getElementById('status').textContent = '✅ 已保存';
       updateHistoryStatus('saved');
-    } else {
-      toast('❌ 保存失败: '+result.error,'error');
+      btn.disabled = false;
+      btn.textContent = '📤 保存到 GitHub';
+    })
+    .catch(function(e){
+      toast('❌ 保存失败: '+e.message,'error');
       document.getElementById('status').textContent = '❌ 保存失败';
-    }
-    btn.disabled = false;
-    btn.textContent = '📤 保存到 GitHub';
-  })
-  .catch(function(e){
-    toast('❌ 网络错误: '+e.message,'error');
-    btn.disabled = false;
-    btn.textContent = '📤 保存到 GitHub';
-  });
+      btn.disabled = false;
+      btn.textContent = '📤 保存到 GitHub';
+    });
 }
 
 /* ══════════════════════════════════════════
