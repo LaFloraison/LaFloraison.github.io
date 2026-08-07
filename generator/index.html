@@ -362,28 +362,67 @@ function loadMath5AllLessons(){
     });
 }
 
-/* ── Load DL-Math lessons (56 sections across 12 chapters) ── */
+/* ── Load DL-Math lessons dynamically (scan decomposition/chapters/) ── */
 function loadDLMathLessons(){
   var sel = document.getElementById('lessonSel');
-  var sections = [
-    {id:'1',label:'Ch1 Introduction'},
-    {id:'2.1',label:'Ch2 §2.1 Introduction'},{id:'2.2',label:'Ch2 §2.2 Vectors & Matrices'},{id:'2.3',label:'Ch2 §2.3 Matrices'},{id:'2.4',label:'Ch2 §2.4 Tensor Operations'},{id:'2.5',label:'Ch2 §2.5 Linear Transformations'},{id:'2.6',label:'Ch2 §2.6 Matrix Factorizations'},
-    {id:'3.1',label:'Ch3 §3.1 Introduction'},{id:'3.2',label:'Ch3 §3.2 Partial Derivatives'},{id:'3.3',label:'Ch3 §3.3 Partial Derivatives in DL'},{id:'3.4',label:'Ch3 §3.4 Gradients'},{id:'3.5',label:'Ch3 §3.5 Gradient in DL'},{id:'3.6',label:'Ch3 §3.6 Jacobians'},
-    {id:'4.1',label:'Ch4 §4.1 Introduction'},{id:'4.2',label:'Ch4 §4.2 Probability Distributions'},{id:'4.3',label:'Ch4 §4.3 Sampling Methods'},{id:'4.4',label:'Ch4 §4.4 Bayesian Statistics'},{id:'4.5',label:'Ch4 §4.5 Moments'},
-    {id:'5.1',label:'Ch5 §5.1 Introduction'},{id:'5.2',label:'Ch5 §5.2 Optimization Theory'},{id:'5.3',label:'Ch5 §5.3 Types of Optimizations'},{id:'5.4',label:'Ch5 §5.4 Global vs Local Optima'},{id:'5.5',label:'Ch5 §5.5 Recent Developments'},{id:'5.6',label:'Ch5 §5.6 Optimization in DL'},
-    {id:'6.1',label:'Ch6 §6.1 Introduction'},{id:'6.2',label:'Ch6 §6.2 Entropy'},{id:'6.3',label:'Ch6 §6.3 Joint & Conditional Entropy'},{id:'6.4',label:'Ch6 §6.4 Information Gain'},{id:'6.5',label:'Ch6 §6.5 Mutual Information'},{id:'6.6',label:'Ch6 §6.6 Data Compression'},
-    {id:'7.1',label:'Ch7 §7.1 Introduction'},{id:'7.2',label:'Ch7 §7.2 Graph Theory for DL'},{id:'7.3',label:'Ch7 §7.3 Graph Neural Networks'},{id:'7.5',label:'Ch7 §7.5 Node & Graph Classification'},{id:'7.6',label:'Ch7 §7.6 Challenges'},{id:'7.7',label:'Ch7 §7.7 Other Graph-Based DL'},
-    {id:'8.1',label:'Ch8 §8.1 Introduction'},{id:'8.2',label:'Ch8 §8.2 Basics of Diff Geometry'},{id:'8.3',label:'Ch8 §8.3 Diff Geometry in DL'},{id:'8.4',label:'Ch8 §8.4 Practical Implications'},
-    {id:'9.1',label:'Ch9 §9.1 Introduction'},{id:'9.2',label:'Ch9 §9.2 Basic Topology'},{id:'9.3',label:'Ch9 §9.3 Convergence of Learning'},{id:'9.4',label:'Ch9 §9.4 Topological Data Analysis'},{id:'9.5',label:'Ch9 §9.5 TDA with DL'},
-    {id:'10.1',label:'Ch10 §10.1 Introduction'},{id:'10.2',label:'Ch10 §10.2 Fourier Analysis'},{id:'10.3',label:'Ch10 §10.3 Wavelets'},{id:'10.4',label:'Ch10 §10.4 Convolution in Frequency Domain'},
-    {id:'11.1',label:'Ch11 §11.1 Introduction'},{id:'11.2',label:'Ch11 §11.2 Dynamical Systems Theory'},{id:'11.3',label:'Ch11 §11.3 Understanding RNN Behavior'},
-    {id:'12.1',label:'Ch12 §12.1 Introduction'},{id:'12.2',label:'Ch12 §12.2 Intro to Quantum Computing'},{id:'12.3',label:'Ch12 §12.3 Quantum Algorithms'},{id:'12.4',label:'Ch12 §12.4 Integration with DL'}
-  ];
-  state.lessons = sections;
-  sel.innerHTML = '<option value="">选择课程 ('+sections.length+' 节)...</option>';
-  sections.forEach(function(l){
-    sel.innerHTML += '<option value="'+l.id+'">'+l.label+'</option>';
-  });
+  sel.innerHTML = '<option value="">加载中...</option>';
+
+  /* Fetch chapter directories */
+  fetch('https://api.github.com/repos/LaFloraison/DL-Math/contents/decomposition/chapters?ref=main',
+    {headers:{'Accept':'application/vnd.github.v3+json'}})
+    .then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})
+    .then(function(chDirs){
+      /* For each chapter, fetch its sec-*.txt files */
+      var promises = chDirs.filter(function(d){return d.type==='dir'}).map(function(d){
+        return fetch(d.url+'?ref=main',{headers:{'Accept':'application/vnd.github.v3+json'}})
+          .then(function(r){return r.json()})
+          .then(function(files){
+            var secs = [];
+            for(var i=0;i<files.length;i++){
+              var m = files[i].name.match(/^sec-(\d+\.\d+(?:\.\d+)?(?:\.\d+)?)-(.+)\.txt$/);
+              if(m){
+                secs.push({id:m[1], title:m[2].replace(/-/g,' '), path:files[i].path});
+              }
+            }
+            /* Sort by section number */
+            secs.sort(function(a,b){
+              var ap=a.id.split('.').map(Number), bp=b.id.split('.').map(Number);
+              for(var j=0;j<Math.max(ap.length,bp.length);j++){
+                if((ap[j]||0)!==(bp[j]||0))return (ap[j]||0)-(bp[j]||0);
+              }
+              return 0;
+            });
+            /* Extract chapter number from path */
+            var chm = d.name.match(/^ch(\d+)/);
+            return {chNum:chm?chm[1]:'', chName:d.name, sections:secs};
+          });
+      });
+      return Promise.all(promises);
+    })
+    .then(function(chapters){
+      chapters.sort(function(a,b){return parseInt(a.chNum)-parseInt(b.chNum)});
+      state.lessons = [];
+      /* Add chapter-level option too (uses full-text.txt) */
+      chapters.forEach(function(ch){
+        state.lessons.push({id:'ch'+ch.chNum, title:'Full chapter', chapter:ch.chNum, isChapter:true});
+        ch.sections.forEach(function(s){
+          state.lessons.push({id:s.id, title:s.title, chapter:ch.chNum, sectionPath:s.path});
+        });
+      });
+      sel.innerHTML = '<option value="">选择课程 ('+state.lessons.length+' 项)...</option>';
+      var lastCh = '';
+      chapters.forEach(function(ch){
+        sel.innerHTML += '<optgroup label="Ch'+ch.chNum+'">';
+        sel.innerHTML += '<option value="ch'+ch.chNum+'">  Ch'+ch.chNum+' 整章</option>';
+        ch.sections.forEach(function(s){
+          sel.innerHTML += '<option value="'+s.id+'">    '+s.id+' '+s.title.substring(0,60)+'</option>';
+        });
+        sel.innerHTML += '</optgroup>';
+      });
+    })
+    .catch(function(e){
+      sel.innerHTML = '<option value="">加载失败: '+e.message+'</option>';
+    });
 }
 
 /* ══════════════════════════════════════════
@@ -466,13 +505,25 @@ function startGeneration(){
   }
 
   /* Fetch section-level text for DL-Math */
-  if(projectId==='dlmath' && cfg.sectionMap && cfg.sectionMap[lessonId]){
-    var secPath = cfg.sectionMap[lessonId];
-    fetches.push(
-      fetch('https://raw.githubusercontent.com/'+cfg.repo+'/'+cfg.branch+'/'+cfg.chaptersDir+'/'+secPath)
-        .then(function(r){return r.ok?r.text():''})
-        .catch(function(){return ''})
-    );
+  if(projectId==='dlmath'){
+    var lesson = state.lessons.find(function(l){return l.id===lessonId});
+    var rawUrl;
+    if(lesson && lesson.sectionPath){
+      /* Specific subsection */
+      rawUrl = 'https://raw.githubusercontent.com/'+cfg.repo+'/'+cfg.branch+'/'+lesson.sectionPath;
+    } else if(lesson && lesson.isChapter){
+      /* Full chapter fallback */
+      rawUrl = 'https://raw.githubusercontent.com/'+cfg.repo+'/'+cfg.branch+'/'+cfg.chaptersDir+'/ch'+lesson.chapter+'-*/full-text.txt';
+      /* Can't use glob in URL, just skip for full chapters */
+      rawUrl = null;
+    }
+    if(rawUrl){
+      fetches.push(
+        fetch(rawUrl).then(function(r){return r.ok?r.text():''}).catch(function(){return ''})
+      );
+    } else {
+      fetches.push(Promise.resolve(''));
+    }
   } else {
     fetches.push(Promise.resolve(''));
   }
@@ -612,8 +663,8 @@ function commitToGitHub(){
     if(dash>0)short = short.substring(0,dash);
     folderName = '第'+state.lessonId+'节-'+short;
   } else if(state.project==='dlmath'){
-    var chName = lesson?lesson.title.replace(/\s+/g,'-'):'Chapter';
-    folderName = '第'+state.lessonId+'节-'+chName;
+    var secTitle = lesson?lesson.title.replace(/\s+/g,'-').replace(/[^a-zA-Z0-9\-]/g,'').substring(0,30):'Section';
+    folderName = '第'+(lesson&&lesson.chapter?lesson.chapter:'00')+'节-'+state.lessonId+'-'+secTitle;
   } else {
     folderName = lesson?lesson.folderName:'第'+state.lessonId+'节';
   }
