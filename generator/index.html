@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1e1e1e">
+<title>课程生成器 · 精神漫游站</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+
+:root{
+  --bg-primary:#1e1e1e;--bg-secondary:#181818;--bg-surface:#252525;--bg-hover:#2d2d2d;
+  --color-accent:#2d82cc;--color-accent-light:#4993d4;--color-accent-soft:rgba(45,130,204,0.15);
+  --color-success:#4caf50;--color-error:#e57373;
+  --text-normal:#c6c6c6;--text-soft:#a0a0a0;--text-muted:#7a7a7a;
+  --border-subtle:rgba(255,255,255,0.06);--border-normal:rgba(255,255,255,0.09);
+  --radius-s:5px;--radius-m:7px;--radius-l:15px;
+  --font-text:Bookerly,'Inter',"Segoe UI","霞鹜文楷 GB","LXGW WenKai","Microsoft YaHei",sans-serif;
+  --font-mono:'JetBrains Mono',Consolas,Monaco,monospace;
+  --safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);
+}
+
+html,body{height:100%}
+body{
+  background:var(--bg-primary);color:var(--text-normal);font-family:var(--font-text);
+  font-size:16px;min-height:100dvh;-webkit-font-smoothing:antialiased;
+}
+
+.app{max-width:720px;margin:0 auto;padding:calc(1rem + var(--safe-top)) 1rem calc(2rem + var(--safe-bottom))}
+
+/* Header */
+.header{display:flex;align-items:center;gap:.8rem;margin-bottom:1.5rem}
+.header .back{color:var(--text-muted);text-decoration:none;font-size:1.1rem}
+.header h1{font-size:1.2rem;font-weight:600}
+
+/* Form */
+.form{background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:var(--radius-l);padding:1.2rem;margin-bottom:1rem}
+.form-row{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:.8rem}
+.form-row:last-child{margin-bottom:0}
+
+select,input[type=text],textarea{
+  background:var(--bg-surface);color:var(--text-normal);border:1px solid var(--border-normal);
+  border-radius:var(--radius-s);padding:.5rem .7rem;font-family:var(--font-text);font-size:.9rem;
+  outline:none;transition:border-color .15s;
+}
+select:focus,input:focus,textarea:focus{border-color:var(--color-accent)}
+select{appearance:none;-webkit-appearance:none;padding-right:2rem;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237a7a7a' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right .6rem center;
+}
+.form-row select{flex:1;min-width:140px}
+.form-row input[type=text]{flex:2;min-width:200px}
+
+/* Buttons */
+.btn{
+  display:inline-flex;align-items:center;gap:.4rem;padding:.55rem 1.2rem;
+  border-radius:var(--radius-s);font-size:.85rem;font-weight:600;cursor:pointer;
+  border:none;font-family:inherit;touch-action:manipulation;transition:all .15s;
+}
+.btn-primary{background:var(--color-accent);color:#fff}
+.btn-primary:hover{background:#3d92dc}
+.btn-primary:active{transform:scale(.97)}
+.btn-primary:disabled{opacity:.4;cursor:not-allowed}
+.btn-outline{background:transparent;color:var(--text-soft);border:1px solid var(--border-normal)}
+.btn-outline:hover{color:var(--text-normal);border-color:var(--text-muted)}
+.btn-success{background:var(--color-success);color:#fff}
+.btn-row{display:flex;gap:.5rem;flex-wrap:wrap}
+
+/* Status */
+.status{font-size:.8rem;color:var(--text-muted);padding:.3rem 0}
+
+/* Output area */
+.output{
+  background:var(--bg-secondary);border:1px solid var(--border-subtle);
+  border-radius:var(--radius-l);min-height:300px;max-height:60vh;overflow-y:auto;
+  padding:1.2rem;margin-bottom:1rem;font-family:var(--font-mono);font-size:.85rem;
+  line-height:1.7;white-space:pre-wrap;word-break:break-word;
+  -webkit-overflow-scrolling:touch;
+}
+.output:empty::after{content:'生成的内容将在这里实时展示…';color:var(--text-muted)}
+.output .token-stream{color:var(--text-soft)}
+.output .done-info{display:block;margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--border-subtle);color:var(--color-success);font-size:.8rem;white-space:normal}
+
+/* History */
+.history{margin-top:1.5rem}
+.history h3{font-size:.9rem;color:var(--text-muted);margin-bottom:.6rem}
+.history-item{
+  background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:var(--radius-m);
+  padding:.7rem 1rem;margin-bottom:.4rem;font-size:.8rem;
+  display:flex;align-items:center;gap:.6rem;
+}
+.history-item .time{color:var(--text-muted);font-size:.7rem;min-width:4rem}
+.history-item .desc{flex:1;color:var(--text-soft)}
+.history-item .status{min-width:3rem;text-align:right}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);
+  background:var(--bg-surface);border:1px solid var(--border-normal);border-radius:var(--radius-m);
+  padding:.7rem 1.2rem;font-size:.85rem;z-index:100;box-shadow:0 4px 24px rgba(0,0,0,0.3);
+  animation:toastIn .3s ease;
+}
+.toast.success{border-color:rgba(76,175,80,0.3)}
+.toast.error{border-color:rgba(244,67,54,0.3)}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+/* Worker URL config message */
+.worker-config{
+  background:var(--color-accent-soft);border:1px solid var(--color-accent);border-radius:var(--radius-m);
+  padding:.8rem 1rem;margin-bottom:1rem;font-size:.8rem;display:none;
+}
+.worker-config.visible{display:block}
+.worker-config input{width:100%;margin-top:.4rem;font-size:.8rem;padding:.4rem .6rem}
+
+/* Mobile */
+@media(max-width:480px){
+  .app{padding:.5rem .8rem 2rem}
+  .form{padding:.8rem}
+  .header h1{font-size:1rem}
+  .form-row{flex-direction:column}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <a href="../" class="back">←</a>
+    <h1>✨ 课程生成器</h1>
+  </div>
+
+  <!-- Worker URL config (saved to localStorage) -->
+  <div class="worker-config" id="workerConfig">
+    <strong>⚙️ 设置 Worker 地址</strong>
+    <p style="color:var(--text-muted);margin:.3rem 0">部署 Cloudflare Worker 后，将其 URL 粘贴到下方：</p>
+    <input type="text" id="workerUrl" placeholder="https://lafloraison-generator.YOURNAME.workers.dev" value="">
+    <button class="btn btn-primary" onclick="saveWorkerUrl()" style="margin-top:.4rem">保存</button>
+    <button class="btn btn-outline" onclick="hideWorkerConfig()" style="margin-top:.4rem">稍后</button>
+  </div>
+
+  <div class="form" id="form">
+    <div class="form-row">
+      <select id="projectSel" onchange="onProjectChange()">
+        <option value="">选择项目…</option>
+        <option value="roadofcs">⚛️ Road of CS</option>
+        <option value="math5all">📐 Math5All</option>
+      </select>
+      <select id="lessonSel" onchange="onLessonChange()">
+        <option value="">选择课程…</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <select id="fileTypeSel">
+        <option value="">文件类型…</option>
+      </select>
+      <input type="text" id="topicInput" placeholder="深入主题（仅'深入'时需要）" style="display:none">
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="generateBtn" onclick="startGeneration()">🚀 生成</button>
+      <button class="btn btn-outline" id="commitBtn" onclick="commitToGitHub()" disabled style="display:none">📤 保存到 GitHub</button>
+    </div>
+    <div class="status" id="status"></div>
+  </div>
+
+  <div class="output" id="output"></div>
+
+  <div class="history" id="history">
+    <h3>📋 生成历史</h3>
+    <div id="historyList"></div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════
+   CONFIG
+   ══════════════════════════════════════════ */
+
+var FILE_TYPES = {
+  roadofcs: [
+    {id:'主线',label:'📜 主线',desc:'AI历史叙事 + Toy Model + 408讲解'},
+    {id:'前沿',label:'🚀 前沿',desc:'9维桥接 + 美的创造'},
+    {id:'习题',label:'✏️ 习题',desc:'三组习题 + 答案'},
+    {id:'镜鉴',label:'🪞 镜鉴',desc:'哲学 + 艺术 + 大师耳语'},
+    {id:'深入',label:'🔬 深入',desc:'不限篇幅的深度探索',needsTopic:true}
+  ],
+  math5all: [
+    {id:'数学',label:'📐 数学',desc:'动机 + 直观 + 严谨讲解'},
+    {id:'应用',label:'🔗 应用',desc:'纵向学科桥接'},
+    {id:'习题',label:'✏️ 习题',desc:'三组习题 + 答案'},
+    {id:'谜镜',label:'🪞 谜镜',desc:'哲学 + 艺术 + 大师耳语'},
+    {id:'深入',label:'🔬 深入',desc:'不限篇幅的深度探索',needsTopic:true}
+  ]
+};
+
+var state = {
+  project:null,
+  lessonId:null,
+  fileType:null,
+  lessons:[],           // [{id, title}]
+  generatedContent:'',  // Full content after generation
+  generating:false
+};
+
+/* ══════════════════════════════════════════
+   INIT
+   ══════════════════════════════════════════ */
+(function init(){
+  renderHistory();
+  var savedUrl = localStorage.getItem('workerUrl');
+  if(!savedUrl){
+    document.getElementById('workerConfig').classList.add('visible');
+  } else {
+    document.getElementById('workerUrl').value = savedUrl;
+  }
+})();
+
+function getWorkerUrl(){
+  return document.getElementById('workerUrl').value.trim() || localStorage.getItem('workerUrl') || '';
+}
+
+function saveWorkerUrl(){
+  var url = document.getElementById('workerUrl').value.trim();
+  if(url){
+    localStorage.setItem('workerUrl', url);
+    toast('Worker 地址已保存','success');
+    hideWorkerConfig();
+  }
+}
+
+function hideWorkerConfig(){
+  document.getElementById('workerConfig').classList.remove('visible');
+}
+
+/* ══════════════════════════════════════════
+   PROJECT / LESSON LOADING
+   ══════════════════════════════════════════ */
+
+function onProjectChange(){
+  var projectId = document.getElementById('projectSel').value;
+  state.project = projectId;
+  state.lessonId = null;
+  state.lessons = [];
+
+  /* Update file type selector */
+  var ftSel = document.getElementById('fileTypeSel');
+  var fts = FILE_TYPES[projectId] || [];
+  ftSel.innerHTML = '<option value="">文件类型…</option>';
+  fts.forEach(function(ft){
+    ftSel.innerHTML += '<option value="'+ft.id+'">'+ft.label+' — '+ft.desc+'</option>';
+  });
+  document.getElementById('topicInput').style.display = 'none';
+
+  /* Load lessons */
+  if(projectId === 'roadofcs'){
+    loadRoadOfCSLessons();
+  } else if(projectId === 'math5all'){
+    loadMath5AllLessons();
+  }
+}
+
+function onLessonChange(){
+  state.lessonId = document.getElementById('lessonSel').value;
+}
+
+function onFileTypeChange(){
+  state.fileType = document.getElementById('fileTypeSel').value;
+  var fts = FILE_TYPES[state.project] || [];
+  var ft = fts.find(function(f){return f.id===state.fileType});
+  var topicInput = document.getElementById('topicInput');
+  if(ft && ft.needsTopic){
+    topicInput.style.display = '';
+  } else {
+    topicInput.style.display = 'none';
+  }
+}
+
+/* ── Load RoadOfCS lessons from curriculum-design.md ── */
+function loadRoadOfCSLessons(){
+  var sel = document.getElementById('lessonSel');
+  sel.innerHTML = '<option value="">加载中…</option>';
+
+  fetch('https://raw.githubusercontent.com/LaFloraison/RoadOfCS/main/curriculum/408-history/curriculum-design.md')
+    .then(function(r){if(!r.ok)throw new Error(r.status);return r.text()})
+    .then(function(text){
+      var lessons = [];
+      var lines = text.split('\n');
+      var eraRe = /^##\s+时代(\d+)/;
+      var lessonRe = /^###\s+(?:\[预备\]\s*)?(\d+\.\d+)\s+(.+)/;
+      var currentEra = '';
+
+      for(var i=0;i<lines.length;i++){
+        var em = lines[i].match(eraRe);
+        if(em){currentEra = '时代'+em[1]; continue}
+        var lm = lines[i].match(lessonRe);
+        if(lm){
+          var title = lm[2].trim();
+          var dash = title.indexOf('——');
+          if(dash>0)title=title.substring(0,dash);
+          lessons.push({id:lm[1], title:title, era:currentEra});
+        }
+      }
+
+      state.lessons = lessons;
+      sel.innerHTML = '<option value="">选择课程 ('+lessons.length+' 节)…</option>';
+      var eraGroup = '';
+      lessons.forEach(function(l){
+        if(l.era!==eraGroup){
+          if(eraGroup)sel.innerHTML += '</optgroup>';
+          sel.innerHTML += '<optgroup label="'+l.era+'">';
+          eraGroup=l.era;
+        }
+        sel.innerHTML += '<option value="'+l.id+'">'+l.id+' '+l.title+'</option>';
+      });
+      sel.innerHTML += '</optgroup>';
+    })
+    .catch(function(e){
+      sel.innerHTML = '<option value="">加载失败: '+e.message+'</option>';
+    });
+}
+
+/* ── Load Math5All lessons via GitHub API ── */
+function loadMath5AllLessons(){
+  var sel = document.getElementById('lessonSel');
+  sel.innerHTML = '<option value="">加载中…</option>';
+
+  fetch('https://api.github.com/repos/LaFloraison/Math5All/contents/lessons/calculus')
+    .then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})
+    .then(function(items){
+      state.lessons = [];
+      for(var i=0;i<items.length;i++){
+        if(items[i].type==='dir'){
+          var name = items[i].name;
+          var numMatch = name.match(/第(\d+)节/);
+          var num = numMatch?numMatch[1]:String(i+1);
+          var title = name.replace(/第\d+节-/, '').replace(/-/g, ' ');
+          state.lessons.push({id:num, title:title, folderName:name});
+        }
+      }
+      state.lessons.sort(function(a,b){return parseInt(a.id)-parseInt(b.id)});
+      sel.innerHTML = '<option value="">选择课程 ('+state.lessons.length+' 节)…</option>';
+      state.lessons.forEach(function(l){
+        sel.innerHTML += '<option value="'+l.id+'">第'+l.id+'节 '+l.title+'</option>';
+      });
+    })
+    .catch(function(e){
+      sel.innerHTML = '<option value="">加载失败</option>';
+    });
+}
+
+/* ══════════════════════════════════════════
+   GENERATE
+   ══════════════════════════════════════════ */
+
+function startGeneration(){
+  if(state.generating)return;
+
+  var workerUrl = getWorkerUrl();
+  if(!workerUrl){
+    document.getElementById('workerConfig').classList.add('visible');
+    toast('请先设置 Worker 地址','error');
+    return;
+  }
+
+  var projectId = document.getElementById('projectSel').value;
+  var lessonId = document.getElementById('lessonSel').value;
+  var fileType = document.getElementById('fileTypeSel').value;
+  var topic = document.getElementById('topicInput').value.trim();
+
+  if(!projectId||!lessonId||!fileType){toast('请完整选择项目、课程、文件类型','error');return}
+
+  state.project = projectId;
+  state.lessonId = lessonId;
+  state.fileType = fileType;
+  state.generatedContent = '';
+  state.generating = true;
+
+  var output = document.getElementById('output');
+  output.innerHTML = '';
+  document.getElementById('generateBtn').disabled = true;
+  document.getElementById('commitBtn').style.display = 'none';
+  document.getElementById('commitBtn').disabled = true;
+  document.getElementById('status').textContent = '⏳ 正在生成…';
+
+  var body = {project:projectId, lessonId:lessonId, fileType:fileType};
+  if(topic)body.topic = topic;
+
+  fetch(workerUrl+'/api/generate', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  })
+  .then(function(res){
+    if(!res.ok){
+      return res.json().then(function(e){throw new Error(e.error||'HTTP '+res.status)});
+    }
+    return readSSEStream(res);
+  })
+  .catch(function(e){
+    output.innerHTML = '<span style="color:var(--color-error)">生成失败: '+e.message+'</span>';
+    document.getElementById('status').textContent = '❌ 失败';
+    document.getElementById('generateBtn').disabled = false;
+    state.generating = false;
+  });
+}
+
+/* Read SSE stream */
+function readSSEStream(response){
+  var reader = response.body.getReader();
+  var decoder = new TextDecoder();
+  var buffer = '';
+  var output = document.getElementById('output');
+
+  function process(){
+    reader.read().then(function(result){
+      if(result.done){
+        document.getElementById('status').textContent = '✅ 生成完成';
+        document.getElementById('generateBtn').disabled = false;
+        document.getElementById('commitBtn').style.display = '';
+        state.generating = false;
+
+        /* Save to history */
+        if(state.generatedContent){
+          saveHistory();
+        }
+        return;
+      }
+
+      buffer += decoder.decode(result.value, {stream:true});
+      var lines = buffer.split('\n');
+      buffer = lines.pop() || '';
+
+      for(var i=0;i<lines.length;i++){
+        if(!lines[i].startsWith('data: '))continue;
+        try{
+          var data = JSON.parse(lines[i].slice(6));
+          if(data.type==='token'){
+            state.generatedContent += data.content;
+            output.textContent = state.generatedContent;
+            output.scrollTop = output.scrollHeight;
+          } else if(data.type==='done'){
+            state.generatedContent = data.fullContent;
+            output.textContent = state.generatedContent;
+            output.innerHTML += '<span class="done-info">✅ 生成完成 — 共 '+
+              state.generatedContent.length+' 字符。点击「保存到 GitHub」推送到仓库。</span>';
+          } else if(data.type==='error'){
+            output.innerHTML += '\n<span style="color:var(--color-error)">错误: '+data.message+'</span>';
+          }
+        }catch(e){}
+      }
+      process();
+    });
+  }
+  process();
+}
+
+/* ══════════════════════════════════════════
+   COMMIT TO GITHUB
+   ══════════════════════════════════════════ */
+
+function commitToGitHub(){
+  var workerUrl = getWorkerUrl();
+  if(!workerUrl||!state.generatedContent){return}
+
+  var btn = document.getElementById('commitBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ 保存中…';
+  document.getElementById('status').textContent = '⏳ 正在提交到 GitHub…';
+
+  var lesson = state.lessons.find(function(l){return l.id===state.lessonId});
+  var folderName = '';
+
+  if(state.project==='roadofcs'){
+    var dash = lesson?lesson.title.indexOf('——'):-1;
+    var short = lesson?lesson.title:'';
+    if(dash>0)short = short.substring(0,dash);
+    folderName = '第'+state.lessonId+'节-'+short;
+  } else {
+    folderName = lesson?lesson.folderName:'第'+state.lessonId+'节';
+  }
+
+  var topic = document.getElementById('topicInput').value.trim();
+  var fileName = (state.fileType==='深入'&&topic) ?
+    topic.replace(/[^a-zA-Z0-9一-鿿_-]/g,'-')+'.md' :
+    state.fileType+'.md';
+
+  fetch(workerUrl+'/api/commit',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      project:state.project,
+      lessonId:state.lessonId,
+      fileType:state.fileType,
+      topic:topic||undefined,
+      folderName:folderName,
+      content:state.generatedContent
+    })
+  })
+  .then(function(r){return r.json()})
+  .then(function(result){
+    if(result.success){
+      toast('✅ 已保存到 GitHub: '+result.filePath,'success');
+      document.getElementById('status').textContent = '✅ 已保存';
+      updateHistoryStatus('saved');
+    } else {
+      toast('❌ 保存失败: '+result.error,'error');
+      document.getElementById('status').textContent = '❌ 保存失败';
+    }
+    btn.disabled = false;
+    btn.textContent = '📤 保存到 GitHub';
+  })
+  .catch(function(e){
+    toast('❌ 网络错误: '+e.message,'error');
+    btn.disabled = false;
+    btn.textContent = '📤 保存到 GitHub';
+  });
+}
+
+/* ══════════════════════════════════════════
+   HISTORY (localStorage)
+   ══════════════════════════════════════════ */
+
+function saveHistory(){
+  var history = JSON.parse(localStorage.getItem('genHistory')||'[]');
+  history.unshift({
+    time: new Date().toISOString(),
+    project: state.project,
+    lessonId: state.lessonId,
+    fileType: state.fileType,
+    contentLength: state.generatedContent.length,
+    saved: false
+  });
+  if(history.length>50)history = history.slice(0,50);
+  localStorage.setItem('genHistory', JSON.stringify(history));
+  renderHistory();
+}
+
+function updateHistoryStatus(status){
+  var history = JSON.parse(localStorage.getItem('genHistory')||'[]');
+  if(history.length>0) history[0].saved = (status==='saved');
+  localStorage.setItem('genHistory', JSON.stringify(history));
+  renderHistory();
+}
+
+function renderHistory(){
+  var history = JSON.parse(localStorage.getItem('genHistory')||'[]');
+  var list = document.getElementById('historyList');
+  if(history.length===0){
+    list.innerHTML = '<div style="color:var(--text-muted);font-size:.8rem;padding:.5rem 0">暂无生成记录</div>';
+    return;
+  }
+  var projectNames = {roadofcs:'⚛️ RoadOfCS', math5all:'📐 Math5All'};
+  list.innerHTML = history.slice(0,20).map(function(h){
+    var time = new Date(h.time);
+    var timeStr = time.toLocaleDateString('zh-CN')+' '+time.toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'});
+    return '<div class="history-item">'+
+      '<span class="time">'+timeStr+'</span>'+
+      '<span class="desc">'+(projectNames[h.project]||h.project)+' · '+h.lessonId+' · '+h.fileType+' ('+h.contentLength+'字)</span>'+
+      '<span class="status">'+(h.saved?'✅':'📝')+'</span>'+
+    '</div>';
+  }).join('');
+}
+
+/* ══════════════════════════════════════════
+   TOAST
+   ══════════════════════════════════════════ */
+
+function toast(msg, type){
+  var el = document.createElement('div');
+  el.className = 'toast '+(type||'');
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(function(){el.remove()}, 3000);
+}
+
+/* ── Wire up file type change ── */
+document.getElementById('fileTypeSel').addEventListener('change', onFileTypeChange);
+</script>
+</body>
+</html>
