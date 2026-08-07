@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a0a1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>精神漫游站 · LaFloraison</title>
+<link rel="manifest" href="manifest.json">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+
+:root{
+  --bg-deep:#0a0a1a;--bg-base:#12122a;--bg-surface:#1a1a3a;--bg-hover:#22224a;
+  --color-primary:#7c5cfc;--color-primary-light:#9d85fd;--color-primary-glow:rgba(124,92,252,0.4);
+  --color-accent:#ffb347;--color-accent-light:#ffcc80;
+  --text-primary:#e8e8f0;--text-secondary:#a0a0c0;--text-muted:#606080;
+  --border-color:rgba(124,92,252,0.2);--border-glow:rgba(124,92,252,0.5);
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;
+  --font-sans:"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;
+  --font-mono:"Cascadia Code","Fira Code","JetBrains Mono","Consolas",monospace;
+  --safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);
+}
+
+html,body{height:100%}
+body{
+  background:var(--bg-deep);color:var(--text-primary);font-family:var(--font-sans);
+  overflow-x:hidden;line-height:1.6;-webkit-font-smoothing:antialiased;
+}
+
+/* ── Starfield Canvas ── */
+#starfield{position:fixed;top:0;left:0;z-index:0}
+
+/* ── Main Container ── */
+.app{
+  position:relative;z-index:1;min-height:100vh;min-height:100dvh;
+  display:flex;flex-direction:column;align-items:center;
+  padding:calc(48px + var(--safe-top)) 1.5rem calc(3rem + var(--safe-bottom));
+  max-width:900px;margin:0 auto;
+}
+
+/* ── Header ── */
+.header{text-align:center;margin-bottom:3rem}
+.header-tag{
+  display:inline-block;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--color-primary-light);border:1px solid var(--border-color);
+  border-radius:50px;padding:4px 16px;margin-bottom:1.2rem;
+  backdrop-filter:blur(8px);background:rgba(124,92,252,0.08);
+}
+.header h1{
+  font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;margin-bottom:.6rem;
+  background:linear-gradient(135deg,#a78bfa 0%,#60a5fa 40%,#ffb347 100%);
+  background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  animation:gradientShift 6s ease infinite;
+}
+.header .subtitle{color:var(--text-secondary);font-size:1.05rem;max-width:500px;margin:0 auto}
+@keyframes gradientShift{
+  0%,100%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+}
+
+/* ── Project Card Grid ── */
+.project-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:1.5rem;width:100%;margin-bottom:3rem;
+}
+
+/* ── Glass Card ── */
+.project-card{
+  background:rgba(15,15,35,0.72);border:1px solid var(--border-color);
+  border-radius:var(--radius-lg);padding:1.8rem;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  cursor:pointer;transition:transform .3s cubic-bezier(.4,0,.2,1),box-shadow .3s, border-color .3s;
+  text-decoration:none;color:inherit;display:flex;flex-direction:column;
+  position:relative;overflow:hidden;
+}
+.project-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--card-gradient,var(--color-primary)),transparent);
+  opacity:0;transition:opacity .3s;
+}
+.project-card:hover,.project-card:active{
+  transform:translateY(-4px);
+  box-shadow:0 8px 32px var(--card-glow,rgba(124,92,252,0.15));
+  border-color:var(--border-glow);
+}
+.project-card:hover::before,.project-card:active::before{opacity:1}
+.project-card:active{transform:translateY(-2px)}
+
+.card-icon{font-size:2.2rem;margin-bottom:.8rem;line-height:1}
+.card-title{font-size:1.2rem;font-weight:700;margin-bottom:.5rem}
+.card-desc{color:var(--text-secondary);font-size:.92rem;line-height:1.6;flex:1;margin-bottom:1rem}
+
+/* Progress bar inside card */
+.card-progress{margin-bottom:1rem}
+.card-progress-bar{
+  height:4px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;
+}
+.card-progress-fill{
+  height:100%;border-radius:4px;
+  background:linear-gradient(90deg,var(--card-gradient,var(--color-primary)),var(--color-accent));
+  transition:width 1s ease;
+}
+.card-progress-label{
+  font-size:.75rem;color:var(--text-muted);margin-top:4px;
+  display:flex;justify-content:space-between;
+}
+
+.card-meta{
+  display:flex;gap:1rem;font-size:.78rem;color:var(--text-muted);
+  flex-wrap:wrap;
+}
+.card-meta span{
+  display:flex;align-items:center;gap:4px;
+}
+
+.card-btn{
+  display:inline-block;margin-top:1rem;padding:10px 24px;
+  background:var(--card-gradient,linear-gradient(135deg,#7c3aed,#3b82f6));
+  color:#fff;border-radius:50px;font-size:.9rem;font-weight:600;
+  text-align:center;transition:transform .2s,box-shadow .2s;
+  border:none;cursor:pointer;touch-action:manipulation;
+}
+.card-btn:hover{box-shadow:0 0 24px var(--card-glow,rgba(124,58,237,.3))}
+.card-btn:active{transform:scale(.97)}
+
+/* ── Footer ── */
+.footer{
+  text-align:center;color:var(--text-muted);font-size:.82rem;
+  padding-top:2rem;border-top:1px solid rgba(255,255,255,0.05);width:100%;
+}
+.footer a{color:var(--color-primary-light);text-decoration:none}
+.footer a:hover{text-decoration:underline}
+
+/* ── Responsive ── */
+@media(max-width:600px){
+  .app{padding:calc(32px + var(--safe-top)) 1rem calc(2rem + var(--safe-bottom))}
+  .header{margin-bottom:2rem}
+  .project-card{padding:1.4rem}
+  .card-icon{font-size:1.8rem}
+  .card-title{font-size:1.1rem}
+}
+@media(max-width:400px){
+  .header h1{font-size:1.4rem}
+  .header .subtitle{font-size:.95rem}
+  .project-grid{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<canvas id="starfield"></canvas>
+
+<div class="app">
+  <header class="header">
+    <div class="header-tag">LaFloraison · 精神漫游站</div>
+    <h1>穿越技术，抵达星辰与深渊</h1>
+    <p class="subtitle">计算机 · 数学 · AI 艺术 — 一场精神漫游的入口</p>
+  </header>
+
+  <div class="project-grid" id="projectGrid"></div>
+
+  <!-- Secondary: docsify wiki link -->
+  <div style="text-align:center;margin-bottom:2rem">
+    <a href="docs/" style="display:inline-flex;align-items:center;gap:.5rem;padding:12px 28px;
+      background:rgba(15,15,35,0.5);border:1px solid var(--border-color);border-radius:50px;
+      color:var(--text-secondary);text-decoration:none;font-size:.85rem;transition:all .2s;
+      backdrop-filter:blur(8px);">
+      📚 个人知识库 · Tools · Math · AI · Plan
+    </a>
+  </div>
+
+  <footer class="footer">
+    <p>由 <a href="https://github.com/LaFloraison" target="_blank">LaFloraison</a> 用热爱搭建 ·
+    课程内容持续生成中 ·
+    <a href="https://github.com/LaFloraison/RoadOfCS" target="_blank">RoadOfCS</a> ·
+    <a href="https://github.com/LaFloraison/Math5All" target="_blank">Math5All</a> ·
+    <a href="https://github.com/LaFloraison/digital-art" target="_blank">AI+数字艺术</a>
+  </p>
+  </footer>
+</div>
+
+<script>
+/* ══════════════════════════════════════════
+   PROJECT CONFIG — 添加新项目只需在此数组新增一项
+   ══════════════════════════════════════════ */
+var PROJECTS = [
+  {
+    id:'roadofcs',
+    icon:'⚛️',
+    name:'Road of CS',
+    title:'408 计算机 · AI 历史精神漫游',
+    desc:'从图灵机到万卡集群，穿越数据结构、计组、操作系统、网络的完整宇宙。每一个知识点都是一场精神漫游——在硅片的喜马拉雅上感受宇宙秩序，在指令流水线里看见人生的数据冒险。',
+    gradient:'linear-gradient(135deg,#7c3aed,#3b82f6)',
+    glow:'rgba(124,58,237,0.25)',
+    color:'#7c5cfc',
+    link:'reader/roadofcs/',
+    github:'https://github.com/LaFloraison/RoadOfCS',
+    stats:{lessons:359,generated:1,label:'节课程'}
+  },
+  {
+    id:'math5all',
+    icon:'📐',
+    name:'Math5All',
+    title:'以数学为脊柱的整合式学习',
+    desc:'数学不是孤立的工具，而是人类思想史的脊柱。从实数公理到深度学习，一位融汇数学、哲学、艺术与 AI 的学者型导师，为你打通知识的任督二脉。',
+    gradient:'linear-gradient(135deg,#059669,#06b6d4)',
+    glow:'rgba(5,150,105,0.25)',
+    color:'#059669',
+    link:'reader/math5all/',
+    github:'https://github.com/LaFloraison/Math5All',
+    stats:{lessons:200,generated:2,label:'节课程'}
+  },
+  {
+    id:'digital-art',
+    icon:'🎨',
+    name:'AI + 数字艺术',
+    title:'60 节交互式游戏课程',
+    desc:'从零开始，用游戏的方式理解 AI 与数字艺术。每节课都是一个可交互的"卡片世界"——星河背景、环境音乐、语音讲解、Canvas 交互演示。纯 HTML · 零依赖 · 手机可玩。',
+    gradient:'linear-gradient(135deg,#e91e63,#ff9800)',
+    glow:'rgba(233,30,99,0.25)',
+    color:'#e91e63',
+    link:'https://lafloraison.github.io/digital-art/',
+    external:true,
+    github:'https://github.com/LaFloraison/digital-art',
+    stats:{lessons:60,generated:60,label:'节课程 · 全部完成'}
+  }
+];
+
+/* ── Render project cards ── */
+var grid = document.getElementById('projectGrid');
+PROJECTS.forEach(function(p){
+  var gen = p.stats.generated;
+  var total = p.stats.lessons;
+  var pct = Math.round(gen/total*100);
+  var html = '<a class="project-card" href="'+p.link+'"'+(p.external?' target="_blank"':'')+
+    ' style="--card-gradient:'+p.gradient+';--card-glow:'+p.glow+'">'+
+    '<div class="card-icon">'+p.icon+'</div>'+
+    '<div class="card-title">'+p.name+'</div>'+
+    '<div class="card-desc">'+p.desc+'</div>'+
+    '<div class="card-progress">'+
+      '<div class="card-progress-bar"><div class="card-progress-fill" style="width:'+pct+'%"></div></div>'+
+      '<div class="card-progress-label"><span>课程进度</span><span>'+gen+'/'+total+' '+p.stats.label+'</span></div>'+
+    '</div>'+
+    '<div class="card-meta">'+
+      '<span>📂 GitHub</span>'+
+      (p.external?'<span>🔗 外部站点</span>':'<span>📖 在线阅读</span>')+
+    '</div>'+
+    '<span class="card-btn">'+(gen>0?'📖 进入学习':(p.external?'🚀 进入体验':'🔮 敬请期待'))+'</span>'+
+  '</a>';
+  grid.insertAdjacentHTML('beforeend',html);
+});
+
+/* ── Starfield ── */
+(function(){
+  var c=document.getElementById('starfield'),ctx=c.getContext('2d'),stars=[],nebulae=[],meteors=[];
+  var isMobile=window.innerWidth<600;
+  var W,H;
+
+  function resize(){
+    var dpr=Math.min(window.devicePixelRatio||1,2);
+    W=window.innerWidth;H=window.innerHeight;
+    c.width=W*dpr;c.height=H*dpr;c.style.width=W+'px';c.style.height=H+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+
+    /* 3 star layers */
+    var counts=isMobile?[60,25,0]:[120,60,30];
+    stars=[];for(var i=0;i<counts[0];i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.3,s:Math.random()*.3+.15,a:Math.random(),ap:Math.random()*Math.PI*2,z:0});
+    for(var i=0;i<counts[1];i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*2+.8,s:Math.random()*.2+.08,a:Math.random()*.7+.3,z:1});
+    for(var i=0;i<counts[2];i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*2.5+1,s:Math.random()*.15+.04,a:Math.random()*.5+.5,z:2});
+
+    /* 4 nebulae */
+    nebulae=[];
+    for(var i=0;i<4;i++)nebulae.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*200+100,h:Math.random()*360,s:60,l:40,drift:Math.random()*.2-.1});
+
+    meteors=[];spawnMeteor();
+  }
+
+  function spawnMeteor(){
+    if(isMobile)return;
+    meteors.push({x:Math.random()*W,y:-20,len:Math.random()*80+40,speed:Math.random()*4+3,life:1,decay:Math.random()*.02+.01});
+    setTimeout(spawnMeteor,Math.random()*5000+4000);
+  }
+
+  resize();window.addEventListener('resize',resize);
+
+  var time=0;
+  function draw(){
+    time+=0.016;
+    ctx.clearRect(0,0,W,H);
+    /* deep space gradient bg */
+    var bg=ctx.createRadialGradient(W*.3,H*.3,0,W*.5,H*.5,Math.max(W,H));
+    bg.addColorStop(0,'#12122a');bg.addColorStop(.5,'#0a0a1a');bg.addColorStop(1,'#030310');
+    ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+
+    /* nebulae */
+    for(var ni=0;ni<nebulae.length;ni++){
+      var n=nebulae[ni];n.x+=n.drift;if(n.x<-n.r)n.x=W+n.r;if(n.x>W+n.r)n.x=-n.r;
+      var ng=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r);
+      ng.addColorStop(0,'hsla('+n.h+','+n.s+'%,'+n.l+'%,0.04)');
+      ng.addColorStop(1,'hsla('+n.h+','+n.s+'%,'+n.l+'%,0)');
+      ctx.fillStyle=ng;ctx.fillRect(n.x-n.r,n.y-n.r,n.r*2,n.r*2);
+    }
+
+    /* stars */
+    for(var si=0;si<stars.length;si++){
+      var s=stars[si];s.y-=s.s;if(s.y<-10){s.y=H+10;s.x=Math.random()*W}
+      var twinkle=Math.sin(time*3+s.ap)*.3+.7;
+      var alpha=s.a*twinkle;
+      ctx.fillStyle='rgba(255,255,255,'+alpha+')';
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();
+      /* glow for larger stars */
+      if(s.z>=2){
+        ctx.fillStyle='rgba(180,180,255,'+alpha*.3+')';
+        ctx.beginPath();ctx.arc(s.x,s.y,s.r*2,0,Math.PI*2);ctx.fill();
+      }
+    }
+
+    /* meteors */
+    for(var mi=meteors.length-1;mi>=0;mi--){
+      var m=meteors[mi];m.x+=m.speed;m.y+=m.speed*.5;m.life-=m.decay;
+      if(m.life<=0){meteors.splice(mi,1);continue}
+      var mx=m.x-m.len,my=m.y-m.len*.5;
+      var mg=ctx.createLinearGradient(mx,my,m.x,m.y);
+      mg.addColorStop(0,'rgba(255,255,255,0)');
+      mg.addColorStop(1,'rgba(255,255,255,'+m.life*.6+')');
+      ctx.strokeStyle=mg;ctx.lineWidth=1.2;
+      ctx.beginPath();ctx.moveTo(mx,my);ctx.lineTo(m.x,m.y);ctx.stroke();
+    }
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>
