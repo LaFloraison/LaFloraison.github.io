@@ -280,11 +280,6 @@ function loadTree(){
       });
 
       renderTree();
-      /* Auto-expand chapters */
-      setTimeout(function(){
-        var toggles=treeEl.querySelectorAll('.era-toggle');
-        for(var t=0;t<toggles.length;t++){toggles[t].click()}
-      },200);
     });
   }).catch(function(e){
     treeEl.innerHTML='<div style="color:var(--color-error);padding:1rem;font-size:.8rem">Load error: '+e.message+'</div>';
