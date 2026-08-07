@@ -394,8 +394,18 @@ function loadFile(fileId){
 
   contentEl.innerHTML='<div class="loader"><div class="spinner"></div></div>';
   fetch(url).then(r=>{if(!r.ok)throw new Error('不存在');return r.text()})
-    .then(md=>renderMarkdown(md))
-    .catch(e=>{
+    .then(function(md){
+      /* Auto-mark as generated on successful load */
+      if(!state.generatedFiles[sec.id])state.generatedFiles[sec.id]=[];
+      if(state.generatedFiles[sec.id].indexOf(fileId)<0)state.generatedFiles[sec.id].push(fileId);
+      if(!state.lessonFolders[sec.id])state.lessonFolders[sec.id]=folderName;
+      renderFileTabs();renderActionBar();
+      /* Update tree icon */
+      var item=treeEl.querySelector('[data-sid="'+sec.id+'"]');
+      if(item){var icon=item.querySelector('span[style]');if(icon)icon.textContent='✅'}
+      renderMarkdown(md);
+    })
+    .catch(function(e){
       contentEl.innerHTML='<div class="empty-state"><div class="icon">🔮</div>'+
         '<h3>'+fileId+' 还没有生成</h3>'+
         '<p>'+sec.num+' '+sec.title+'</p>'+
