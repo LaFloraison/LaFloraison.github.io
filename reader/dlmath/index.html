@@ -37,8 +37,7 @@ body{background:var(--bg-primary);color:var(--text-normal);font-family:var(--fon
 .era-toggle{display:flex;align-items:center;gap:.35rem;padding:.5rem 1rem;cursor:pointer;font-size:.8rem;font-weight:600;color:var(--text-muted);transition:color .15s,background .15s;user-select:none;border:none;background:none;width:100%;text-align:left;font-family:inherit}
 .era-toggle:hover{color:var(--text-normal);background:var(--bg-hover)}
 .era-toggle .arrow{font-size:.5rem;transition:transform .2s;display:inline-block;opacity:.5}
-.era-lessons{display:none}
-.era-lessons.open{display:block}
+.era-lessons{display:block}
 .lesson-item{display:flex;align-items:center;gap:.3rem;padding:.35rem 1rem .35rem 2rem;cursor:pointer;font-size:.75rem;color:var(--text-muted);transition:color .15s,background .15s;border-left:3px solid transparent}
 .lesson-item:hover{color:var(--text-normal);background:var(--bg-hover)}
 .lesson-item.active{color:var(--color-accent-light);background:var(--color-accent-glow);border-left-color:var(--color-accent)}
@@ -276,7 +275,14 @@ function loadTree(){
   .then(chapters=>{
     chapters.sort((a,b)=>parseInt(a.num)-parseInt(b.num));
     state.chapters=chapters;
+    var totalSecs=0;chapters.forEach(function(c){totalSecs+=c.sections.length});
+    console.log('DL-Math: loaded',chapters.length,'chapters,',totalSecs,'sections');
     try{renderTree()}catch(e){treeEl.innerHTML='<div style="color:var(--color-error);padding:1rem">Render error: '+e.message+'</div>';return}
+    /* Show debug count */
+    var dbg=document.createElement('div');
+    dbg.style.cssText='padding:.3rem 1rem;font-size:.65rem;color:var(--text-faint);border-top:1px solid var(--border-subtle)';
+    dbg.textContent=chapters.length+' chapters · '+totalSecs+' sections';
+    treeEl.appendChild(dbg);
     setTimeout(function(){
       var toggles=treeEl.querySelectorAll('.era-toggle');
       for(var t=0;t<toggles.length;t++){toggles[t].click()}
