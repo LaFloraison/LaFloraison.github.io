@@ -224,18 +224,27 @@ function saveSettings(){
 if(!getDSKey()||!getGHToken()){setTimeout(openSettings,500)}
 
 /* ══════════════════════════════════════════
-   LOAD CHAPTER TREE
+   LOAD CHAPTER TREE — single manifest fetch
    ══════════════════════════════════════════ */
 function loadTree(){
   treeEl.innerHTML='<div class="loader"><div class="spinner"></div></div>';
-  var chApi='https://api.github.com/repos/'+CONFIG.repo+'/contents/'+CONFIG.chaptersDir+'?ref='+CONFIG.branch;
+
+  /* Load manifest.json + scan lessons/ in parallel */
+  var manifestUrl='https://raw.githubusercontent.com/'+CONFIG.repo+'/'+CONFIG.branch+'/manifest.json';
   var lesApi='https://api.github.com/repos/'+CONFIG.repo+'/contents/'+CONFIG.lessonsDir+'?ref='+CONFIG.branch;
 
   Promise.all([
-    fetch(chApi,{headers:{Accept:'application/vnd.github.v3+json'}}).then(r=>r.ok?r.json():[]).catch(()=>[]),
+    fetch(manifestUrl).then(r=>r.ok?r.json():null).catch(()=>null),
     fetch(lesApi,{headers:{Accept:'application/vnd.github.v3+json'}}).then(r=>r.ok?r.json():[]).catch(()=>[])
-  ]).then(([chDirs,lesItems])=>{
-    /* Build generated files map: {sectionId: [fileTypes]} */
+  ]).then(function(results){
+    var manifest=results[0], lesItems=results[1];
+
+    if(!manifest||!manifest.chapters){
+      treeEl.innerHTML='<div style="color:var(--color-error);padding:1rem">无法加载课程目录</div>';
+      return;
+    }
+
+    /* Build generated files map from lessons/ */
     state.generatedFiles={};
     var folderPromises=[];
     for(var i=0;i<lesItems.length;i++){
@@ -244,68 +253,41 @@ function loadTree(){
         if(fm){
           var secId=fm[1];
           state.lessonFolders[secId]=lesItems[i].name;
-          /* Fetch files inside folder */
           folderPromises.push(
             fetch(lesItems[i].url+'?ref='+CONFIG.branch,{headers:{Accept:'application/vnd.github.v3+json'}})
-              .then(r=>r.json()).then(files=>{
-                state.generatedFiles[secId]=files.filter(f=>f.type==='file'&&f.name.endsWith('.md')).map(f=>f.name.replace('.md',''));
-              }).catch(()=>{state.generatedFiles[secId]=[]})
+              .then(function(r){return r.ok?r.json():[]}).catch(function(){return []})
+              .then(function(files){
+                state.generatedFiles[secId]=files.filter(function(f){return f.type==='file'&&f.name.endsWith('.md')}).map(function(f){return f.name.replace('.md','')});
+              })
           );
         }
       }
     }
-    return Promise.all([Promise.resolve(chDirs),Promise.all(folderPromises).then(()=>null)]);
-  })
-  .then(([chDirs])=>{
-    var debugLog=[];
-    var promises=chDirs.filter(d=>d.type==='dir').map(function(d,di){
-      var url=d.url+'?ref='+CONFIG.branch;
-      return fetch(url,{headers:{Accept:'application/vnd.github.v3+json'}})
-        .then(function(r){
-          if(!r.ok){debugLog.push('Ch'+di+' HTTP '+r.status);return []}
-          return r.json();
-        }).catch(function(e){debugLog.push('Ch'+di+' ERR: '+e.message);return []})
-        .then(function(files){
-          if(!Array.isArray(files)){debugLog.push('Ch'+di+' not array: '+typeof files);files=[]}
-          var secs=[];
-          for(var j=0;j<files.length;j++){
-            var sm=files[j].name.match(/^sec-(\d+\.\d+(?:\.\d+)?(?:\.\d+)?)-(.+)\.txt$/);
-            if(sm)secs.push({id:sm[1],num:sm[1],title:sm[2].replace(/-/g,' ').substring(0,80),path:files[j].path});
+
+    return Promise.all(folderPromises).then(function(){
+      /* Map manifest chapters, attach section paths */
+      state.chapters=manifest.chapters.map(function(ch){
+        ch.sections.forEach(function(sec){
+          /* Derive path from manifest structure if not already set */
+          if(!sec.path){
+            var chDir='ch'+ch.num+'-'+ch.name.replace(/\s+/g,'-');
+            var secFile='sec-'+sec.id+'-'+sec.title.replace(/\s/g,'-')+'.txt';
+            sec.path=CONFIG.chaptersDir+'/'+chDir+'/'+secFile;
           }
-          debugLog.push('Ch'+di+' files:'+files.length+' secs:'+secs.length);
-          secs.sort(function(a,b){var ap=a.id.split('.').map(Number),bp=b.id.split('.').map(Number);for(var k=0;k<Math.max(ap.length,bp.length);k++){if((ap[k]||0)!==(bp[k]||0))return (ap[k]||0)-(bp[k]||0)}return 0});
-          var cm=d.name.match(/^ch(\d+)-(.+)/);
-          return {num:cm?cm[1]:'?',name:cm?cm[2].replace(/-/g,' '):d.name,sections:secs,_debug:debugLog.join(' | ')};
         });
+        return ch;
+      });
+
+      renderTree();
+      /* Auto-expand chapters */
+      setTimeout(function(){
+        var toggles=treeEl.querySelectorAll('.era-toggle');
+        for(var t=0;t<toggles.length;t++){toggles[t].click()}
+      },200);
     });
-    return Promise.all(promises);
-  })
-  .then(chapters=>{
-    chapters.sort((a,b)=>parseInt(a.num)-parseInt(b.num));
-    state.chapters=chapters;
-    var totalSecs=0;chapters.forEach(function(c){totalSecs+=c.sections.length});
-    /* RENDER DEBUG to sidebar bottom */
-    var dbg=document.createElement('div');
-    dbg.style.cssText='padding:.4rem .8rem;font-size:.6rem;color:var(--color-warn);border-top:1px solid var(--border-subtle);line-height:1.5;white-space:pre-wrap;max-height:150px;overflow-y:auto';
-    dbg.textContent='DEBUG: '+chapters.length+' chapters, '+totalSecs+' sections\n';
-    chapters.forEach(function(c){dbg.textContent+=c._debug+'\n'});
-    treeEl.appendChild(dbg);
-    /* Also log */
-    console.log('DL-Math loaded:',chapters.length,'chapters,',totalSecs,'sections');
-    chapters.forEach(function(c){console.log(c._debug)});
-    try{renderTree()}catch(e){treeEl.innerHTML='<div style="color:var(--color-error);padding:1rem">Render error: '+e.message+'</div>';return}
-    /* Debug — add AFTER renderTree so it survives innerHTML */
-    var dbg2=document.createElement('div');
-    dbg2.style.cssText='padding:.5rem .8rem;font-size:.6rem;color:#ff0;background:#330;border-top:1px solid #660;line-height:1.6;white-space:pre-wrap;max-height:200px;overflow-y:auto';
-    dbg2.textContent='=== DEBUG ===\nChapters: '+chapters.length+' | Total sections: '+totalSecs+'\n';
-    chapters.forEach(function(c,i){dbg2.textContent+='['+i+'] '+c.name+': '+c.sections.length+' secs | '+c._debug+'\n'});
-    treeEl.appendChild(dbg2);
-    setTimeout(function(){
-      var toggles=treeEl.querySelectorAll('.era-toggle');
-      for(var t=0;t<toggles.length;t++){toggles[t].click()}
-    },200);
-  })
-  .catch(e=>{treeEl.innerHTML='<div style="color:var(--color-error);padding:1rem;font-size:.8rem">Load failed: '+e.message+'</div>';console.error(e)});
+  }).catch(function(e){
+    treeEl.innerHTML='<div style="color:var(--color-error);padding:1rem;font-size:.8rem">Load error: '+e.message+'</div>';
+  });
 }
 
 /* ══════════════════════════════════════════
