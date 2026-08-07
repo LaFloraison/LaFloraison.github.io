@@ -254,6 +254,7 @@ var state = {
   eras:[],          // Parsed curriculum tree
   currentLesson:null, // {eraIdx, lessonIdx, lesson}
   currentFile:'主线',
+  lessonFolders:{}, // Maps "X.Y" → actual folder name (from GitHub API)
   generatedLessons:{} // Cache: "era-lesson" → true/false
 };
 
@@ -354,22 +355,44 @@ function renderTree(){
 }
 
 /* ══════════════════════════════════════════
-   DETECT GENERATED LESSONS
+   DETECT ACTUAL LESSON FOLDERS (GitHub API)
    ══════════════════════════════════════════ */
-function detectGeneratedLessons(){
-  /* Try fetching lesson files to detect which exist.
-     We check the first lesson in each era as a sample.
-     In practice, we detect by trying to fetch the 主线.md */
-  var repoUrl='https://raw.githubusercontent.com/'+CONFIG.repo+'/'+CONFIG.branch+'/';
-  var dirUrl=repoUrl+CONFIG.lessonsDir+'/';
+function scanLessonFolders(){
+  var apiUrl='https://api.github.com/repos/'+CONFIG.repo+'/contents/'+CONFIG.lessonsDir+'?ref='+CONFIG.branch;
+  return fetch(apiUrl,{headers:{'Accept':'application/vnd.github.v3+json'}})
+    .then(function(r){if(!r.ok)throw new Error('API '+r.status);return r.json()})
+    .then(function(items){
+      state.lessonFolders={};
+      for(var i=0;i<items.length;i++){
+        if(items[i].type!=='dir')continue;
+        var name=items[i].name;
+        /* Extract lesson ID from folder name "第X.Y节-..." */
+        var m=name.match(/^第(\d+\.\d+)节/);
+        if(m){
+          state.lessonFolders[m[1]]=name;
+          state.generatedLessons[m[1]]=true;
+        }
+      }
+    })
+    .catch(function(e){
+      console.warn('GitHub API folder scan failed:',e.message);
+      /* Fallback: empty, will try constructed names */
+    });
+}
 
-  /* We'll use a simpler approach: fetch the lessons directory listing
-     via GitHub API, or check known generated lessons.
-     For now, we know lesson 0.1 is generated. */
-  state.generatedLessons['0.1']=true;
+/* ══════════════════════════════════════════
+   GET FOLDER NAME (mapping or fallback)
+   ══════════════════════════════════════════ */
+function getFolderName(lesson){
+  /* Use API-discovered folder name if available */
+  if(state.lessonFolders[lesson.id])return state.lessonFolders[lesson.id];
 
-  /* Also attempt to detect by scanning for any lesson folders we can find */
-  /* We'll mark lessons as generated when they load successfully */
+  /* Fallback: construct from title */
+  var short=lesson.title;
+  var dash=short.indexOf('——');
+  if(dash>0)short=short.substring(0,dash);
+  if(short.charAt(short.length-1)==='？')short=short.slice(0,-1);
+  return '第'+lesson.id+'节-'+short;
 }
 
 /* ══════════════════════════════════════════
@@ -379,18 +402,22 @@ function loadCurriculum(){
   treeEl.innerHTML='<div class="loader"><div class="spinner"></div><p>加载课程结构…</p></div>';
   var url='https://raw.githubusercontent.com/'+CONFIG.repo+'/'+CONFIG.branch+'/'+CONFIG.curriculumPath;
 
-  fetch(url)
-    .then(function(r){if(!r.ok)throw new Error(r.status);return r.text()})
-    .then(function(text){
+  /* Fetch curriculum + folder listing in parallel */
+  Promise.all([
+    fetch(url).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.text()}),
+    scanLessonFolders()
+  ])
+    .then(function(results){
+      var text=results[0];
       state.eras=parseCurriculum(text);
-      detectGeneratedLessons();
       renderTree();
-      /* Auto-expand first era */
+      /* Refresh tree to show detected generated lessons */
       var firstToggle=treeEl.querySelector('.era-toggle');
       if(firstToggle)firstToggle.click();
     })
     .catch(function(e){
-      treeEl.innerHTML='<div class="error-banner">加载课程结构失败: '+e.message+'<br>请检查网络连接</div>';
+      treeEl.innerHTML='<div class="error-banner">加载课程结构失败: '+e.message+
+        '<br><small>请检查网络连接后刷新页面</small></div>';
     });
 }
 
@@ -431,17 +458,6 @@ function renderFileTabs(lessonId){
       loadFile(this.dataset.file);
     });
   });
-}
-
-/* Extract short folder name from full lesson title */
-function getFolderName(lesson){
-  var short=lesson.title;
-  /* Strip everything after —— (Chinese em-dash subtitle separator) */
-  var dash=short.indexOf('——');
-  if(dash>0)short=short.substring(0,dash);
-  /* Strip trailing ？ */
-  if(short.charAt(short.length-1)==='？')short=short.slice(0,-1);
-  return '第'+lesson.id+'节-'+short;
 }
 
 function loadFile(fileId){
