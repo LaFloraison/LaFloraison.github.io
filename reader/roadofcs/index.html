@@ -433,6 +433,17 @@ function renderFileTabs(lessonId){
   });
 }
 
+/* Extract short folder name from full lesson title */
+function getFolderName(lesson){
+  var short=lesson.title;
+  /* Strip everything after —— (Chinese em-dash subtitle separator) */
+  var dash=short.indexOf('——');
+  if(dash>0)short=short.substring(0,dash);
+  /* Strip trailing ？ */
+  if(short.charAt(short.length-1)==='？')short=short.slice(0,-1);
+  return '第'+lesson.id+'节-'+short;
+}
+
 function loadFile(fileId){
   state.currentFile=fileId;
   /* Update tab active */
@@ -441,8 +452,7 @@ function loadFile(fileId){
   });
 
   var lesson=state.currentLesson.lesson;
-  /* Build folder name: "第X.Y节-简称" */
-  var folderName=encodeURIComponent('第'+lesson.id+'节-'+lesson.title);
+  var folderName=encodeURIComponent(getFolderName(lesson));
   var fileName=encodeURIComponent(fileId+'.md');
   var url='https://raw.githubusercontent.com/'+CONFIG.repo+'/'+CONFIG.branch+'/'+
     CONFIG.lessonsDir+'/'+folderName+'/'+fileName;
