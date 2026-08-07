@@ -362,23 +362,27 @@ function loadMath5AllLessons(){
     });
 }
 
-/* ── Load DL-Math lessons (12 chapters hardcoded) ── */
+/* ── Load DL-Math lessons (56 sections across 12 chapters) ── */
 function loadDLMathLessons(){
   var sel = document.getElementById('lessonSel');
-  var chapters = [
-    '01 Introduction','02 Linear Algebra','03 Multivariate Calculus',
-    '04 Probability Theory and Statistics','05 Optimization Theory',
-    '06 Information Theory','07 Graph Theory','08 Differential Geometry',
-    '09 Topology in Deep Learning','10 Harmonic Analysis for CNNs',
-    '11 Dynamical Systems & DEs for RNNs','12 Quantum Computing'
+  var sections = [
+    {id:'1',label:'Ch1 Introduction'},
+    {id:'2.1',label:'Ch2 §2.1 Introduction'},{id:'2.2',label:'Ch2 §2.2 Vectors & Matrices'},{id:'2.3',label:'Ch2 §2.3 Matrices'},{id:'2.4',label:'Ch2 §2.4 Tensor Operations'},{id:'2.5',label:'Ch2 §2.5 Linear Transformations'},{id:'2.6',label:'Ch2 §2.6 Matrix Factorizations'},
+    {id:'3.1',label:'Ch3 §3.1 Introduction'},{id:'3.2',label:'Ch3 §3.2 Partial Derivatives'},{id:'3.3',label:'Ch3 §3.3 Partial Derivatives in DL'},{id:'3.4',label:'Ch3 §3.4 Gradients'},{id:'3.5',label:'Ch3 §3.5 Gradient in DL'},{id:'3.6',label:'Ch3 §3.6 Jacobians'},
+    {id:'4.1',label:'Ch4 §4.1 Introduction'},{id:'4.2',label:'Ch4 §4.2 Probability Distributions'},{id:'4.3',label:'Ch4 §4.3 Sampling Methods'},{id:'4.4',label:'Ch4 §4.4 Bayesian Statistics'},{id:'4.5',label:'Ch4 §4.5 Moments'},
+    {id:'5.1',label:'Ch5 §5.1 Introduction'},{id:'5.2',label:'Ch5 §5.2 Optimization Theory'},{id:'5.3',label:'Ch5 §5.3 Types of Optimizations'},{id:'5.4',label:'Ch5 §5.4 Global vs Local Optima'},{id:'5.5',label:'Ch5 §5.5 Recent Developments'},{id:'5.6',label:'Ch5 §5.6 Optimization in DL'},
+    {id:'6.1',label:'Ch6 §6.1 Introduction'},{id:'6.2',label:'Ch6 §6.2 Entropy'},{id:'6.3',label:'Ch6 §6.3 Joint & Conditional Entropy'},{id:'6.4',label:'Ch6 §6.4 Information Gain'},{id:'6.5',label:'Ch6 §6.5 Mutual Information'},{id:'6.6',label:'Ch6 §6.6 Data Compression'},
+    {id:'7.1',label:'Ch7 §7.1 Introduction'},{id:'7.2',label:'Ch7 §7.2 Graph Theory for DL'},{id:'7.3',label:'Ch7 §7.3 Graph Neural Networks'},{id:'7.5',label:'Ch7 §7.5 Node & Graph Classification'},{id:'7.6',label:'Ch7 §7.6 Challenges'},{id:'7.7',label:'Ch7 §7.7 Other Graph-Based DL'},
+    {id:'8.1',label:'Ch8 §8.1 Introduction'},{id:'8.2',label:'Ch8 §8.2 Basics of Diff Geometry'},{id:'8.3',label:'Ch8 §8.3 Diff Geometry in DL'},{id:'8.4',label:'Ch8 §8.4 Practical Implications'},
+    {id:'9.1',label:'Ch9 §9.1 Introduction'},{id:'9.2',label:'Ch9 §9.2 Basic Topology'},{id:'9.3',label:'Ch9 §9.3 Convergence of Learning'},{id:'9.4',label:'Ch9 §9.4 Topological Data Analysis'},{id:'9.5',label:'Ch9 §9.5 TDA with DL'},
+    {id:'10.1',label:'Ch10 §10.1 Introduction'},{id:'10.2',label:'Ch10 §10.2 Fourier Analysis'},{id:'10.3',label:'Ch10 §10.3 Wavelets'},{id:'10.4',label:'Ch10 §10.4 Convolution in Frequency Domain'},
+    {id:'11.1',label:'Ch11 §11.1 Introduction'},{id:'11.2',label:'Ch11 §11.2 Dynamical Systems Theory'},{id:'11.3',label:'Ch11 §11.3 Understanding RNN Behavior'},
+    {id:'12.1',label:'Ch12 §12.1 Introduction'},{id:'12.2',label:'Ch12 §12.2 Intro to Quantum Computing'},{id:'12.3',label:'Ch12 §12.3 Quantum Algorithms'},{id:'12.4',label:'Ch12 §12.4 Integration with DL'}
   ];
-  state.lessons = chapters.map(function(c,i){
-    var parts = c.split(' ');
-    return {id: parts[0], title: parts.slice(1).join(' ')};
-  });
-  sel.innerHTML = '<option value="">选择课程 ('+state.lessons.length+' 节)...</option>';
-  state.lessons.forEach(function(l){
-    sel.innerHTML += '<option value="'+l.id+'">Ch'+l.id+' '+l.title+'</option>';
+  state.lessons = sections;
+  sel.innerHTML = '<option value="">选择课程 ('+sections.length+' 节)...</option>';
+  sections.forEach(function(l){
+    sel.innerHTML += '<option value="'+l.id+'">'+l.label+'</option>';
   });
 }
 
@@ -392,7 +396,21 @@ var PROJECT_CONFIG = {
   math5all: {repo:'LaFloraison/Math5All',branch:'main',claudeMd:'CLAUDE.md',skillsDir:'.claude/skills'},
   dlmath: {repo:'LaFloraison/DL-Math',branch:'main',claudeMd:'CLAUDE.md',skillsDir:'.claude/skills',
     chaptersDir:'decomposition/chapters',
-    chapterMap:{'01':'chapter01-Introduction','02':'chapter02-Linear-Algebra','03':'chapter03-Multivariate-Calculus','04':'chapter04-Probability-Theory-and-Statistics','05':'chapter05-Optimization-Theory','06':'chapter06-Information-Theory','07':'chapter07-Graph-Theory','08':'chapter08-Differential-Geometry','09':'chapter09-Topology-in-Deep-Learning','10':'chapter10-Harmonic-Analysis-for-CNNs','11':'chapter11-Dynamical-Systems-and-Differential-Equations-for-RNNs','12':'chapter12-Quantum-Computing'}
+    // Map section ID → chapterDir + section filename
+    sectionMap:{
+      '1':'ch01-Introduction/sec-all.txt',
+      '2.1':'ch02-Linear-Algebra/sec-2.1-INTRODUCTION.txt','2.2':'ch02-Linear-Algebra/sec-2.2-VECTORS-MATRICES-AND-TENSOR-OPERATIONS.txt','2.3':'ch02-Linear-Algebra/sec-2.3-MATRICES.txt','2.4':'ch02-Linear-Algebra/sec-2.4-TENSOR-AND-ITS-OPERATIONS.txt','2.5':'ch02-Linear-Algebra/sec-2.5-LINEAR-TRANSFORMATIONS.txt','2.6':'ch02-Linear-Algebra/sec-2.6-MATRIX-FACTORIZATIONS.txt',
+      '3.1':'ch03-Multivariate-Calculus/sec-3.1-INTRODUCTION.txt','3.2':'ch03-Multivariate-Calculus/sec-3.2-PARTIAL-DERIVATIVES.txt','3.3':'ch03-Multivariate-Calculus/sec-3.3-PARTIAL-DERIVATIVES-IN-DEEP-LEARNING.txt','3.4':'ch03-Multivariate-Calculus/sec-3.4-GRADIENTS.txt','3.5':'ch03-Multivariate-Calculus/sec-3.5-GRADIENT-IN-DEEP-LEARNING.txt','3.6':'ch03-Multivariate-Calculus/sec-3.6-JACOBIANS.txt',
+      '4.1':'ch04-Probability-Theory/sec-4.1-INTRODUCTION.txt','4.2':'ch04-Probability-Theory/sec-4.2-PROBABILITY-DISTRIBUTIONS.txt','4.3':'ch04-Probability-Theory/sec-4.3-SAMPLING-METHODS.txt','4.4':'ch04-Probability-Theory/sec-4.4-BAYESIAN-STATISTICS.txt','4.5':'ch04-Probability-Theory/sec-4.5-MOMENTS-IN-STATISTICS-AND-PROBABILITY-THEORY.txt',
+      '5.1':'ch05-Optimization-Theory/sec-5.1-INTRODUCTION.txt','5.2':'ch05-Optimization-Theory/sec-5.2-OPTIMIZATION-THEORY.txt','5.3':'ch05-Optimization-Theory/sec-5.3-TYPES-OF-OPTIMIZATIONS.txt','5.4':'ch05-Optimization-Theory/sec-5.4-GLOBAL-VERSUS-LOCAL-OPTIMA.txt','5.5':'ch05-Optimization-Theory/sec-5.5-RECENT-DEVELOPMENTS-IN-OPTIMIZATION.txt','5.6':'ch05-Optimization-Theory/sec-5.6-OPTIMIZATION-METHODS-IN-DEEP-LEARNING.txt',
+      '6.1':'ch06-Information-Theory/sec-6.1-INTRODUCTION.txt','6.2':'ch06-Information-Theory/sec-6.2-ENTROPY.txt','6.3':'ch06-Information-Theory/sec-6.3-JOINT-AND-CONDITIONAL-ENTROPY.txt','6.4':'ch06-Information-Theory/sec-6.4-INFORMATION-GAIN.txt','6.5':'ch06-Information-Theory/sec-6.5-MUTUAL-INFORMATION.txt','6.6':'ch06-Information-Theory/sec-6.6-DATA-COMPRESSION.txt',
+      '7.1':'ch07-Graph-Theory/sec-7.1-INTRODUCTION.txt','7.2':'ch07-Graph-Theory/sec-7.2-GRAPH-THEORY-FOR-DEEP-LEARNING.txt','7.3':'ch07-Graph-Theory/sec-7.3-GRAPH-NEURAL-NETWORKS.txt','7.5':'ch07-Graph-Theory/sec-7.5-NODE-AND-GRAPH-CLASSIFICATION.txt','7.6':'ch07-Graph-Theory/sec-7.6-CHALLENGES.txt','7.7':'ch07-Graph-Theory/sec-7.7-OTHER-GRAPH---BASED-DEEP-LEARNING-MODELS.txt',
+      '8.1':'ch08-Differential-Geometry/sec-8.1-INTRODUCTION.txt','8.2':'ch08-Differential-Geometry/sec-8.2-BASICS-OF-DIFFERENTIAL-GEOMETRY.txt','8.3':'ch08-Differential-Geometry/sec-8.3-DIFFERENTIAL-GEOMETRY-IN-DEEP-LEARNING.txt','8.4':'ch08-Differential-Geometry/sec-8.4-PRACTICAL-IMPLICATIONS.txt',
+      '9.1':'ch09-Topology-in-DL/sec-9.1-INTRODUCTION.txt','9.2':'ch09-Topology-in-DL/sec-9.2-BASIC-TOPOLOGY.txt','9.3':'ch09-Topology-in-DL/sec-9.3-RELATION-TO-CONVERGENCE-OF-LEARNING-ALGORITHMS.txt','9.4':'ch09-Topology-in-DL/sec-9.4-TOPOLOGICAL-DATA-ANALYSIS-IN-NEURAL-NETWORKS.txt','9.5':'ch09-Topology-in-DL/sec-9.5-TOPOLOGICAL-DATA-ANALYSIS-WITH-DEEP-LEARNING.txt',
+      '10.1':'ch10-Harmonic-Analysis-CNNs/sec-10.1-INTRODUCTION.txt','10.2':'ch10-Harmonic-Analysis-CNNs/sec-10.2-FOURIER-ANALYSIS.txt','10.3':'ch10-Harmonic-Analysis-CNNs/sec-10.3-WAVELETS.txt','10.4':'ch10-Harmonic-Analysis-CNNs/sec-10.4-CONVOLUTION-IN-THE-FREQUENCY-DOMAIN-FOR-CNNS.txt',
+      '11.1':'ch11-Dynamical-Systems-RNNs/sec-11.1-INTRODUCTION.txt','11.2':'ch11-Dynamical-Systems-RNNs/sec-11.2-THEORY-OF-DYNAMICAL-SYSTEMS-AND-DIFFERENTIAL-EQUATIONS.txt','11.3':'ch11-Dynamical-Systems-RNNs/sec-11.3-UNDERSTANDING-THE-BEHAVIOR-OF-RNNS.txt',
+      '12.1':'ch12-Quantum-Computing/sec-12.1-INTRODUCTION.txt','12.2':'ch12-Quantum-Computing/sec-12.2-INTRODUCTION-TO-QUANTUM-COMPUTING.txt','12.3':'ch12-Quantum-Computing/sec-12.3-QUANTUM-ALGORITHMS.txt','12.4':'ch12-Quantum-Computing/sec-12.4-INTEGRATION-WITH-DEEP-LEARNING.txt'
+    }
   }
 };
 
@@ -447,11 +465,11 @@ function startGeneration(){
     fetches.push(Promise.resolve(''));
   }
 
-  /* Fetch full-text.txt for DL-Math */
-  if(projectId==='dlmath' && cfg.chapterMap && cfg.chapterMap[lessonId]){
-    var chDir = cfg.chapterMap[lessonId];
+  /* Fetch section-level text for DL-Math */
+  if(projectId==='dlmath' && cfg.sectionMap && cfg.sectionMap[lessonId]){
+    var secPath = cfg.sectionMap[lessonId];
     fetches.push(
-      fetch('https://raw.githubusercontent.com/'+cfg.repo+'/'+cfg.branch+'/'+cfg.chaptersDir+'/'+chDir+'/full-text.txt')
+      fetch('https://raw.githubusercontent.com/'+cfg.repo+'/'+cfg.branch+'/'+cfg.chaptersDir+'/'+secPath)
         .then(function(r){return r.ok?r.text():''})
         .catch(function(){return ''})
     );

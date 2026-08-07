@@ -47,8 +47,13 @@ body{
 .sidebar-tree::-webkit-scrollbar{width:4px}
 .sidebar-tree::-webkit-scrollbar-thumb{background:var(--border-visible);border-radius:4px}
 
+.chapter-group{border-bottom:1px solid var(--border-subtle)}
+.era-toggle:hover{color:var(--text-normal)!important;background:var(--bg-hover)}
+.era-lessons{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.era-lessons.open{max-height:2000px}
+
 .lesson-item{
-  display:flex;align-items:center;gap:.4rem;padding:.4rem 1.1rem;
+  display:flex;align-items:center;gap:.4rem;padding:.4rem 1.1rem .4rem 2.2rem;
   cursor:pointer;font-size:.78rem;color:var(--text-muted);
   transition:color .15s,background .15s;border-left:3px solid transparent;
 }
@@ -157,13 +162,78 @@ var CONFIG = {
   repo:'LaFloraison/DL-Math',
   branch:'main',
   lessonsDir:'lessons',
+  // Chapters with their sections
   chapters: [
-    {num:'01',name:'Introduction',en:'Introduction'},
-    {num:'02',name:'Linear-Algebra',en:'Linear Algebra'},
-    {num:'03',name:'Multivariate-Calculus',en:'Multivariate Calculus'},
-    {num:'04',name:'Probability-Theory-and-Statistics',en:'Probability Theory and Statistics'},
-    {num:'05',name:'Optimization-Theory',en:'Optimization Theory'},
-    {num:'06',name:'Information-Theory',en:'Information Theory'},
+    {num:'01',en:'Introduction',sections:[
+      {id:'1',num:'1',title:'Introduction to Deep Learning Math'}]},
+    {num:'02',en:'Linear Algebra',sections:[
+      {id:'2.1',num:'2.1',title:'Introduction'},
+      {id:'2.2',num:'2.2',title:'Vectors, Matrices, and Tensor Operations'},
+      {id:'2.3',num:'2.3',title:'Matrices'},
+      {id:'2.4',num:'2.4',title:'Tensor and Its Operations'},
+      {id:'2.5',num:'2.5',title:'Linear Transformations'},
+      {id:'2.6',num:'2.6',title:'Matrix Factorizations'}]},
+    {num:'03',en:'Multivariate Calculus',sections:[
+      {id:'3.1',num:'3.1',title:'Introduction'},
+      {id:'3.2',num:'3.2',title:'Partial Derivatives'},
+      {id:'3.3',num:'3.3',title:'Partial Derivatives in Deep Learning'},
+      {id:'3.4',num:'3.4',title:'Gradients'},
+      {id:'3.5',num:'3.5',title:'Gradient in Deep Learning'},
+      {id:'3.6',num:'3.6',title:'Jacobians'}]},
+    {num:'04',en:'Probability Theory',sections:[
+      {id:'4.1',num:'4.1',title:'Introduction'},
+      {id:'4.2',num:'4.2',title:'Probability Distributions'},
+      {id:'4.3',num:'4.3',title:'Sampling Methods'},
+      {id:'4.4',num:'4.4',title:'Bayesian Statistics'},
+      {id:'4.5',num:'4.5',title:'Moments in Statistics'}]},
+    {num:'05',en:'Optimization Theory',sections:[
+      {id:'5.1',num:'5.1',title:'Introduction'},
+      {id:'5.2',num:'5.2',title:'Optimization Theory'},
+      {id:'5.3',num:'5.3',title:'Types of Optimizations'},
+      {id:'5.4',num:'5.4',title:'Global versus Local Optima'},
+      {id:'5.5',num:'5.5',title:'Recent Developments in Optimization'},
+      {id:'5.6',num:'5.6',title:'Optimization Methods in Deep Learning'}]},
+    {num:'06',en:'Information Theory',sections:[
+      {id:'6.1',num:'6.1',title:'Introduction'},
+      {id:'6.2',num:'6.2',title:'Entropy'},
+      {id:'6.3',num:'6.3',title:'Joint and Conditional Entropy'},
+      {id:'6.4',num:'6.4',title:'Information Gain'},
+      {id:'6.5',num:'6.5',title:'Mutual Information'},
+      {id:'6.6',num:'6.6',title:'Data Compression'}]},
+    {num:'07',en:'Graph Theory',sections:[
+      {id:'7.1',num:'7.1',title:'Introduction'},
+      {id:'7.2',num:'7.2',title:'Graph Theory for Deep Learning'},
+      {id:'7.3',num:'7.3',title:'Graph Neural Networks'},
+      {id:'7.5',num:'7.5',title:'Node and Graph Classification'},
+      {id:'7.6',num:'7.6',title:'Challenges'},
+      {id:'7.7',num:'7.7',title:'Other Graph-Based DL Models'}]},
+    {num:'08',en:'Differential Geometry',sections:[
+      {id:'8.1',num:'8.1',title:'Introduction'},
+      {id:'8.2',num:'8.2',title:'Basics of Differential Geometry'},
+      {id:'8.3',num:'8.3',title:'Differential Geometry in Deep Learning'},
+      {id:'8.4',num:'8.4',title:'Practical Implications'}]},
+    {num:'09',en:'Topology in DL',sections:[
+      {id:'9.1',num:'9.1',title:'Introduction'},
+      {id:'9.2',num:'9.2',title:'Basic Topology'},
+      {id:'9.3',num:'9.3',title:'Relation to Convergence of Learning Algorithms'},
+      {id:'9.4',num:'9.4',title:'Topological Data Analysis in Neural Networks'},
+      {id:'9.5',num:'9.5',title:'Topological Data Analysis with Deep Learning'}]},
+    {num:'10',en:'Harmonic Analysis for CNNs',sections:[
+      {id:'10.1',num:'10.1',title:'Introduction'},
+      {id:'10.2',num:'10.2',title:'Fourier Analysis'},
+      {id:'10.3',num:'10.3',title:'Wavelets'},
+      {id:'10.4',num:'10.4',title:'Convolution in the Frequency Domain for CNNs'}]},
+    {num:'11',en:'Dynamical Systems for RNNs',sections:[
+      {id:'11.1',num:'11.1',title:'Introduction'},
+      {id:'11.2',num:'11.2',title:'Theory of Dynamical Systems and DEs'},
+      {id:'11.3',num:'11.3',title:'Understanding the Behavior of RNNs'}]},
+    {num:'12',en:'Quantum Computing',sections:[
+      {id:'12.1',num:'12.1',title:'Introduction'},
+      {id:'12.2',num:'12.2',title:'Introduction to Quantum Computing'},
+      {id:'12.3',num:'12.3',title:'Quantum Algorithms'},
+      {id:'12.4',num:'12.4',title:'Integration with Deep Learning'}]}
+  ]
+};
     {num:'07',name:'Graph-Theory',en:'Graph Theory'},
     {num:'08',name:'Differential-Geometry',en:'Differential Geometry'},
     {num:'09',name:'Topology-in-Deep-Learning',en:'Topology in Deep Learning'},
@@ -182,7 +252,7 @@ var lessonTitle=document.getElementById('lessonTitle'),menuBtn=document.getEleme
 menuBtn.addEventListener('click',function(){sidebar.classList.toggle('open');overlay.classList.toggle('active')});
 overlay.addEventListener('click',function(){sidebar.classList.remove('open');overlay.classList.remove('active')});
 
-/* Scan for actual lesson folders */
+/* Scan for actual lesson folders — match by section ID pattern */
 function scanLessons(){
   var apiUrl='https://api.github.com/repos/'+CONFIG.repo+'/contents/'+CONFIG.lessonsDir+'?ref='+CONFIG.branch;
   return fetch(apiUrl,{headers:{'Accept':'application/vnd.github.v3+json'}})
@@ -191,46 +261,93 @@ function scanLessons(){
       for(var i=0;i<items.length;i++){
         if(items[i].type==='dir'){
           var name=items[i].name;
-          var m=name.match(/^第(\d+)节/);
+          /* Match folder names like "第02节-2.1-Introduction" */
+          var m=name.match(/第\d+节-(\d+\.\d+)/);
           if(m)state.lessonFolders[m[1]]=name;
         }
       }
     })
-    .catch(function(){}); /* Silently fail — empty lessons dir is fine */
+    .catch(function(){});
 }
 
 function renderTree(){
   var html='';
-  for(var i=0;i<CONFIG.chapters.length;i++){
-    var ch=CONFIG.chapters[i];
-    var active=i===state.currentIdx?' active':'';
-    var hasLesson=state.lessonFolders[ch.num]!==undefined;
-    var status=hasLesson?'✅':'⏳';
-    html+='<div class="lesson-item'+active+'" data-idx="'+i+'">'+
-      '<span class="num">'+ch.num+'</span>'+
-      '<span class="status">'+status+'</span> '+
-      '<span>'+ch.en+'</span>'+
-    '</div>';
+  for(var ci=0;ci<CONFIG.chapters.length;ci++){
+    var ch=CONFIG.chapters[ci];
+    var chHasLessons=false;
+    for(var si=0;si<ch.sections.length;si++){
+      if(state.lessonFolders[ch.sections[si].id])chHasLessons=true;
+    }
+    var chStatus=chHasLessons?'✅':'⏳';
+    html+='<div class="chapter-group" style="margin-bottom:2px">'+
+      '<button class="era-toggle" data-ch="'+ci+'" style="display:flex;align-items:center;gap:.35rem;padding:.55rem 1.1rem;cursor:pointer;font-size:.82rem;font-weight:600;color:var(--text-muted);transition:color .15s,background .15s;user-select:none;border:none;background:none;width:100%;text-align:left;font-family:inherit">'+
+        '<span class="arrow" style="font-size:.55rem;transition:transform .2s;display:inline-block;opacity:.6">▶</span> '+
+        '<span style="font-size:.68rem;color:var(--text-faint);font-family:var(--font-mono)">Ch'+ch.num+'</span> '+
+        '<span style="flex:1">'+ch.en+'</span>'+
+        '<span style="font-size:.6rem">'+chStatus+'</span>'+
+      '</button>'+
+      '<div class="era-lessons" data-ch-list="'+ci+'">';
+    for(var si=0;si<ch.sections.length;si++){
+      var sec=ch.sections[si];
+      var hasLesson=state.lessonFolders[sec.id]!==undefined;
+      var secStatus=hasLesson?'✅':'⏳';
+      html+='<div class="lesson-item" data-ch="'+ci+'" data-sec="'+si+'" data-sid="'+sec.id+'">'+
+        '<span class="num">'+sec.num+'</span>'+
+        '<span class="status">'+secStatus+'</span> '+
+        '<span>'+sec.title+'</span>'+
+      '</div>';
+    }
+    html+='</div></div>';
   }
   treeEl.innerHTML=html;
 
+  /* Chapter toggle */
+  treeEl.querySelectorAll('.era-toggle').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var ci=this.dataset.ch;
+      var list=treeEl.querySelector('[data-ch-list="'+ci+'"]');
+      var arrow=this.querySelector('.arrow');
+      this.classList.toggle('open');
+      list.classList.toggle('open');
+      if(this.classList.contains('open')){
+        arrow.style.transform='rotate(90deg)';arrow.style.opacity='1';
+        list.style.maxHeight='2000px';
+      } else {
+        arrow.style.transform='';arrow.style.opacity='0.6';
+        list.style.maxHeight='0';
+      }
+    });
+  });
+
+  /* Section click */
   treeEl.querySelectorAll('.lesson-item').forEach(function(item){
     item.addEventListener('click',function(){
-      selectLesson(parseInt(this.dataset.idx));
+      var ci=parseInt(this.dataset.ch),si=parseInt(this.dataset.sec);
+      selectLesson(ci,si);
       sidebar.classList.remove('open');overlay.classList.remove('active');
     });
   });
 }
 
-function selectLesson(idx){
-  state.currentIdx=idx;
-  treeEl.querySelectorAll('.lesson-item').forEach(function(el,i){el.classList.toggle('active',i===idx)});
+function selectLesson(ci,si){
+  var ch=CONFIG.chapters[ci];
+  var sec=ch.sections[si];
+  state.currentIdx={ch:ci,sec:si,id:sec.id};
 
-  var ch=CONFIG.chapters[idx];
-  lessonTitle.textContent='Ch'+ch.num+' '+ch.en;
+  /* Update active */
+  treeEl.querySelectorAll('.lesson-item').forEach(function(el){el.classList.remove('active')});
+  var activeEl=treeEl.querySelector('[data-sid="'+sec.id+'"]');
+  if(activeEl)activeEl.classList.add('active');
 
-  /* Try exact folder match first, then fallback to constructed */
-  var folderName = state.lessonFolders[ch.num] || ('第'+ch.num+'节-'+ch.name);
+  lessonTitle.textContent='Ch'+ch.num+' §'+sec.num+' '+sec.title;
+
+  /* Build folder name: 第ChNum节-SecId-SecTitle (shortened) */
+  var shortTitle=sec.title.replace(/\s+/g,'-').replace(/[^a-zA-Z0-9\-]/g,'').substring(0,40);
+  var folderName='第'+ch.num+'节-'+sec.id+'-'+shortTitle;
+
+  /* Check if stored folder name exists */
+  if(state.lessonFolders[sec.id])folderName=state.lessonFolders[sec.id];
+
   var url='https://raw.githubusercontent.com/'+CONFIG.repo+'/'+CONFIG.branch+'/'+
     CONFIG.lessonsDir+'/'+encodeURIComponent(folderName)+'/'+encodeURIComponent('主线.md');
 
@@ -243,7 +360,7 @@ function selectLesson(idx){
       contentEl.innerHTML='<div class="empty-state">'+
         '<div class="icon">🔮</div>'+
         '<h3>这节课还没有生成</h3>'+
-        '<p>Ch'+ch.num+' '+ch.en+'</p>'+
+        '<p>Ch'+ch.num+' §'+sec.num+' '+sec.title+'</p>'+
         '<p style="font-size:.8rem;margin-top:.5rem;color:var(--text-muted)">'+
         '去 <a href="../../generator/" style="color:var(--color-accent-light)">课程生成器</a> 创建</p>'+
       '</div>';
@@ -274,19 +391,30 @@ function renderMarkdown(md){
 }
 
 document.addEventListener('keydown',function(e){
-  if(state.currentIdx<0)return;
-  if((e.key==='ArrowRight'||e.key==='ArrowDown')&&state.currentIdx<CONFIG.chapters.length-1){
-    e.preventDefault();selectLesson(state.currentIdx+1);
+  if(!state.currentIdx)return;
+  var ci=state.currentIdx.ch,si=state.currentIdx.sec;
+  var ch=CONFIG.chapters[ci];
+  if(e.key==='ArrowDown'||e.key==='ArrowRight'){
+    e.preventDefault();
+    if(si+1<ch.sections.length){selectLesson(ci,si+1)}
+    else if(ci+1<CONFIG.chapters.length){selectLesson(ci+1,0)}
   }
-  if((e.key==='ArrowLeft'||e.key==='ArrowUp')&&state.currentIdx>0){
-    e.preventDefault();selectLesson(state.currentIdx-1);
+  if(e.key==='ArrowUp'||e.key==='ArrowLeft'){
+    e.preventDefault();
+    if(si>0){selectLesson(ci,si-1)}
+    else if(ci>0){var prev=CONFIG.chapters[ci-1];selectLesson(ci-1,prev.sections.length-1)}
   }
 });
 
 /* Init */
 Promise.all([scanLessons()]).then(function(){
   renderTree();
-  if(CONFIG.chapters.length>0)selectLesson(0);
+  /* Auto-expand first chapter, select first section */
+  if(CONFIG.chapters.length>0){
+    selectLesson(0,0);
+    var firstToggle=treeEl.querySelector('.era-toggle');
+    if(firstToggle)firstToggle.click();
+  }
 });
 </script>
 </body>
