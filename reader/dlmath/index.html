@@ -257,32 +257,43 @@ function loadTree(){
     return Promise.all([Promise.resolve(chDirs),Promise.all(folderPromises).then(()=>null)]);
   })
   .then(([chDirs])=>{
-    var promises=chDirs.filter(d=>d.type==='dir').map(d=>
-      fetch(d.url+'?ref='+CONFIG.branch,{headers:{Accept:'application/vnd.github.v3+json'}})
-        .then(r=>r.ok?r.json():[]).catch(()=>[]).then(files=>{
+    var debugLog=[];
+    var promises=chDirs.filter(d=>d.type==='dir').map(function(d,di){
+      var url=d.url+'?ref='+CONFIG.branch;
+      return fetch(url,{headers:{Accept:'application/vnd.github.v3+json'}})
+        .then(function(r){
+          if(!r.ok){debugLog.push('Ch'+di+' HTTP '+r.status);return []}
+          return r.json();
+        }).catch(function(e){debugLog.push('Ch'+di+' ERR: '+e.message);return []})
+        .then(function(files){
+          if(!Array.isArray(files)){debugLog.push('Ch'+di+' not array: '+typeof files);files=[]}
           var secs=[];
           for(var j=0;j<files.length;j++){
             var sm=files[j].name.match(/^sec-(\d+\.\d+(?:\.\d+)?(?:\.\d+)?)-(.+)\.txt$/);
             if(sm)secs.push({id:sm[1],num:sm[1],title:sm[2].replace(/-/g,' ').substring(0,80),path:files[j].path});
           }
-          secs.sort((a,b)=>{var ap=a.id.split('.').map(Number),bp=b.id.split('.').map(Number);for(var k=0;k<Math.max(ap.length,bp.length);k++){if((ap[k]||0)!==(bp[k]||0))return (ap[k]||0)-(bp[k]||0)}return 0});
+          debugLog.push('Ch'+di+' files:'+files.length+' secs:'+secs.length);
+          secs.sort(function(a,b){var ap=a.id.split('.').map(Number),bp=b.id.split('.').map(Number);for(var k=0;k<Math.max(ap.length,bp.length);k++){if((ap[k]||0)!==(bp[k]||0))return (ap[k]||0)-(bp[k]||0)}return 0});
           var cm=d.name.match(/^ch(\d+)-(.+)/);
-          return {num:cm?cm[1]:'?',name:cm?cm[2].replace(/-/g,' '):d.name,sections:secs};
-        })
-    );
+          return {num:cm?cm[1]:'?',name:cm?cm[2].replace(/-/g,' '):d.name,sections:secs,_debug:debugLog.join(' | ')};
+        });
+    });
     return Promise.all(promises);
   })
   .then(chapters=>{
     chapters.sort((a,b)=>parseInt(a.num)-parseInt(b.num));
     state.chapters=chapters;
     var totalSecs=0;chapters.forEach(function(c){totalSecs+=c.sections.length});
-    console.log('DL-Math: loaded',chapters.length,'chapters,',totalSecs,'sections');
-    try{renderTree()}catch(e){treeEl.innerHTML='<div style="color:var(--color-error);padding:1rem">Render error: '+e.message+'</div>';return}
-    /* Show debug count */
+    /* RENDER DEBUG to sidebar bottom */
     var dbg=document.createElement('div');
-    dbg.style.cssText='padding:.3rem 1rem;font-size:.65rem;color:var(--text-faint);border-top:1px solid var(--border-subtle)';
-    dbg.textContent=chapters.length+' chapters · '+totalSecs+' sections';
+    dbg.style.cssText='padding:.4rem .8rem;font-size:.6rem;color:var(--color-warn);border-top:1px solid var(--border-subtle);line-height:1.5;white-space:pre-wrap;max-height:150px;overflow-y:auto';
+    dbg.textContent='DEBUG: '+chapters.length+' chapters, '+totalSecs+' sections\n';
+    chapters.forEach(function(c){dbg.textContent+=c._debug+'\n'});
     treeEl.appendChild(dbg);
+    /* Also log */
+    console.log('DL-Math loaded:',chapters.length,'chapters,',totalSecs,'sections');
+    chapters.forEach(function(c){console.log(c._debug)});
+    try{renderTree()}catch(e){treeEl.innerHTML='<div style="color:var(--color-error);padding:1rem">Render error: '+e.message+'</div>';return}
     setTimeout(function(){
       var toggles=treeEl.querySelectorAll('.era-toggle');
       for(var t=0;t<toggles.length;t++){toggles[t].click()}
