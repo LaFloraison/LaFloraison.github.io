@@ -197,7 +197,7 @@ body{background:var(--bg-primary);color:var(--text-normal);font-family:var(--fon
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 <script>
 /* ══════════════════════════════════════════
-   CONFIG — 5 file types
+   CONFIG — 6 file types
    ══════════════════════════════════════════ */
 var CONFIG={
   repo:'LaFloraison/DL-Math',branch:'main',
@@ -205,12 +205,13 @@ var CONFIG={
   fileTypes:[
     {id:'历史',icon:'📜',label:'历史'},
     {id:'主线',icon:'🧠',label:'主线'},
+    {id:'代码',icon:'💻',label:'代码'},
     {id:'习题',icon:'✏️',label:'习题'},
     {id:'镜鉴',icon:'🪞',label:'镜鉴'},
     {id:'参考资料',icon:'📚',label:'参考'}
   ],
   /* Generation order — first file is the entry point */
-  genOrder:['历史','主线','习题','镜鉴','参考资料']
+  genOrder:['历史','主线','代码','习题','镜鉴','参考资料']
 };
 
 var state={
@@ -512,7 +513,10 @@ function generateSection(ch,sec){
         fileInstruction='请生成【历史.md】。按照 CLAUDE.md 中"历史.md 结构"的写作纪律：画面感优先、悬念驱动、不引入技术符号、择一历史源流深入（数学史或DL史），结尾留一扇门引向主线。篇幅 5-8 min 阅读量。';
         break;
       case '主线':
-        fileInstruction='请生成【主线.md】。按照 CLAUDE.md 中"主线.md 三步结构"：(1) Toy Model直观感受 (2) 正式数学讲解（定义先行、推导优于宣告、边界声明）(3) DL桥接+代码验证。必须有可运行的Python代码。';
+        fileInstruction='请生成【主线.md】。按照 CLAUDE.md 中"主线.md 三步结构"：(1) Toy Model直观感受 (2) 正式数学讲解（定义先行、推导优于宣告、边界声明）(3) 概念性DL桥接——不写代码，只用数学符号描述概念在DL中的位置，结尾指向代码.md。';
+        break;
+      case '代码':
+        fileInstruction='请生成【代码.md】。按照 CLAUDE.md 中"代码.md 结构"：先完整可运行脚本（20-40行，透明数学操作，无黑盒API），然后分步逐函数拆解。每个函数按"做什么/操作/输入/输出/可调参数/对应数学"格式，每个参数讲透含义和取值范围。';
         break;
       case '习题':
         fileInstruction='请生成【习题.md】。按照 CLAUDE.md 中"习题.md 结构"：概念检验（2-3题）、计算实践（2-3题，含代码验证）、DL延伸（1-2题）。每题附完整解答和思路点拨。';
@@ -622,7 +626,7 @@ document.addEventListener('keydown',function(e){
   if(!state.currentCh||!state.currentSec)return;
   var ch=state.currentCh,sec=state.currentSec;
   var ci=state.chapters.indexOf(ch),si=ch.sections.indexOf(sec);
-  var keyMap={'1':'历史','2':'主线','3':'习题','4':'镜鉴','5':'参考资料'};
+  var keyMap={'1':'历史','2':'主线','3':'代码','4':'习题','5':'镜鉴','6':'参考资料'};
   if(keyMap[e.key])loadFile(keyMap[e.key]);
   if(e.key==='ArrowDown'){e.preventDefault();if(si+1<ch.sections.length)selectSection(ch,ch.sections[si+1]);else if(ci+1<state.chapters.length){var nc=state.chapters[ci+1];selectSection(nc,nc.sections[0])}}
   if(e.key==='ArrowUp'){e.preventDefault();if(si>0)selectSection(ch,ch.sections[si-1]);else if(ci>0){var pc=state.chapters[ci-1];selectSection(pc,pc.sections[pc.sections.length-1])}}
