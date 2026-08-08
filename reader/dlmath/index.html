@@ -25,36 +25,58 @@
 html,body{height:100%}
 body{background:var(--bg-primary);color:var(--text-normal);font-family:var(--font-text);font-size:17px;overflow:hidden;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 .app{display:flex;height:100vh;height:100dvh}
-.sidebar{width:280px;min-width:280px;background:var(--bg-secondary);border-right:1px solid var(--border-subtle);display:flex;flex-direction:column;overflow:hidden;z-index:10;transition:transform .3s cubic-bezier(.4,0,.2,1)}
-.sidebar-header{padding:.75rem 1rem;border-bottom:1px solid var(--border-subtle);display:flex;align-items:center;gap:.5rem;flex-shrink:0;background:var(--bg-secondary)}
-.sidebar-header .back{color:var(--text-muted);text-decoration:none;font-size:1rem}
-.sidebar-header h2{font-size:.85rem;font-weight:600;color:var(--text-normal);flex:1}
-.sidebar-header .settings-btn{background:none;border:none;color:var(--text-muted);font-size:1.1rem;cursor:pointer;padding:2px 6px}
-.sidebar-tree{flex:1;overflow-y:auto;padding:.2rem 0;-webkit-overflow-scrolling:touch}
+
+/* ── SIDEBAR ── */
+.sidebar{width:300px;min-width:300px;background:var(--bg-secondary);border-right:1px solid var(--border-subtle);display:flex;flex-direction:column;overflow:hidden;z-index:10;transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.sidebar-header{padding:.9rem 1.1rem;border-bottom:1px solid var(--border-subtle);display:flex;align-items:center;gap:.55rem;flex-shrink:0;background:var(--bg-secondary)}
+.sidebar-header .back{color:var(--text-muted);text-decoration:none;font-size:1rem;transition:color .15s}
+.sidebar-header .back:hover{color:var(--text-normal)}
+.sidebar-header h2{font-size:.9rem;font-weight:600;color:var(--text-normal);flex:1;letter-spacing:.01em}
+.sidebar-header .settings-btn{background:none;border:none;color:var(--text-muted);font-size:1.1rem;cursor:pointer;padding:3px 7px;border-radius:var(--radius-s);transition:color .15s,background .15s}
+.sidebar-header .settings-btn:hover{color:var(--text-normal);background:var(--bg-hover)}
+.sidebar-header .collapse-all{background:none;border:none;color:var(--text-faint);font-size:.7rem;cursor:pointer;padding:3px 8px;border-radius:var(--radius-s);font-family:inherit;transition:color .15s,background .15s}
+.sidebar-header .collapse-all:hover{color:var(--text-muted);background:var(--bg-hover)}
+
+.sidebar-tree{flex:1;overflow-y:auto;overflow-x:hidden;padding:.15rem 0;-webkit-overflow-scrolling:touch}
 .sidebar-tree::-webkit-scrollbar{width:3px}
 .sidebar-tree::-webkit-scrollbar-thumb{background:var(--border-visible);border-radius:3px}
-.chapter-group{border-bottom:1px solid var(--border-subtle)}
-.era-toggle{display:flex;align-items:center;gap:.35rem;padding:.5rem 1rem;cursor:pointer;font-size:.8rem;font-weight:600;color:var(--text-muted);transition:color .15s,background .15s;user-select:none;border:none;background:none;width:100%;text-align:left;font-family:inherit}
+
+/* Chapter */
+.chapter-group{margin:1px 0}
+.chapter-group + .chapter-group{border-top:1px solid var(--border-subtle)}
+.era-toggle{display:flex;align-items:center;gap:.45rem;padding:.6rem 1.1rem;cursor:pointer;font-size:.82rem;font-weight:600;color:var(--text-soft);transition:color .15s,background .15s;user-select:none;border:none;background:none;width:100%;text-align:left;font-family:inherit;letter-spacing:.01em}
 .era-toggle:hover{color:var(--text-normal);background:var(--bg-hover)}
-.era-toggle .arrow{font-size:.5rem;transition:transform .2s;display:inline-block;opacity:.5}
+.era-toggle .arrow{font-size:.48rem;transition:transform .2s;display:inline-block;color:var(--text-faint);line-height:1;width:10px;text-align:center;flex-shrink:0}
+.era-toggle .ch-num{font-size:.62rem;color:var(--text-faint);font-family:var(--font-mono);background:var(--bg-surface);padding:1px 6px;border-radius:3px;flex-shrink:0}
+.era-toggle .ch-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.era-toggle .ch-progress{font-size:.6rem;color:var(--text-faint);flex-shrink:0}
+
+/* Lessons (default collapsed) */
 .era-lessons{display:none}
 .era-lessons.open{display:block}
-.lesson-item{display:flex;align-items:center;gap:.3rem;padding:.35rem 1rem .35rem 2rem;cursor:pointer;font-size:.75rem;color:var(--text-muted);transition:color .15s,background .15s;border-left:3px solid transparent}
+.lesson-item{display:flex;align-items:center;gap:.4rem;padding:.42rem 1.1rem .42rem 2.2rem;cursor:pointer;font-size:.78rem;color:var(--text-muted);transition:color .15s,background .15s;border-left:3px solid transparent;position:relative}
 .lesson-item:hover{color:var(--text-normal);background:var(--bg-hover)}
 .lesson-item.active{color:var(--color-accent-light);background:var(--color-accent-glow);border-left-color:var(--color-accent)}
-.lesson-item .num{color:var(--text-faint);font-family:var(--font-mono);font-size:.65rem;min-width:3rem}
-.lesson-item .gen-btn{display:none;background:var(--color-accent-soft);border:1px solid var(--color-accent);color:var(--color-accent-light);border-radius:var(--radius-s);padding:1px 8px;font-size:.65rem;cursor:pointer;margin-left:auto;white-space:nowrap;font-family:inherit;touch-action:manipulation}
+.lesson-item .sec-id{color:var(--text-faint);font-family:var(--font-mono);font-size:.63rem;min-width:3.2rem;flex-shrink:0}
+.lesson-item .sec-title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lesson-item .sec-status{font-size:.6rem;flex-shrink:0;margin-left:.15rem}
+.lesson-item .gen-btn{display:none;background:var(--color-accent-soft);border:1px solid var(--color-accent);color:var(--color-accent-light);border-radius:var(--radius-s);padding:1px 8px;font-size:.62rem;cursor:pointer;margin-left:auto;white-space:nowrap;font-family:inherit;touch-action:manipulation;flex-shrink:0}
 .lesson-item:hover .gen-btn{display:inline-block}
 .lesson-item .gen-btn:active{background:var(--color-accent)}
 
+/* File tabs in topbar — show 5 files as vertical nav pills */
+.file-tabs{display:flex;gap:2px;background:var(--bg-hover);border-radius:var(--radius-m);padding:3px}
+.file-tab{padding:3px 10px;border-radius:var(--radius-s);font-size:.68rem;cursor:pointer;border:none;background:transparent;color:var(--text-muted);transition:all .15s;font-family:inherit;white-space:nowrap;touch-action:manipulation;display:flex;align-items:center;gap:.25rem}
+.file-tab:hover{color:var(--text-normal);background:rgba(255,255,255,0.04)}
+.file-tab.active{background:var(--color-accent);color:#fff}
+.file-tab .tab-dot{width:5px;height:5px;border-radius:50%;background:var(--color-success);flex-shrink:0}
+.file-tab:not(.has-file) .tab-dot{background:var(--text-faint)}
+
+/* ── MAIN ── */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;background:var(--bg-primary)}
 .topbar{padding:.5rem 1.2rem;border-bottom:1px solid var(--border-subtle);display:flex;align-items:center;gap:.6rem;flex-shrink:0;background:var(--bg-secondary);flex-wrap:wrap}
 .menu-btn{display:none;background:none;border:none;color:var(--text-muted);font-size:1.1rem;cursor:pointer;padding:4px}
-.topbar .lesson-title{font-size:.82rem;font-weight:600;flex:1;min-width:100px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text-normal)}
-.file-tabs{display:flex;gap:2px;background:var(--bg-hover);border-radius:var(--radius-m);padding:3px}
-.file-tab{padding:3px 12px;border-radius:var(--radius-s);font-size:.7rem;cursor:pointer;border:none;background:transparent;color:var(--text-muted);transition:all .15s;font-family:inherit;white-space:nowrap;touch-action:manipulation}
-.file-tab:hover{color:var(--text-normal);background:rgba(255,255,255,0.04)}
-.file-tab.active{background:var(--color-accent);color:#fff}
+.topbar .lesson-title{font-size:.8rem;font-weight:600;flex:1;min-width:100px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text-normal)}
 
 .content{flex:1;overflow-y:auto;padding:2rem 2.5rem;-webkit-overflow-scrolling:touch}
 .content::-webkit-scrollbar{width:5px}
@@ -130,6 +152,7 @@ body{background:var(--bg-primary);color:var(--text-normal);font-family:var(--fon
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-header">
     <a href="../../" class="back">←</a><h2>🧠 DL Math</h2>
+    <button class="collapse-all" id="collapseAll" title="折叠全部章节">⊟</button>
     <button class="settings-btn" onclick="openSettings()" title="设置 API 密钥">⚙️</button>
   </div>
   <div class="sidebar-tree" id="tree"></div>
@@ -174,17 +197,20 @@ body{background:var(--bg-primary);color:var(--text-normal);font-family:var(--fon
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 <script>
 /* ══════════════════════════════════════════
-   CONFIG
+   CONFIG — 5 file types
    ══════════════════════════════════════════ */
 var CONFIG={
   repo:'LaFloraison/DL-Math',branch:'main',
   lessonsDir:'lessons',chaptersDir:'decomposition/chapters',
   fileTypes:[
+    {id:'历史',icon:'📜',label:'历史'},
     {id:'主线',icon:'🧠',label:'主线'},
     {id:'习题',icon:'✏️',label:'习题'},
-    {id:'镜鉴',icon:'🪞',label:'镜鉴'}
+    {id:'镜鉴',icon:'🪞',label:'镜鉴'},
+    {id:'参考资料',icon:'📚',label:'参考'}
   ],
-  skillMap:{'主线':'CLAUDE.md','习题':'CLAUDE.md','镜鉴':'CLAUDE.md'}
+  /* Generation order — first file is the entry point */
+  genOrder:['历史','主线','习题','镜鉴','参考资料']
 };
 
 var state={
@@ -198,9 +224,15 @@ var sidebar=document.getElementById('sidebar'),overlay=document.getElementById('
 var treeEl=document.getElementById('tree'),contentEl=document.getElementById('content');
 var lessonTitle=document.getElementById('lessonTitle'),fileTabs=document.getElementById('fileTabs');
 var actionBar=document.getElementById('actionBar'),menuBtn=document.getElementById('menuBtn');
+var collapseAllBtn=document.getElementById('collapseAll');
 
 menuBtn.addEventListener('click',function(){sidebar.classList.toggle('open');overlay.classList.toggle('active')});
 overlay.addEventListener('click',function(){sidebar.classList.remove('open');overlay.classList.remove('active')});
+
+/* Collapse all chapters */
+collapseAllBtn.addEventListener('click',function(){
+  treeEl.querySelectorAll('.era-toggle.open').forEach(function(t){t.click()});
+});
 
 /* ══════════════════════════════════════════
    SETTINGS
@@ -221,16 +253,14 @@ function saveSettings(){
   closeSettings();
   if(!ds||!gh)alert('请填写两个密钥');else toast('已保存');
 }
-/* Auto-open if no keys */
 if(!getDSKey()||!getGHToken()){setTimeout(openSettings,500)}
 
 /* ══════════════════════════════════════════
-   LOAD CHAPTER TREE — single manifest fetch
+   LOAD CHAPTER TREE
    ══════════════════════════════════════════ */
 function loadTree(){
   treeEl.innerHTML='<div class="loader"><div class="spinner"></div></div>';
 
-  /* Load manifest.json + scan lessons/ in parallel */
   var manifestUrl='https://raw.githubusercontent.com/'+CONFIG.repo+'/'+CONFIG.branch+'/manifest.json';
   var lesApi='https://api.github.com/repos/'+CONFIG.repo+'/contents/'+CONFIG.lessonsDir+'?ref='+CONFIG.branch;
 
@@ -245,7 +275,6 @@ function loadTree(){
       return;
     }
 
-    /* Build generated files map from lessons/ */
     state.generatedFiles={};
     var folderPromises=[];
     for(var i=0;i<lesItems.length;i++){
@@ -254,22 +283,22 @@ function loadTree(){
         if(fm){
           var secId=fm[1];
           state.lessonFolders[secId]=lesItems[i].name;
-          folderPromises.push(
-            fetch(lesItems[i].url+'?ref='+CONFIG.branch,{headers:{Accept:'application/vnd.github.v3+json'}})
-              .then(function(r){return r.ok?r.json():[]}).catch(function(){return []})
-              .then(function(files){
-                state.generatedFiles[secId]=files.filter(function(f){return f.type==='file'&&f.name.endsWith('.md')}).map(function(f){return f.name.replace('.md','')});
-              })
-          );
+          (function(sid,url){
+            folderPromises.push(
+              fetch(url+'?ref='+CONFIG.branch,{headers:{Accept:'application/vnd.github.v3+json'}})
+                .then(function(r){return r.ok?r.json():[]}).catch(function(){return []})
+                .then(function(files){
+                  state.generatedFiles[sid]=files.filter(function(f){return f.type==='file'&&f.name.endsWith('.md')}).map(function(f){return f.name.replace('.md','')});
+                })
+            );
+          })(secId,lesItems[i].url);
         }
       }
     }
 
     return Promise.all(folderPromises).then(function(){
-      /* Map manifest chapters, attach section paths */
       state.chapters=manifest.chapters.map(function(ch){
         ch.sections.forEach(function(sec){
-          /* Derive path from manifest structure if not already set */
           if(!sec.path){
             var chDir='ch'+ch.num+'-'+ch.name.replace(/\s+/g,'-');
             var secFile='sec-'+sec.id+'-'+sec.title.replace(/\s/g,'-')+'.txt';
@@ -278,7 +307,6 @@ function loadTree(){
         });
         return ch;
       });
-
       renderTree();
     });
   }).catch(function(e){
@@ -287,27 +315,40 @@ function loadTree(){
 }
 
 /* ══════════════════════════════════════════
-   RENDER TREE
+   RENDER TREE — all chapters collapsed by default
    ══════════════════════════════════════════ */
 function renderTree(){
+  var TOTAL=CONFIG.fileTypes.length;
   var html='';
   for(var ci=0;ci<state.chapters.length;ci++){
     var ch=state.chapters[ci];
+    /* Count progress */
+    var done=0,totalSecs=ch.sections.length;
+    for(var si=0;si<totalSecs;si++){
+      var gf=state.generatedFiles[ch.sections[si].id]||[];
+      if(gf.length>=TOTAL)done++;
+    }
+    var progressText=done+'/'+totalSecs;
+    var progressPercent=totalSecs>0?Math.round(done/totalSecs*100):0;
+
     html+='<div class="chapter-group">'+
       '<button class="era-toggle" data-ch="'+ci+'">'+
-        '<span class="arrow">▶</span> '+
-        '<span style="font-size:.65rem;color:var(--text-faint);font-family:var(--font-mono)">Ch'+ch.num+'</span> '+
-        '<span style="flex:1">'+ch.name+'</span>'+
+        '<span class="arrow">▶</span>'+
+        '<span class="ch-num">Ch'+ch.num+'</span>'+
+        '<span class="ch-name" title="'+ch.name+'">'+ch.name+'</span>'+
+        '<span class="ch-progress">'+progressText+'</span>'+
       '</button>'+
       '<div class="era-lessons" data-ch-list="'+ci+'">';
-    for(var si=0;si<ch.sections.length;si++){
+    for(var si=0;si<totalSecs;si++){
       var sec=ch.sections[si];
-      var hasAll=state.generatedFiles[sec.id]&&state.generatedFiles[sec.id].length>=CONFIG.fileTypes.length;
-      var hasSome=state.generatedFiles[sec.id]&&state.generatedFiles[sec.id].length>0;
-      var statusIcon=hasAll?'✅':hasSome?'📝':'⏳';
+      var gf=state.generatedFiles[sec.id]||[];
+      var hasAll=gf.length>=TOTAL;
+      var hasSome=gf.length>0;
+      var statusIcon=hasAll?'✅':hasSome?'📝':'';
       html+='<div class="lesson-item" data-ch="'+ci+'" data-sec="'+si+'" data-sid="'+sec.id+'">'+
-        '<span class="num">'+sec.id+'</span><span>'+sec.title+'</span>'+
-        '<span style="font-size:.6rem;margin-left:.3rem">'+statusIcon+'</span>'+
+        '<span class="sec-id">'+sec.id+'</span>'+
+        '<span class="sec-title" title="'+sec.title+'">'+sec.title+'</span>'+
+        (statusIcon?'<span class="sec-status">'+statusIcon+'</span>':'')+
         (!hasAll?'<button class="gen-btn" data-ch="'+ci+'" data-sec="'+si+'">⚡</button>':'')+
       '</div>';
     }
@@ -315,62 +356,85 @@ function renderTree(){
   }
   treeEl.innerHTML=html;
 
-  treeEl.querySelectorAll('.era-toggle').forEach(btn=>{btn.addEventListener('click',function(){
-    var ci=this.dataset.ch,list=treeEl.querySelector('[data-ch-list="'+ci+'"]'),arrow=this.querySelector('.arrow');
-    this.classList.toggle('open');list.classList.toggle('open');
-    if(this.classList.contains('open')){arrow.style.transform='rotate(90deg)';arrow.style.opacity='1'}
-    else{arrow.style.transform='';arrow.style.opacity='.5'}
-  })});
+  /* Toggle chapter */
+  treeEl.querySelectorAll('.era-toggle').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var ci=this.dataset.ch;
+      var list=treeEl.querySelector('[data-ch-list="'+ci+'"]');
+      var arrow=this.querySelector('.arrow');
+      this.classList.toggle('open');
+      list.classList.toggle('open');
+      if(this.classList.contains('open')){arrow.style.transform='rotate(90deg)'}
+      else{arrow.style.transform=''}
+    });
+  });
 
-  treeEl.querySelectorAll('.lesson-item').forEach(item=>{item.addEventListener('click',function(e){
-    if(e.target.classList.contains('gen-btn'))return;
-    var ci=parseInt(this.dataset.ch),si=parseInt(this.dataset.sec);
-    selectSection(state.chapters[ci],state.chapters[ci].sections[si]);
-    sidebar.classList.remove('open');overlay.classList.remove('active');
-  })});
+  /* Select lesson */
+  treeEl.querySelectorAll('.lesson-item').forEach(function(item){
+    item.addEventListener('click',function(e){
+      if(e.target.classList.contains('gen-btn'))return;
+      var ci=parseInt(this.dataset.ch),si=parseInt(this.dataset.sec);
+      selectSection(state.chapters[ci],state.chapters[ci].sections[si]);
+      sidebar.classList.remove('open');overlay.classList.remove('active');
+    });
+  });
 
-  treeEl.querySelectorAll('.gen-btn').forEach(btn=>{btn.addEventListener('click',function(e){
-    e.stopPropagation();
-    var ci=parseInt(this.dataset.ch),si=parseInt(this.dataset.sec);
-    if(!getDSKey()||!getGHToken()){openSettings();return}
-    generateSection(state.chapters[ci],state.chapters[ci].sections[si]);
-  })});
+  /* Generate button */
+  treeEl.querySelectorAll('.gen-btn').forEach(function(btn){
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      var ci=parseInt(this.dataset.ch),si=parseInt(this.dataset.sec);
+      if(!getDSKey()||!getGHToken()){openSettings();return}
+      /* Generate the first missing file */
+      var sec=state.chapters[ci].sections[si];
+      var gf=state.generatedFiles[sec.id]||[];
+      var firstMissing=null;
+      for(var fi=0;fi<CONFIG.genOrder.length;fi++){
+        if(gf.indexOf(CONFIG.genOrder[fi])<0){firstMissing=CONFIG.genOrder[fi];break}
+      }
+      if(firstMissing){state.currentFile=firstMissing;selectSection(state.chapters[ci],sec)}
+      generateSection(state.chapters[ci],sec);
+    });
+  });
 }
 
 /* ══════════════════════════════════════════
    SELECT & LOAD
    ══════════════════════════════════════════ */
 function selectSection(ch,sec){
-  state.currentCh=ch;state.currentSec=sec;state.currentFile='主线';
-  treeEl.querySelectorAll('.lesson-item').forEach(el=>el.classList.remove('active'));
+  state.currentCh=ch;state.currentSec=sec;
+  if(!state.currentFile||CONFIG.fileTypes.every(function(ft){return ft.id!==state.currentFile}))state.currentFile='主线';
+  treeEl.querySelectorAll('.lesson-item').forEach(function(el){el.classList.remove('active')});
   var ael=treeEl.querySelector('[data-sid="'+sec.id+'"]');if(ael)ael.classList.add('active');
   lessonTitle.textContent='Ch'+ch.num+' §'+sec.id+' '+sec.title;
   renderFileTabs();renderActionBar();
-  loadFile('主线');
+  loadFile(state.currentFile);
 }
 
 function renderFileTabs(){
   var generated=state.generatedFiles[(state.currentSec||{}).id]||[];
   var html='';
-  CONFIG.fileTypes.forEach(ft=>{
+  CONFIG.fileTypes.forEach(function(ft){
     var active=ft.id===state.currentFile?' active':'';
     var hasIt=generated.indexOf(ft.id)>=0;
-    html+='<button class="file-tab'+active+'" data-file="'+ft.id+'"'+(hasIt?'':' style="opacity:.5"')+'>'+ft.icon+' '+ft.label+'</button>';
+    html+='<button class="file-tab'+active+(hasIt?' has-file':'')+'" data-file="'+ft.id+'">'+
+      '<span class="tab-dot"></span>'+ft.icon+' '+ft.label+'</button>';
   });
   fileTabs.innerHTML=html;
-  fileTabs.querySelectorAll('.file-tab').forEach(tab=>{
+  fileTabs.querySelectorAll('.file-tab').forEach(function(tab){
     tab.addEventListener('click',function(){loadFile(this.dataset.file)});
   });
 }
 
 function renderActionBar(){
   var generated=state.generatedFiles[(state.currentSec||{}).id]||[];
-  var missing=CONFIG.fileTypes.filter(ft=>generated.indexOf(ft.id)<0);
-  var allDone=missing.length===0;
-  if(allDone){actionBar.innerHTML='';return}
-  var genLabel=state.generating?'⏳ 生成中…':'⚡ 生成';
+  var missing=CONFIG.fileTypes.filter(function(ft){return generated.indexOf(ft.id)<0});
+  if(missing.length===0){actionBar.innerHTML='';return}
+  /* Show what's missing */
+  var genLabel=state.generating?'⏳ 生成中…':'⚡ 生成 ('+missing.length+'个待生成)';
   actionBar.innerHTML='<button class="gen-section-btn'+(state.generating?' generating':'')+'" id="genSectionBtn" '+(state.generating?'disabled':'')+'>'+genLabel+'</button>';
-  document.getElementById('genSectionBtn').addEventListener('click',function(){
+  var btn=document.getElementById('genSectionBtn');
+  if(btn)btn.addEventListener('click',function(){
     if(!getDSKey()||!getGHToken()){openSettings();return}
     generateCurrentMissing();
   });
@@ -378,7 +442,7 @@ function renderActionBar(){
 
 function loadFile(fileId){
   state.currentFile=fileId;
-  fileTabs.querySelectorAll('.file-tab').forEach(t=>t.classList.toggle('active',t.dataset.file===fileId));
+  fileTabs.querySelectorAll('.file-tab').forEach(function(t){t.classList.toggle('active',t.dataset.file===fileId)});
   renderActionBar();
 
   if(!state.currentSec){return}
@@ -389,17 +453,12 @@ function loadFile(fileId){
     CONFIG.lessonsDir+'/'+encodeURIComponent(folderName)+'/'+encodeURIComponent(fileId+'.md');
 
   contentEl.innerHTML='<div class="loader"><div class="spinner"></div></div>';
-  fetch(url).then(r=>{if(!r.ok)throw new Error('不存在');return r.text()})
+  fetch(url).then(function(r){if(!r.ok)throw new Error('不存在');return r.text()})
     .then(function(md){
-      /* Auto-mark as generated on successful load */
       if(!state.generatedFiles[sec.id])state.generatedFiles[sec.id]=[];
       if(state.generatedFiles[sec.id].indexOf(fileId)<0)state.generatedFiles[sec.id].push(fileId);
       if(!state.lessonFolders[sec.id])state.lessonFolders[sec.id]=folderName;
-      renderFileTabs();renderActionBar();
-      /* Update tree icon */
-      var item=treeEl.querySelector('[data-sid="'+sec.id+'"]');
-      if(item){var icon=item.querySelector('span[style]');if(icon)icon.textContent='✅'}
-      renderMarkdown(md);
+      renderFileTabs();renderActionBar();renderMarkdown(md);
     })
     .catch(function(e){
       contentEl.innerHTML='<div class="empty-state"><div class="icon">🔮</div>'+
@@ -422,15 +481,18 @@ function renderMarkdown(md){
 }
 
 /* ══════════════════════════════════════════
-   GENERATE — INLINE
+   GENERATE
    ══════════════════════════════════════════ */
 function generateCurrentMissing(){
   var ch=state.currentCh,sec=state.currentSec;
   var generated=state.generatedFiles[sec.id]||[];
-  var missing=CONFIG.fileTypes.filter(ft=>generated.indexOf(ft.id)<0);
-  if(missing.length===0)return;
-  /* Generate the first missing type */
-  state.currentFile=missing[0].id;
+  /* Find first missing in genOrder */
+  var target=null;
+  for(var fi=0;fi<CONFIG.genOrder.length;fi++){
+    if(generated.indexOf(CONFIG.genOrder[fi])<0){target=CONFIG.genOrder[fi];break}
+  }
+  if(!target)return;
+  state.currentFile=target;
   renderFileTabs();
   generateSection(ch,sec);
 }
@@ -442,24 +504,50 @@ function generateSection(ch,sec){
   contentEl.innerHTML='<div class="gen-panel"><div class="streaming" id="genStream"></div><div class="gen-status" id="genStatus">⏳ 加载教材原文…</div></div>';
 
   var dsKey=getDSKey();
-  /* Fetch CLAUDE.md + section text */
-  Promise.all([
-    fetch('https://raw.githubusercontent.com/'+CONFIG.repo+'/'+CONFIG.branch+'/CLAUDE.md').then(r=>r.ok?r.text():'').catch(()=>''),
-    fetch('https://raw.githubusercontent.com/'+CONFIG.repo+'/'+CONFIG.branch+'/'+sec.path).then(r=>r.ok?r.text():'').catch(()=>'')
-  ]).then(([claudeMd,secText])=>{
-    var systemPrompt='你是一位深度学习数学导师。请严格遵循以下教学指令：\n\n'+claudeMd+'\n\n---\n\n请只输出最终的课程内容（Markdown格式），不要包含任何元对话或解释。';
-    var userPrompt='请生成课程内容：\n\n- 章节：Ch'+ch.num+' §'+sec.id+' '+sec.title+'\n- 文件类型：'+state.currentFile+'\n';
-    if(secText){userPrompt+='\n以下是教材原文参考（请基于此内容生成，逐一覆盖每个关键定义、定理和示例，不得跳过，同时添加深度学习桥接和代码验证）：\n\n'+secText.substring(0,50000)+'\n';}
-    userPrompt+='\n请开始生成。注意控制篇幅和结构，使内容适合移动端阅读。';
+  var fileType=state.currentFile;
 
-    document.getElementById('genStatus').textContent='⏳ DeepSeek 正在生成…';
+  Promise.all([
+    fetch('https://raw.githubusercontent.com/'+CONFIG.repo+'/'+CONFIG.branch+'/CLAUDE.md').then(function(r){return r.ok?r.text():''}).catch(function(){return ''}),
+    fetch('https://raw.githubusercontent.com/'+CONFIG.repo+'/'+CONFIG.branch+'/'+sec.path).then(function(r){return r.ok?r.text():''}).catch(function(){return ''})
+  ]).then(function(results){
+    var claudeMd=results[0],secText=results[1];
+
+    /* Build targeted prompt based on file type */
+    var fileInstruction='';
+    switch(fileType){
+      case '历史':
+        fileInstruction='请生成【历史.md】。按照 CLAUDE.md 中"历史.md 结构"的写作纪律：画面感优先、悬念驱动、不引入技术符号、择一历史源流深入（数学史或DL史），结尾留一扇门引向主线。篇幅 5-8 min 阅读量。';
+        break;
+      case '主线':
+        fileInstruction='请生成【主线.md】。按照 CLAUDE.md 中"主线.md 三步结构"：(1) Toy Model直观感受 (2) 正式数学讲解（定义先行、推导优于宣告、边界声明）(3) DL桥接+代码验证。必须有可运行的Python代码。';
+        break;
+      case '习题':
+        fileInstruction='请生成【习题.md】。按照 CLAUDE.md 中"习题.md 结构"：概念检验（2-3题）、计算实践（2-3题，含代码验证）、DL延伸（1-2题）。每题附完整解答和思路点拨。';
+        break;
+      case '镜鉴':
+        fileInstruction='请生成【镜鉴.md】。按照 CLAUDE.md 中"镜鉴.md 结构"：数学之美、DL中的意义、人的映射、开放问题。200-400字，精炼有力，具体到概念本身的结构。';
+        break;
+      case '参考资料':
+        fileInstruction='请生成【参考资料.md】。按照 CLAUDE.md 中"参考资料.md 结构"：教材出处、延伸论文、代码库/工具、推荐阅读。按本节内容灵活选择，不为凑字数而填满。';
+        break;
+    }
+
+    var systemPrompt='你是一位深度学习数学导师。请严格遵循以下教学指令：\n\n'+claudeMd+'\n\n---\n\n请只输出最终的课程内容（Markdown格式），不要包含任何元对话或解释。';
+    var userPrompt=fileInstruction+'\n\n- 章节：Ch'+ch.num+' §'+sec.id+' '+sec.title+'\n- 文件类型：'+fileType+'\n';
+    if(secText){
+      if(fileType==='历史')userPrompt+='\n以下是教材原文参考（了解本节涉及的数学概念，但历史叙事不要复述教材——去找这个概念"必须被发明"的时刻）：\n\n'+secText.substring(0,30000)+'\n';
+      else userPrompt+='\n以下是教材原文参考（请基于此内容生成，逐一覆盖每个关键定义、定理和示例，不得跳过）：\n\n'+secText.substring(0,50000)+'\n';
+    }
+    userPrompt+='\n请开始生成。';
+
+    document.getElementById('genStatus').textContent='⏳ DeepSeek 正在生成 '+fileType+'…';
     return fetch('https://api.deepseek.com/v1/chat/completions',{
       method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+dsKey},
       body:JSON.stringify({model:'deepseek-chat',messages:[{role:'system',content:systemPrompt},{role:'user',content:userPrompt}],stream:true,temperature:.7,max_tokens:16384})
     });
   })
-  .then(res=>{if(!res.ok)return res.text().then(t=>{throw new Error('API '+res.status+': '+t.substring(0,200))});return readStream(res);})
-  .catch(e=>{
+  .then(function(res){if(!res.ok)return res.text().then(function(t){throw new Error('API '+res.status+': '+t.substring(0,200))});return readStream(res);})
+  .catch(function(e){
     contentEl.innerHTML='<div class="empty-state"><div class="icon">❌</div><h3>生成失败</h3><p>'+e.message+'</p></div>';
     state.generating=false;renderActionBar();
   });
@@ -469,13 +557,13 @@ function readStream(response){
   var reader=response.body.getReader(),decoder=new TextDecoder(),buffer='';
   var streamEl=document.getElementById('genStream');
   function pump(){
-    reader.read().then(({done,value})=>{
-      if(done){
+    reader.read().then(function(result){
+      if(result.done){
         document.getElementById('genStatus').textContent='✅ 生成完成 — '+state.genContent.length+' 字符 · 正在保存到 GitHub…';
         commitGenerated();
         return;
       }
-      buffer+=decoder.decode(value,{stream:true});
+      buffer+=decoder.decode(result.value,{stream:true});
       var lines=buffer.split('\n');buffer=lines.pop()||'';
       for(var i=0;i<lines.length;i++){
         if(!lines[i].startsWith('data: '))continue;
@@ -500,26 +588,37 @@ function commitGenerated(){
   var filePath=CONFIG.lessonsDir+'/'+folderName+'/'+state.currentFile+'.md';
   var apiUrl='https://api.github.com/repos/'+CONFIG.repo+'/contents/'+filePath+'?ref='+CONFIG.branch;
 
-  /* Check if exists */
   fetch(apiUrl,{headers:{Authorization:'Bearer '+ghToken,Accept:'application/vnd.github.v3+json'}})
-    .then(r=>r.ok?r.json():null)
-    .then(existing=>{
+    .then(function(r){return r.ok?r.json():null})
+    .then(function(existing){
       var body={message:'📱 生成: '+state.currentFile+' — Ch'+ch.num+' §'+sec.id+' '+sec.title,content:btoa(unescape(encodeURIComponent(state.genContent))),branch:CONFIG.branch};
       if(existing&&existing.sha)body.sha=existing.sha;
       return fetch(apiUrl,{method:'PUT',headers:{Authorization:'Bearer '+ghToken,'Content-Type':'application/json',Accept:'application/vnd.github.v3+json'},body:JSON.stringify(body)});
     })
-    .then(r=>{if(!r.ok)return r.json().then(e=>{throw new Error(e.message||'HTTP '+r.status)});return r.json()})
-    .then(()=>{
-      /* Update generatedFiles cache */
+    .then(function(r){if(!r.ok)return r.json().then(function(e){throw new Error(e.message||'HTTP '+r.status)});return r.json()})
+    .then(function(){
       if(!state.generatedFiles[sec.id])state.generatedFiles[sec.id]=[];
       if(state.generatedFiles[sec.id].indexOf(state.currentFile)<0)state.generatedFiles[sec.id].push(state.currentFile);
       if(!state.lessonFolders[sec.id])state.lessonFolders[sec.id]=folderName;
       renderTree();renderFileTabs();renderActionBar();
-      /* Show generated content */
       renderMarkdown(state.genContent);
-      toast('✅ 已保存到 GitHub');
+      toast('✅ '+state.currentFile+' 已保存到 GitHub');
+      /* Auto-generate next missing file */
+      state.generating=false;
+      var gf=state.generatedFiles[sec.id]||[];
+      var next=null;
+      for(var fi=0;fi<CONFIG.genOrder.length;fi++){
+        if(gf.indexOf(CONFIG.genOrder[fi])<0){next=CONFIG.genOrder[fi];break}
+      }
+      if(next){
+        state.currentFile=next;
+        renderFileTabs();
+        generateSection(ch,sec);
+      } else {
+        state.generating=false;renderActionBar();
+      }
     })
-    .catch(e=>{toast('❌ 保存失败: '+e.message);finishGeneration(false)});
+    .catch(function(e){toast('❌ 保存失败: '+e.message);finishGeneration(false)});
 }
 
 function finishGeneration(ok){
@@ -533,17 +632,18 @@ function toast(msg){
   var el=document.createElement('div');
   el.style.cssText='position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);background:var(--bg-surface);border:1px solid var(--border-normal);border-radius:var(--radius-m);padding:.6rem 1.2rem;font-size:.8rem;z-index:200;box-shadow:0 4px 24px rgba(0,0,0,.3)';
   el.textContent=msg;document.body.appendChild(el);
-  setTimeout(()=>el.remove(),2500);
+  setTimeout(function(){el.remove()},2500);
 }
 
 /* ══════════════════════════════════════════
-   KEYBOARD
+   KEYBOARD — 1-5 for file tabs
    ══════════════════════════════════════════ */
 document.addEventListener('keydown',function(e){
   if(!state.currentCh||!state.currentSec)return;
   var ch=state.currentCh,sec=state.currentSec;
   var ci=state.chapters.indexOf(ch),si=ch.sections.indexOf(sec);
-  if(e.key==='1')loadFile('主线');if(e.key==='2')loadFile('习题');if(e.key==='3')loadFile('镜鉴');
+  var keyMap={'1':'历史','2':'主线','3':'习题','4':'镜鉴','5':'参考资料'};
+  if(keyMap[e.key])loadFile(keyMap[e.key]);
   if(e.key==='ArrowDown'){e.preventDefault();if(si+1<ch.sections.length)selectSection(ch,ch.sections[si+1]);else if(ci+1<state.chapters.length){var nc=state.chapters[ci+1];selectSection(nc,nc.sections[0])}}
   if(e.key==='ArrowUp'){e.preventDefault();if(si>0)selectSection(ch,ch.sections[si-1]);else if(ci>0){var pc=state.chapters[ci-1];selectSection(pc,pc.sections[pc.sections.length-1])}}
 });
