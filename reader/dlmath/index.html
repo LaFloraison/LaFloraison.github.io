@@ -261,7 +261,8 @@ if(!getDSKey()||!getGHToken()){setTimeout(openSettings,500)}
 function loadTree(){
   treeEl.innerHTML='<div class="loader"><div class="spinner"></div></div>';
 
-  var manifestUrl='https://raw.githubusercontent.com/'+CONFIG.repo+'/'+CONFIG.branch+'/manifest.json';
+  var nocache='?_='+Date.now();
+  var manifestUrl='https://raw.githubusercontent.com/'+CONFIG.repo+'/'+CONFIG.branch+'/manifest.json'+nocache;
   var lesApi='https://api.github.com/repos/'+CONFIG.repo+'/contents/'+CONFIG.lessonsDir+'?ref='+CONFIG.branch;
 
   Promise.all([
@@ -279,7 +280,7 @@ function loadTree(){
     var folderPromises=[];
     for(var i=0;i<lesItems.length;i++){
       if(lesItems[i].type==='dir'){
-        var fm=lesItems[i].name.match(/第\d+节-(\d+\.\d+)/);
+        var fm=lesItems[i].name.match(/第\d+节-([^-]+)/);
         if(fm){
           var secId=fm[1];
           state.lessonFolders[secId]=lesItems[i].name;
