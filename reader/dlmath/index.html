@@ -386,15 +386,16 @@ function renderTree(){
       e.stopPropagation();
       var ci=parseInt(this.dataset.ch),si=parseInt(this.dataset.sec);
       if(!getDSKey()||!getGHToken()){openSettings();return}
-      /* Generate the first missing file */
+      /* Select section, default to first missing file */
       var sec=state.chapters[ci].sections[si];
       var gf=state.generatedFiles[sec.id]||[];
       var firstMissing=null;
       for(var fi=0;fi<CONFIG.genOrder.length;fi++){
         if(gf.indexOf(CONFIG.genOrder[fi])<0){firstMissing=CONFIG.genOrder[fi];break}
       }
-      if(firstMissing){state.currentFile=firstMissing;selectSection(state.chapters[ci],sec)}
-      generateSection(state.chapters[ci],sec);
+      if(firstMissing)state.currentFile=firstMissing;
+      selectSection(state.chapters[ci],sec);
+      sidebar.classList.remove('open');overlay.classList.remove('active');
     });
   });
 }
@@ -429,15 +430,15 @@ function renderFileTabs(){
 
 function renderActionBar(){
   var generated=state.generatedFiles[(state.currentSec||{}).id]||[];
-  var missing=CONFIG.fileTypes.filter(function(ft){return generated.indexOf(ft.id)<0});
-  if(missing.length===0){actionBar.innerHTML='';return}
-  /* Show what's missing */
-  var genLabel=state.generating?'⏳ 生成中…':'⚡ 生成 ('+missing.length+'个待生成)';
+  var currentMissing=generated.indexOf(state.currentFile)<0;
+  actionBar.innerHTML='';
+  if(!currentMissing)return;
+  var genLabel=state.generating?'⏳ 生成中…':'⚡ 生成 '+state.currentFile;
   actionBar.innerHTML='<button class="gen-section-btn'+(state.generating?' generating':'')+'" id="genSectionBtn" '+(state.generating?'disabled':'')+'>'+genLabel+'</button>';
   var btn=document.getElementById('genSectionBtn');
   if(btn)btn.addEventListener('click',function(){
     if(!getDSKey()||!getGHToken()){openSettings();return}
-    generateCurrentMissing();
+    generateCurrentFile();
   });
 }
 
@@ -465,7 +466,7 @@ function loadFile(fileId){
       contentEl.innerHTML='<div class="empty-state"><div class="icon">🔮</div>'+
         '<h3>'+fileId+' 还没有生成</h3>'+
         '<p>'+sec.id+' '+sec.title+'</p>'+
-        '<button class="btn btn-primary" style="margin-top:1rem" onclick="generateCurrentMissing()">⚡ 生成 '+fileId+'</button>'+
+        '<button class="btn btn-primary" style="margin-top:1rem" onclick="generateCurrentFile()">⚡ 生成 '+fileId+'</button>'+
       '</div>';
     });
 }
@@ -484,18 +485,9 @@ function renderMarkdown(md){
 /* ══════════════════════════════════════════
    GENERATE
    ══════════════════════════════════════════ */
-function generateCurrentMissing(){
-  var ch=state.currentCh,sec=state.currentSec;
-  var generated=state.generatedFiles[sec.id]||[];
-  /* Find first missing in genOrder */
-  var target=null;
-  for(var fi=0;fi<CONFIG.genOrder.length;fi++){
-    if(generated.indexOf(CONFIG.genOrder[fi])<0){target=CONFIG.genOrder[fi];break}
-  }
-  if(!target)return;
-  state.currentFile=target;
-  renderFileTabs();
-  generateSection(ch,sec);
+function generateCurrentFile(){
+  if(!state.currentCh||!state.currentSec)return;
+  generateSection(state.currentCh,state.currentSec);
 }
 
 function generateSection(ch,sec){
@@ -604,20 +596,7 @@ function commitGenerated(){
       renderTree();renderFileTabs();renderActionBar();
       renderMarkdown(state.genContent);
       toast('✅ '+state.currentFile+' 已保存到 GitHub');
-      /* Auto-generate next missing file */
-      state.generating=false;
-      var gf=state.generatedFiles[sec.id]||[];
-      var next=null;
-      for(var fi=0;fi<CONFIG.genOrder.length;fi++){
-        if(gf.indexOf(CONFIG.genOrder[fi])<0){next=CONFIG.genOrder[fi];break}
-      }
-      if(next){
-        state.currentFile=next;
-        renderFileTabs();
-        generateSection(ch,sec);
-      } else {
-        state.generating=false;renderActionBar();
-      }
+      state.generating=false;renderActionBar();
     })
     .catch(function(e){toast('❌ 保存失败: '+e.message);finishGeneration(false)});
 }
