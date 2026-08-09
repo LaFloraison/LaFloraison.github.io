@@ -28,7 +28,8 @@ body{background:var(--bg-primary);color:var(--text-normal);font-family:var(--fon
 .app{display:flex;height:100vh;height:100dvh}
 
 /* ── SIDEBAR ── */
-.sidebar{width:300px;min-width:300px;background:var(--bg-secondary);border-right:1px solid var(--border-subtle);display:flex;flex-direction:column;overflow:hidden;z-index:10;transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.sidebar{width:300px;min-width:300px;background:var(--bg-secondary);border-right:1px solid var(--border-subtle);display:flex;flex-direction:column;overflow:hidden;z-index:10;transition:width .25s,min-width .25s,border .25s}
+.sidebar.collapsed{width:0;min-width:0;border-right:none}
 .sidebar-header{padding:.9rem 1.1rem;border-bottom:1px solid var(--border-subtle);display:flex;align-items:center;gap:.55rem;flex-shrink:0;background:var(--bg-secondary)}
 .sidebar-header .back{color:var(--text-muted);text-decoration:none;font-size:1rem;transition:color .15s}
 .sidebar-header .back:hover{color:var(--text-normal)}
@@ -37,6 +38,8 @@ body{background:var(--bg-primary);color:var(--text-normal);font-family:var(--fon
 .sidebar-header .settings-btn:hover{color:var(--text-normal);background:var(--bg-hover)}
 .sidebar-header .collapse-all{background:none;border:none;color:var(--text-faint);font-size:.7rem;cursor:pointer;padding:3px 8px;border-radius:var(--radius-s);font-family:inherit;transition:color .15s,background .15s}
 .sidebar-header .collapse-all:hover{color:var(--text-muted);background:var(--bg-hover)}
+.sidebar-header .sidebar-toggle{background:none;border:none;color:var(--text-muted);font-size:.75rem;cursor:pointer;padding:3px 6px;border-radius:var(--radius-s);font-family:inherit;transition:color .15s,background .15s;margin-right:.25rem}
+.sidebar-header .sidebar-toggle:hover{color:var(--text-normal);background:var(--bg-hover)}
 
 .sidebar-tree{flex:1;overflow-y:auto;overflow-x:hidden;padding:.15rem 0;-webkit-overflow-scrolling:touch}
 .sidebar-tree::-webkit-scrollbar{width:3px}
@@ -147,6 +150,9 @@ body{background:var(--bg-primary);color:var(--text-normal);font-family:var(--fon
 .btn-warn{background:var(--color-warn);color:#000}
 
 .sidebar-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:9}
+.sidebar-expand-tab{display:none;position:fixed;left:0;top:50%;transform:translateY(-50%);background:var(--bg-secondary);border:1px solid var(--border-normal);border-left:none;border-radius:0 var(--radius-m) var(--radius-m) 0;padding:1rem .35rem;cursor:pointer;z-index:11;color:var(--text-muted);font-size:.7rem;writing-mode:vertical-lr;transition:color .15s,background .15s}
+.sidebar-expand-tab:hover{color:var(--text-normal);background:var(--bg-hover)}
+.sidebar.collapsed ~ .sidebar-expand-tab{display:block}
 .action-bar{display:flex;gap:.4rem;align-items:center}
 .action-bar .gen-section-btn{padding:4px 12px;border-radius:var(--radius-s);font-size:.7rem;cursor:pointer;border:1px solid var(--color-accent);background:var(--color-accent-soft);color:var(--color-accent-light);font-family:inherit;white-space:nowrap;touch-action:manipulation}
 .action-bar .gen-section-btn:hover{background:var(--color-accent);color:#fff}
@@ -171,12 +177,14 @@ body{background:var(--bg-primary);color:var(--text-normal);font-family:var(--fon
 <div class="sidebar-overlay" id="overlay"></div>
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-header">
+    <button class="sidebar-toggle" id="sidebarToggle" title="收起侧边栏">◀</button>
     <a href="../../" class="back">←</a><h2>🧠 DL Math</h2>
     <button class="collapse-all" id="collapseAll" title="折叠全部章节">⊟</button>
     <button class="settings-btn" onclick="openSettings()" title="设置 API 密钥">⚙️</button>
   </div>
   <div class="sidebar-tree" id="tree"></div>
 </aside>
+<div class="sidebar-expand-tab" id="sidebarExpandTab" title="展开侧边栏">侧边栏 ▶</div>
 
 <main class="main">
   <div class="topbar">
@@ -253,6 +261,16 @@ var collapseAllBtn=document.getElementById('collapseAll');
 
 menuBtn.addEventListener('click',function(){sidebar.classList.toggle('open');overlay.classList.toggle('active')});
 overlay.addEventListener('click',function(){sidebar.classList.remove('open');overlay.classList.remove('active')});
+
+/* Sidebar toggle */
+var sidebarToggle=document.getElementById('sidebarToggle');
+var sidebarExpandTab=document.getElementById('sidebarExpandTab');
+sidebarToggle.addEventListener('click',function(){
+  sidebar.classList.add('collapsed');
+});
+sidebarExpandTab.addEventListener('click',function(){
+  sidebar.classList.remove('collapsed');
+});
 
 /* Collapse all chapters */
 collapseAllBtn.addEventListener('click',function(){
@@ -645,16 +663,39 @@ function toast(msg){
 }
 
 /* ══════════════════════════════════════════
-   KEYBOARD — 1-5 for file tabs
+   KEYBOARD
    ══════════════════════════════════════════ */
 document.addEventListener('keydown',function(e){
   if(!state.currentCh||!state.currentSec)return;
   var ch=state.currentCh,sec=state.currentSec;
   var ci=state.chapters.indexOf(ch),si=ch.sections.indexOf(sec);
+
+  /* 1-6: switch file tab */
   var keyMap={'1':'历史','2':'主线','3':'代码','4':'习题','5':'镜鉴','6':'参考资料'};
-  if(keyMap[e.key])loadFile(keyMap[e.key]);
-  if(e.key==='ArrowDown'){e.preventDefault();if(si+1<ch.sections.length)selectSection(ch,ch.sections[si+1]);else if(ci+1<state.chapters.length){var nc=state.chapters[ci+1];selectSection(nc,nc.sections[0])}}
-  if(e.key==='ArrowUp'){e.preventDefault();if(si>0)selectSection(ch,ch.sections[si-1]);else if(ci>0){var pc=state.chapters[ci-1];selectSection(pc,pc.sections[pc.sections.length-1])}}
+  if(keyMap[e.key]){e.preventDefault();loadFile(keyMap[e.key]);return}
+
+  /* Left/Right: prev/next file, wrap to prev/next section */
+  if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+    e.preventDefault();
+    var files=CONFIG.fileTypes.map(function(f){return f.id});
+    var fi=files.indexOf(state.currentFile);
+    if(e.key==='ArrowRight'){
+      if(fi+1<files.length){loadFile(files[fi+1])}
+      else{
+        /* Last file → first file of next section */
+        if(si+1<ch.sections.length){state.currentFile=files[0];selectSection(ch,ch.sections[si+1])}
+        else if(ci+1<state.chapters.length){var nc=state.chapters[ci+1];state.currentFile=files[0];selectSection(nc,nc.sections[0])}
+      }
+    }else{
+      if(fi>0){loadFile(files[fi-1])}
+      else{
+        /* First file → last file of prev section */
+        if(si>0){state.currentFile=files[files.length-1];selectSection(ch,ch.sections[si-1])}
+        else if(ci>0){var pc=state.chapters[ci-1];state.currentFile=files[files.length-1];selectSection(pc,pc.sections[pc.sections.length-1])}
+      }
+    }
+  }
+  /* Up/Down: let browser scroll naturally — no preventDefault */
 });
 
 /* ══════════════════════════════════════════
