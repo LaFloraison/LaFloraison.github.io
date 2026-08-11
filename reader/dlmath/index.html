@@ -301,62 +301,49 @@ if(!getDSKey()||!getGHToken()){setTimeout(openSettings,500)}
 /* ══════════════════════════════════════════
    LOAD CHAPTER TREE
    ══════════════════════════════════════════ */
-function loadTree(){
-  treeEl.innerHTML='<div class="loader"><div class="spinner"></div></div>';
+	function loadTree(){
+	  treeEl.innerHTML='<div class="loader"><div class="spinner"></div></div>';
 
-  var nocache='?_='+Date.now();
-  var manifestUrl='https://raw.githubusercontent.com/'+CONFIG.repo+'/'+CONFIG.branch+'/manifest.json'+nocache;
-  var lesApi='https://api.github.com/repos/'+CONFIG.repo+'/contents/'+CONFIG.lessonsDir+'?ref='+CONFIG.branch;
+	  var nocache='?_='+Date.now();
+	  var manifestUrl='https://raw.githubusercontent.com/'+CONFIG.repo+'/'+CONFIG.branch+'/manifest.json'+nocache;
+	  var indexUrl='lessons-index.json'+nocache;
 
-  Promise.all([
-    fetch(manifestUrl).then(r=>r.ok?r.json():null).catch(()=>null),
-    fetch(lesApi,{headers:{Accept:'application/vnd.github.v3+json'}}).then(r=>r.ok?r.json():[]).catch(()=>[])
-  ]).then(function(results){
-    var manifest=results[0], lesItems=results[1];
+	  Promise.all([
+	    fetch(manifestUrl).then(r=>r.ok?r.json():null).catch(()=>null),
+	    fetch(indexUrl).then(r=>r.ok?r.json():{}).catch(()=>({}))
+	  ]).then(function(results){
+	    var manifest=results[0], index=results[1];
 
-    if(!manifest||!manifest.chapters){
-      treeEl.innerHTML='<div style="color:var(--color-error);padding:1rem">无法加载课程目录</div>';
-      return;
-    }
+	    if(!manifest||!manifest.chapters){
+	      treeEl.innerHTML='<div style="color:var(--color-error);padding:1rem">无法加载课程目录</div>';
+	      return;
+	    }
 
-    state.generatedFiles={};
-    var folderPromises=[];
-    for(var i=0;i<lesItems.length;i++){
-      if(lesItems[i].type==='dir'){
-        var fm=lesItems[i].name.match(/第\d+节-([^-]+)/);
-        if(fm){
-          var secId=fm[1];
-          state.lessonFolders[secId]=lesItems[i].name;
-          (function(sid,url){
-            folderPromises.push(
-              fetch(url+'?ref='+CONFIG.branch,{headers:{Accept:'application/vnd.github.v3+json'}})
-                .then(function(r){return r.ok?r.json():[]}).catch(function(){return []})
-                .then(function(files){
-                  state.generatedFiles[sid]=files.filter(function(f){return f.type==='file'&&f.name.endsWith('.md')}).map(function(f){return f.name.replace('.md','')});
-                })
-            );
-          })(secId,lesItems[i].url);
-        }
-      }
-    }
+	    /* Populate from pre-built index — 1 local fetch, 0 GitHub API calls */
+	    state.lessonFolders={};
+	    state.generatedFiles={};
+	    for(var secId in index){
+	      if(index.hasOwnProperty(secId)){
+	        state.lessonFolders[secId]=index[secId].folder;
+	        state.generatedFiles[secId]=index[secId].files||[];
+	      }
+	    }
 
-    return Promise.all(folderPromises).then(function(){
-      state.chapters=manifest.chapters.map(function(ch){
-        ch.sections.forEach(function(sec){
-          if(!sec.path){
-            var chDir='ch'+ch.num+'-'+ch.name.replace(/\s+/g,'-');
-            var secFile='sec-'+sec.id+'-'+sec.title.replace(/\s/g,'-')+'.txt';
-            sec.path=CONFIG.chaptersDir+'/'+chDir+'/'+secFile;
-          }
-        });
-        return ch;
-      });
-      renderTree();
-    });
-  }).catch(function(e){
-    treeEl.innerHTML='<div style="color:var(--color-error);padding:1rem;font-size:.8rem">Load error: '+e.message+'</div>';
-  });
-}
+	    state.chapters=manifest.chapters.map(function(ch){
+	      ch.sections.forEach(function(sec){
+	        if(!sec.path){
+	          var chDir='ch'+ch.num+'-'+ch.name.replace(/\s+/g,'-');
+	          var secFile='sec-'+sec.id+'-'+sec.title.replace(/\s/g,'-')+'.txt';
+	          sec.path=CONFIG.chaptersDir+'/'+chDir+'/'+secFile;
+	        }
+	      });
+	      return ch;
+	    });
+	    renderTree();
+	  }).catch(function(e){
+	    treeEl.innerHTML='<div style="color:var(--color-error);padding:1rem;font-size:.8rem">Load error: '+e.message+'</div>';
+	  });
+	}
 
 /* ══════════════════════════════════════════
    RENDER TREE — all chapters collapsed by default

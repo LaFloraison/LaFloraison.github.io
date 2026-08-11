@@ -1,0 +1,2235 @@
+{
+  "1.0": {
+    "folder": "第01节-1.0-Introduction-to-Deep-Learning-",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.1": {
+    "folder": "第02节-2.1-INTRODUCTION-Linear-algebra-pr",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.2.1.1": {
+    "folder": "第02节-2.2.1.1-What-Is-a-Vector",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.2.1.2": {
+    "folder": "第02节-2.2.1.2-Vector-Operations",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.2.1.3": {
+    "folder": "第02节-2.2.1.3-Vector-Components",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.2.1.4": {
+    "folder": "第02节-2.2.1.4-Magnitude-and-Direction",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.2.1.5": {
+    "folder": "第02节-2.2.1.5-Vector-Spaces",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.2.3.1": {
+    "folder": "第02节-2.2.3.1-Feature-Vectors",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.2.3.2": {
+    "folder": "第02节-2.2.3.2-Neural-Network-Parameters",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.2.3.3": {
+    "folder": "第02节-2.2.3.3-Activation-Functions-and-Layers",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.2.3.4": {
+    "folder": "第02节-2.2.3.4-Dot-Product-in-Neural-Network",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.2.3.5": {
+    "folder": "第02节-2.2.3.5-Gradient-Descent-and-Backpropagation",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.2.3.6": {
+    "folder": "第02节-2.2.3.6-Batch-Processing",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.2.3.7": {
+    "folder": "第02节-2.2.3.7-Convolutional-Neural-Networks",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.3.1": {
+    "folder": "第02节-2.3.1-What-Is-a-Matrix",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.3.2": {
+    "folder": "第02节-2.3.2-Dimensions",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.3.3.7": {
+    "folder": "第02节-2.3.3.7-Symmetric-Matrix",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.3.4.1": {
+    "folder": "第02节-2.3.4.1-Addition-and-Subtraction",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.3.4.3": {
+    "folder": "第02节-2.3.4.3-Matrix-Multiplication",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.3.4.6": {
+    "folder": "第02节-2.3.4.6-Inverse",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.3.5.1": {
+    "folder": "第02节-2.3.5.1-System-of-Linear-Equations",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.3.5.3": {
+    "folder": "第02节-2.3.5.3-Transformations",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.3.6.1": {
+    "folder": "第02节-2.3.6.1-Input-Data",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.3.6.2": {
+    "folder": "第02节-2.3.6.2-Parameters-of-the-Network",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.3.6.3": {
+    "folder": "第02节-2.3.6.3-Operations-in-Layers",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.3.6.4": {
+    "folder": "第02节-2.3.6.4-Activation-Functions",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.3.6.5": {
+    "folder": "第02节-2.3.6.5-Backpropagation-Gradient-Matrices",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.3.6.6": {
+    "folder": "第02节-2.3.6.6-Regularization",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.3.6.7": {
+    "folder": "第02节-2.3.6.7-Optimizers-RMSprop-Adam",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.3.6.8": {
+    "folder": "第02节-2.3.6.8-Batch-Normalization",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.4.1": {
+    "folder": "第02节-2.4.1-Tensors",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.4.2.2": {
+    "folder": "第02节-2.4.2.2-Tensor-Dot-Product",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.4.3": {
+    "folder": "第02节-2.4.3-Tensors-in-Deep-Learning",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.4.4": {
+    "folder": "第02节-2.4.4-Tensor-Operations-in-DL",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.5": {
+    "folder": "第02节-2.5-Linear-Transformations",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.5.1": {
+    "folder": "第02节-2.5.1-Matrix-Representation-of-Linear-Transfor",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.5.2.1": {
+    "folder": "第02节-2.5.2.1-Scaling",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.5.2.4": {
+    "folder": "第02节-2.5.2.4-Shearing",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.5.3": {
+    "folder": "第02节-2.5.3-Linear-Transformations-in-DL",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.5.3.1": {
+    "folder": "第02节-2.5.3.1-Neural-Network-Layers",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.5.3.2": {
+    "folder": "第02节-2.5.3.2-Convolutional-Neural-Networks",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.5.3.3": {
+    "folder": "第02节-2.5.3.3-Embeddings",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.5.3.4": {
+    "folder": "第02节-2.5.3.4-Regularization-Techniques",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.5.3.5": {
+    "folder": "第02节-2.5.3.5-Initialization",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.5.3.6": {
+    "folder": "第02节-2.5.3.6-Loss-Functions-and-Optimization",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.6": {
+    "folder": "第02节-2.6-Matrix-Factorizations",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.6.1": {
+    "folder": "第02节-2.6.1-LU-Decomposition",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.6.2": {
+    "folder": "第02节-2.6.2-QR-Decomposition",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.6.3": {
+    "folder": "第02节-2.6.3-Singular-Value-Decomposition",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "2.6.4": {
+    "folder": "第02节-2.6.4-Eigenvalues-and-Eigenvectors",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "3.1": {
+    "folder": "第03节-3.1-INTRODUCTION-In-this-chapter-we-delve-i",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "3.2": {
+    "folder": "第03节-3.2-PARTIAL-DERIVATIVES-Partial-derivatives",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "3.2.1": {
+    "folder": "第03节-3.2.1-Geometric-Interpretation",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "3.3": {
+    "folder": "第03节-3.3-PARTIAL-DERIVATIVES-IN-DEEP-LEARNING-In",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "3.4": {
+    "folder": "第03节-3.4-GRADIENTS-In-multivariable-calculus-the",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "3.5": {
+    "folder": "第03节-3.5-GRADIENT-IN-DEEP-LEARNING",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "3.5.1": {
+    "folder": "第03节-3.5.1-Gradient-Descent",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "3.5.2": {
+    "folder": "第03节-3.5.2-Backpropagation-The-backpropagation-algo",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "3.6": {
+    "folder": "第03节-3.6-JACOBIANS-Jacobian-is-a-fundamental-conc",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "3.6.1": {
+    "folder": "第03节-3.6.1-Jacobian-Determinant",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "3.6.2": {
+    "folder": "第03节-3.6.2-Relationship-with-the-Chain-Rule",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "3.6.3": {
+    "folder": "第03节-3.6.3-Computational-Aspects",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.1": {
+    "folder": "第04节-4.1-INTRODUCTION-In-this-chapter-we-begin-b",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.2": {
+    "folder": "第04节-4.2-PROBABILITY-DISTRIBUTIONS-Probability-di",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.2.1": {
+    "folder": "第04节-4.2.1-Discrete-Probability-Distribut",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.2.2": {
+    "folder": "第04节-4.2.2-Continuous-Probability-Distribut",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.2.2.1": {
+    "folder": "第04节-4.2.2.1-Uniform-Distribution--Continuous",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.2.2.2": {
+    "folder": "第04节-4.2.2.2-Normal--Gaussian--Distribution",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.2.2.3": {
+    "folder": "第04节-4.2.2.3-Exponential-Distribution-It-is-used-to-m",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.2.2.4": {
+    "folder": "第04节-4.2.2.4-Beta-and-Gamma-Distributions-The-beta-di",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.2.3.1": {
+    "folder": "第04节-4.2.3.1-Mean--Expected-Value",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.2.3.2": {
+    "folder": "第04节-4.2.3.2-Variance-and-Standard-Deviation-Variance",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.2.3.3": {
+    "folder": "第04节-4.2.3.3-Skewness",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.2.3.4": {
+    "folder": "第04节-4.2.3.4-Kurtosis",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.2.4.1": {
+    "folder": "第04节-4.2.4.1-Probability-Mass-Function-The-probabilit",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.2.4.2": {
+    "folder": "第04节-4.2.4.2-Probability-Density-Function-It-is-used",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.2.4.3": {
+    "folder": "第04节-4.2.4.3-Cumulative-Distribution-Function",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.2.5": {
+    "folder": "第04节-4.2.5-Connection-Between-Overfitting-and-Under",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.2.6": {
+    "folder": "第04节-4.2.6-Connecting-BNNs-to-Probability-Distribut",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.2.6.1": {
+    "folder": "第04节-4.2.6.1-Prior-Distribution",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.2.6.2": {
+    "folder": "第04节-4.2.6.2-Posterior-Distribution",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.2.6.3": {
+    "folder": "第04节-4.2.6.3-Prediction",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.3": {
+    "folder": "第04节-4.3-SAMPLING-METHODS-Sampling-methods-are-es",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.3.1": {
+    "folder": "第04节-4.3.1-Simple-Random-Sampling-Simple-random-sam",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.3.10": {
+    "folder": "第04节-4.3.10-Gibbs-Sampling-Gibbs-sampling-is-a-speci",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.3.11": {
+    "folder": "第04节-4.3.11-Latin-Hypercube-Sampling-Latin-hypercube",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.3.12": {
+    "folder": "第04节-4.3.12-Resampling-Methods-Techniques-like-boots",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.3.13.1": {
+    "folder": "第04节-4.3.13.1-Overfitting-Overfitting-occurs-when-a-mo",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.3.13.2": {
+    "folder": "第04节-4.3.13.2-Underfitting-Underfitting-occurs-when-a",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.3.2": {
+    "folder": "第04节-4.3.2-Stratified-Random-Sampling-Stratified-ra",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.3.3": {
+    "folder": "第04节-4.3.3-Cluster-Sampling-Cluster-sampling-divide",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.3.4": {
+    "folder": "第04节-4.3.4-Systematic-Sampling-Systematic-sampling",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.3.6": {
+    "folder": "第04节-4.3.6-Monte-Carlo-Sampling-Monte-Carlo-samplin",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.3.7": {
+    "folder": "第04节-4.3.7-Importance-Sampling-Importance-sampling",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.3.8": {
+    "folder": "第04节-4.3.8-Rejection-Sampling-Rejection-sampling-in",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.3.9": {
+    "folder": "第04节-4.3.9-Markov-Chain-Monte-Carlo-Markov-Chain-Mo",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.4": {
+    "folder": "第04节-4.4-BAYESIAN-STATISTICS-Bayesian-statistics",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.4.1": {
+    "folder": "第04节-4.4.1-Overfitting-and-Bayesian-Statistics-Over",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.4.2": {
+    "folder": "第04节-4.4.2-Underfitting-and-Bayesian-Statistics",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.4.3": {
+    "folder": "第04节-4.4.3-Bayesian-Neural-Networks-BNNs-extend-tra",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "4.5": {
+    "folder": "第04节-4.5-MOMENTS-IN-STATISTICS-AND-PROBABILITY-TH",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "5.1": {
+    "folder": "第05节-5.1-INTRODUCTION-Optimization-theory-is-a-ke",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "5.2": {
+    "folder": "第05节-5.2-OPTIMIZATION-THEORY-Optimization-theory",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "5.3.1": {
+    "folder": "第05节-5.3.1-Linear-Optimization-Linear-optimization",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "5.3.10": {
+    "folder": "第05节-5.3.10-Branch-and-Bound-and-Cutting-Plane-Metho",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "5.3.11": {
+    "folder": "第05节-5.3.11-Evolutionary-Algorithms",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "5.3.3": {
+    "folder": "第05节-5.3.3-Integer-Optimization-Integer-optimizatio",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "5.3.4": {
+    "folder": "第05节-5.3.4-Convex-Optimization-Convex-optimization",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "5.3.5": {
+    "folder": "第05节-5.3.5-Combinatorial-Optimization-Combinatorial",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "5.3.6": {
+    "folder": "第05节-5.3.6-Gradient-Descent-Gradient-descent-is-a-f",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "5.3.7": {
+    "folder": "第05节-5.3.7-Stochastic-Optimization",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "5.3.8": {
+    "folder": "第05节-5.3.8-Simplex-Method-The-Simplex-method-is-a-f",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "5.3.9": {
+    "folder": "第05节-5.3.9-Lagrangian-Multipliers",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "5.4": {
+    "folder": "第05节-5.4-GLOBAL-VERSUS-LOCAL-OPTIMA-Understanding",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "5.5": {
+    "folder": "第05节-5.5-RECENT-DEVELOPMENTS-IN-OPTIMIZATION",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "5.6": {
+    "folder": "第05节-5.6-OPTIMIZATION-METHODS-IN-DEEP-LEARNING-Op",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "5.6.1": {
+    "folder": "第05节-5.6.1-Batch-Gradient-Descent--BGD--BGD--spec",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "5.6.2": {
+    "folder": "第05节-5.6.2-Stochastic-Gradient-Descent--SGD--SGD-is",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "5.6.4": {
+    "folder": "第05节-5.6.4-Momentum-Momentum-is-an-optimization-tec",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "5.6.5": {
+    "folder": "第05节-5.6.5-Adagrad--Adaptive-Gradient-Algorithm--Ad",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "5.6.6": {
+    "folder": "第05节-5.6.6-Root-Mean-Square-Propagation--RMSprop--R",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "5.6.7": {
+    "folder": "第05节-5.6.7-Adam--Adaptive-Moment-Estimation",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "6.1": {
+    "folder": "第06节-6.1-INTRODUCTION-Information-theory-is-found",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "6.2": {
+    "folder": "第06节-6.2-ENTROPY-Entropy-in-the-context-of-infor",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "6.3": {
+    "folder": "第06节-6.3-JOINT-AND-CONDITIONAL-ENTROPY",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "6.3.1": {
+    "folder": "第06节-6.3.1-Joint-Entropy-When-we-talk-about-two",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "6.3.2": {
+    "folder": "第06节-6.3.2-Conditional-Entropy-Conditional-entr",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "6.4": {
+    "folder": "第06节-6.4-INFORMATION-GAIN-Information-gain-qua",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "6.5": {
+    "folder": "第06节-6.5-MUTUAL-INFORMATION-Mutual-information",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "6.6": {
+    "folder": "第06节-6.6-DATA-COMPRESSION",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "7.1": {
+    "folder": "第07节-7.1-INTRODUCTION-In-the-world-of-deep-learni",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "7.2": {
+    "folder": "第07节-7.2-GRAPH-THEORY-FOR-DEEP-LEARNING-Understan",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "7.2.2": {
+    "folder": "第07节-7.2.2-Directed-Graph",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "7.2.2.3": {
+    "folder": "第07节-7.2.2.3-Directed-Graph-Example",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "7.2.3": {
+    "folder": "第07节-7.2.3-Undirected-Graph",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "7.2.3.3": {
+    "folder": "第07节-7.2.3.3-Undirected-Graph-Example",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "7.2.4": {
+    "folder": "第07节-7.2.4-Weighted-Graph",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "7.3": {
+    "folder": "第07节-7.3-GRAPH-NEURAL-NETWORKS-Graph-neural-netwo",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "7.4": {
+    "folder": "第07节-7.4-WHY-GRAPHS-FOR-DEEP-LEARNING",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "7.4.1": {
+    "folder": "第07节-7.4.1-Intuitive-Representation-of-Complex-Rela",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "7.4.2": {
+    "folder": "第07节-7.4.2-Encoding-Relational-Information-Graphs-i",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "7.4.3": {
+    "folder": "第07节-7.4.3-Flexibility-and-Versatility-Graphs-can-r",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "7.4.4": {
+    "folder": "第07节-7.4.4-Efficiency-and-Scalability-with-GNNs-GNN",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "7.4.5": {
+    "folder": "第07节-7.4.5-Uncovering-Advanced-Insights",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "7.5.1": {
+    "folder": "第07节-7.5.1-Node-Classification-Graph-convolutional",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "7.5.2": {
+    "folder": "第07节-7.5.2-Graph-Classification",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "7.6": {
+    "folder": "第07节-7.6-CHALLENGES-Addressing-the-challenges-ass",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "7.6.1": {
+    "folder": "第07节-7.6.1-Scalability",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "7.6.2": {
+    "folder": "第07节-7.6.2-Dynamic-Graphs",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "7.6.3": {
+    "folder": "第07节-7.6.3-Heterogeneous-Graphs-Another-challenge-i",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "7.7.1": {
+    "folder": "第07节-7.7.1-GraphSAGE--Graph-Sample-and-Aggregation",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "8.1": {
+    "folder": "第08节-8.1-INTRODUCTION",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "8.2.1": {
+    "folder": "第08节-8.2.1-Manifolds",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "8.2.2": {
+    "folder": "第08节-8.2.2-Tangent-Space",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "8.2.3": {
+    "folder": "第08节-8.2.3-Metric-Tensor",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "8.2.4": {
+    "folder": "第08节-8.2.4-Curvature",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "8.3": {
+    "folder": "第08节-8.3-Differential-Geometry-in-DL",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "8.3.1": {
+    "folder": "第08节-8.3.1-Loss-Landscapes",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "8.3.2": {
+    "folder": "第08节-8.3.2-Feature-Space-Analysis",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "8.3.3": {
+    "folder": "第08节-8.3.3-Neural-Network-Generalization",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "8.3.4": {
+    "folder": "第08节-8.3.4-Information-Geometry",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "8.4.1": {
+    "folder": "第08节-8.4.1-Regularization",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "9.1": {
+    "folder": "第09节-9.1-INTRODUCTION-In-the-vast-field-of-deep-l",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "9.2": {
+    "folder": "第09节-9.2-BASIC-TOPOLOGY-Topology-is-a-part-of-mat",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "9.2.1": {
+    "folder": "第09节-9.2.1-Continuous-Transformations-and-Invarianc",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "9.2.2": {
+    "folder": "第09节-9.2.2-Neural-Networks-and-Topological-Structur",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "9.3": {
+    "folder": "第09节-9.3-RELATION-TO-CONVERGENCE-OF-LEARNING-ALGO",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "9.3.1.1": {
+    "folder": "第09节-9.3.1.1-Depth--Number-of-Layers--The-depth-of-a",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "9.3.1.2": {
+    "folder": "第09节-9.3.1.2-Width--Number-of-Nodes-per-Layer",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "9.3.2": {
+    "folder": "第09节-9.3.2-Skip-Connections-Skip-connections--also",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "9.3.3": {
+    "folder": "第09节-9.3.3-Recurrent-Connections-Recurrent-neural-n",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "9.3.4": {
+    "folder": "第09节-9.3.4-Activation-Functions",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "9.4": {
+    "folder": "第09节-9.4-TOPOLOGICAL-DATA-ANALYSIS-IN-NEURAL-NETW",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "9.4.1": {
+    "folder": "第09节-9.4.1-Persistent-Homology-Persistent-homology",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "9.5": {
+    "folder": "第09节-9.5-TOPOLOGICAL-DATA-ANALYSIS-WITH-DEEP-LEAR",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "9.5.1": {
+    "folder": "第09节-9.5.1-Persistent-Homology-in-Deep-Learning",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "10.1": {
+    "folder": "第10节-10.1-INTRODUCTION",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "10.2.1": {
+    "folder": "第10节-10.2.1-Fundamentals-of-Fourier-Analysis",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "10.2.2": {
+    "folder": "第10节-10.2.2-Fourier-Transform",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "10.2.3": {
+    "folder": "第10节-10.2.3-Inverse-Fourier-Transform",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "10.3": {
+    "folder": "第10节-10.3-WAVELETS",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "10.3.1": {
+    "folder": "第10节-10.3.1-Wavelet-Transform",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "10.3.2": {
+    "folder": "第10节-10.3.2-Applications-of-WT",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "10.4": {
+    "folder": "第10节-10.4-Convolution-in-the-Frequency-Domain-for-CNN",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "10.4.1": {
+    "folder": "第10节-10.4.1-Convolution-Theorem",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "11.1": {
+    "folder": "第11节-11.1-INTRODUCTION",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "11.2": {
+    "folder": "第11节-11.2-Dynamical-Systems-and-Differential-Equations",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "11.2.1": {
+    "folder": "第11节-11.2.1-Dynamical-Systems",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "11.2.1.1": {
+    "folder": "第11节-11.2.1.1-Discrete-Dynamical-Systems",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "11.2.1.2": {
+    "folder": "第11节-11.2.1.2-Continuous-Dynamical-Systems",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "11.2.2": {
+    "folder": "第11节-11.2.2-Differential-Equations",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "11.2.2.1": {
+    "folder": "第11节-11.2.2.1-Ordinary-Differential-Equations",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "11.2.2.2": {
+    "folder": "第11节-11.2.2.2-Partial-Differential-Equations",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "11.3.1": {
+    "folder": "第11节-11.3.1-Memory-and-Dynamics",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "11.3.2": {
+    "folder": "第11节-11.3.2-Explaining-via-ODEs",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "12.1": {
+    "folder": "第12节-12.1-INTRODUCTION-Quantum-computing",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "12.2": {
+    "folder": "第12节-12.2-INTRODUCTION-TO-QUANTUM-COMPUTING",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "12.2.1": {
+    "folder": "第12节-12.2.1-Qubits",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "12.2.2": {
+    "folder": "第12节-12.2.2-Superposition",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "12.2.3": {
+    "folder": "第12节-12.2.3-Entanglement",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "12.3.1": {
+    "folder": "第12节-12.3.1-Key-Quantum-Algorithms",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "12.3.2": {
+    "folder": "第12节-12.3.2-Quantum-Machine-Learning-Algorithms",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  },
+  "12.4.1": {
+    "folder": "第12节-12.4.1-Quantum-Neural-Networks--QNNs",
+    "files": [
+      "主线",
+      "习题",
+      "代码",
+      "历史",
+      "参考资料",
+      "镜鉴"
+    ]
+  }
+}
