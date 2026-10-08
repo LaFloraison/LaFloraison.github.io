@@ -1,5 +1,5 @@
 /* Service Worker — 离线缓存门户核心资源 */
-var CACHE_NAME = 'lafloraison-portal-v10';
+var CACHE_NAME = 'lafloraison-portal-v11';
 
 var PRECACHE = [
   '.',

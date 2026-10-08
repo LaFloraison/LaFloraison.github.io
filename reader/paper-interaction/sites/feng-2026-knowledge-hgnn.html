@@ -363,6 +363,7 @@ li.ol-card.here::before {
 }
 .pp-body p { margin: 0 0 14px; text-indent: 1.4em; }
 .pp-body p.pp-lead { text-indent: 0; }
+.pp-note { text-indent: 0; font-family: -apple-system, "Segoe UI", sans-serif; font-size: 15px; line-height: 1.7; color: #45566b; background: #f7f9fc; border: 1px solid #e5e8ee; border-radius: 10px; padding: 16px 18px; text-align: left; }
 .pp-fig { padding: 4px 18px 14px; background: #fff; flex: 0 0 auto; }
 .pp-fig img { display: block; width: 100%; height: auto; border: 1px solid #e5e8ee; border-radius: 6px; }
 .pp-fig .pp-figcap { font-size: 12.5px; color: #7a8699; margin-top: 6px; font-family: inherit; }
@@ -5233,6 +5234,19 @@ function paperSync() {
   }
   if (idx < 0) { idx = 0; }
   var quote = card.getAttribute('data-quote') || '';
+  /* 背景卡（拓展小节等）不对应某一处原文：说明清楚，而不是塞一段无关的话 */
+  if (!card.getAttribute('data-clip') && !quote) {
+    PP.cur = idx;
+    piGet('ppBody').innerHTML = '<p class="pp-note">This card is <b>background material</b> — it builds a general idea '
+      + 'rather than reading one passage of the paper, so there is no passage to put here. Cards that do read a passage '
+      + 'show it here as a screenshot from the paper. You can still walk the paper itself with the arrows below.</p>';
+    piGet('ppTag').textContent = '—';
+    var fb = piGet('ppFig');
+    fb.hidden = true; fb.innerHTML = '';
+    piGet('ppPrev').disabled = (idx === 0);
+    piGet('ppNext').disabled = (idx === PP.flat.length - 1);
+    return;
+  }
   /* 图表：卡里内嵌的原图直接克隆过来 */
   var figBox = piGet('ppFig');
   figBox.innerHTML = '';
